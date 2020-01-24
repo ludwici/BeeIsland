@@ -38,10 +38,25 @@
       <attribute name="title">
        <string>Ферма</string>
       </attribute>
+      <widget class="QStackedWidget" name="stackedWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>861</width>
+         <height>271</height>
+        </rect>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="page"/>
+       <widget class="QWidget" name="page_2"/>
+      </widget>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="MapTab">
       <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
+       <enum>Qt::RightToLeft</enum>
       </property>
       <attribute name="title">
        <string>Карта</string>
@@ -51,22 +66,12 @@
         <enum>QLayout::SetDefaultConstraint</enum>
        </property>
        <item>
-        <widget class="QGraphicsView" name="graphicsView">
-         <property name="maximumSize">
-          <size>
-           <width>780</width>
-           <height>16777215</height>
-          </size>
-         </property>
-        </widget>
+        <widget class="QDoubleSpinBox" name="zoomFactor"/>
        </item>
        <item>
         <spacer name="horizontalSpacer">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Minimum</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
