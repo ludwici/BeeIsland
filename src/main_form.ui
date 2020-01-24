@@ -66,7 +66,11 @@
         <enum>QLayout::SetDefaultConstraint</enum>
        </property>
        <item>
-        <widget class="QDoubleSpinBox" name="zoomFactor"/>
+        <widget class="QDoubleSpinBox" name="zoomFactor">
+         <property name="value">
+          <double>12.199999999999999</double>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="horizontalSpacer">
