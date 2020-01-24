@@ -34,4 +34,7 @@ class Hive(Levelable):
         if self.size >= self.max_size:
             return
 
+        if bee.need_hive_level > self.current_level:
+            return
+
         self.__bee_list.append(bee)

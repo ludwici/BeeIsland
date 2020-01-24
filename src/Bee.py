@@ -9,6 +9,7 @@ class Bee(Levelable):
         self.__current_hp = 0
         self.__max_hp = 0
         self.min_hp = 0
+        self.need_hive_level = 0
         self.name = Bee.getRandomName()
         self.changeLevelTo(level)
 
@@ -41,6 +42,7 @@ class Bee(Levelable):
             self.speed = 10
             self.__max_hp = 100
             self.max_xp = 100
+            self.need_hive_level = 1
         elif level == 2:
             self.speed += 2
             self.__max_hp = 120
