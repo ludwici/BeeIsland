@@ -1,10 +1,13 @@
-from PyQt5 import uic
-from PyQt5.QtGui import QPixmap, QBrush, QColor
-from PyQt5.QtWidgets import QApplication, QTableWidget, QTextEdit, QWidget, QGraphicsView, QDoubleSpinBox
+import pygame
 
-from src.MapView import MapView
+from PyQt5 import uic
+from PyQt5.QtCore import QTimer
+from PyQt5.QtWidgets import QApplication, QTableWidget, QTextEdit, QWidget, QGraphicsView, QDoubleSpinBox, QPushButton
+
 from src.Player import Player
 from src.Reporter import Reporter
+from src.Windows.MapWindow import MapWindow
+
 
 Form, Window = uic.loadUiType("main_form.ui")
 
@@ -14,25 +17,30 @@ class Application:
         self.app = QApplication([])
         self.window = Window()
 
-        self.map_view = MapView(self.window)
-        self.map_view.setMaximumWidth(761)
-        self.map_view.setPhoto(QPixmap("../res/images/map1.jpg"))
         self.form = Form()
 
         self.form.setupUi(self.window)
 
         self.player = player
 
+        self.open_map_btn = self.window.findChild(QPushButton, "openMapBtn")
+        self.open_map_btn.clicked.connect(self.initMap)
+
         self.resources_table = self.window.findChild(QTableWidget, "resourceTable")
         self.board = self.window.findChild(QTextEdit, "board")
-        self.map_tap = self.window.findChild(QWidget, "MapTab")
-        self.zoom_factor = self.window.findChild(QDoubleSpinBox, "zoomFactor")
-        self.zoom_factor.setValue(self.map_view.zoom)
-        self.map_view.zoom_spinbox = self.zoom_factor
-
-        self.map_tap.layout().addWidget(self.map_view)
 
         self.reporter = Reporter(self.board)
+        self.map_window = None
+
+    def initMap(self):
+        self.map_window = MapWindow()
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.pygameLoop)
+        self.timer.start(0)
+
+    def pygameLoop(self):
+        if self.map_window.loop():
+            self.window.close()
 
     def start(self):
         self.reporter.post("Вы прибыли на ферму")
