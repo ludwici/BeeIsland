@@ -2,7 +2,7 @@ from src.Bee import Bee
 from src.Interfaces import Levelable
 
 
-class Hive(Levelable):
+class BeeHive(Levelable):
     def __init__(self):
         Levelable.__init__(self)
         self.max_xp = 5
