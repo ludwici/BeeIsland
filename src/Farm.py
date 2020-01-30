@@ -1,4 +1,4 @@
-from src.BeeHive import BeeHive
+from src.Hive import Hive
 
 
 class Farm:
@@ -15,7 +15,7 @@ class Farm:
     def hive_list(self):
         return self.__hive_list
 
-    def addHive(self, hive: BeeHive):
+    def addHive(self, hive: Hive):
         if self.size() >= self.max_active_hive_count:
             return
 
