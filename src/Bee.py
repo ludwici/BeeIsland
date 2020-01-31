@@ -2,7 +2,7 @@ from src.Interfaces import Levelable
 
 
 class Bee(Levelable):
-    def __init__(self, level=1):
+    def __init__(self, level=1) -> None:
         Levelable.__init__(self)
         self.max_xp = 100
         self.speed = 0
@@ -26,7 +26,7 @@ class Bee(Levelable):
         return self.__current_hp
 
     @current_hp.setter
-    def current_hp(self, value):
+    def current_hp(self, value) -> None:
         if value < self.min_hp:
             self.current_hp = self.min_hp
         elif value >= self.max_hp:
@@ -54,4 +54,4 @@ class Bee(Levelable):
             self.need_hive_level = 1
 
         self.current_hp = self.max_hp
-        return False
+        return True

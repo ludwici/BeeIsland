@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class Levelable(ABC):
-    def __init__(self):
+    def __init__(self) -> None:
         self.__current_level = 0
         self.__max_level = 10
         self.xp_enabled = True
@@ -18,7 +18,7 @@ class Levelable(ABC):
         return self.current_xp
 
     @current_xp.setter
-    def current_xp(self, value):
+    def current_xp(self, value) -> None:
         if not self.xp_enabled:
             return
         if self.current_xp > self.max_xp:
@@ -41,5 +41,4 @@ class Levelable(ABC):
             self.xp_enabled = False
             self.current_xp = 0
             self.max_xp = 0
-            return True
-        return False
+        return True
