@@ -1,3 +1,4 @@
+import copy
 import pygame
 
 
@@ -7,12 +8,14 @@ class MapZone:
         self.name = name
         self.border_image = pygame.image.load("../res/images/zones/border_{0}.png".format(self.name)).convert_alpha()
 
-        self.pos_x = pos_x
-        self.pos_y = pos_y
-
         self.zone_rect = self.border_image.get_rect()
         self.zone_rect.x = pos_x
         self.zone_rect.y = pos_y
+
+        self.click_rect = copy.copy(self.zone_rect)
+        self.click_rect.height -= 30
+        self.click_rect.width -= 50
+        self.click_rect.x += 35
 
         self.has_fog = has_fog
         self.show_border = False
@@ -25,7 +28,6 @@ class MapZone:
             self.has_fog = False
 
     def onMouseOver(self):
-        print("Mouse is over {0}".format(self.name))
         self.show_border = True
 
     def onMouseOut(self):
