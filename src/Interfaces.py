@@ -33,9 +33,13 @@ class Levelable(ABC):
         return self.__current_level
 
     def changeLevelTo(self, level: int) -> bool:
-        if (self.current_level + level) <= self.max_level:
-            self.__current_level = level
+        if level < 0 or level > self.max_level:
+            return False
+
+        self.__current_level = level
+        if level == self.max_level:
             self.xp_enabled = False
             self.current_xp = 0
+            self.max_xp = 0
             return True
         return False
