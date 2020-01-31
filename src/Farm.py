@@ -2,7 +2,7 @@ from src.BeeNest import BeeNest
 
 
 class Farm:
-    def __init__(self):
+    def __init__(self) -> None:
         self.__hive_list = []
         self.max_active_hive_count = 3
         self.max_hive_slots = 6
@@ -15,11 +15,12 @@ class Farm:
     def hive_list(self):
         return self.__hive_list
 
-    def addHive(self, hive: BeeNest):
+    def addHive(self, hive: BeeNest) -> bool:
         if self.size() >= self.max_active_hive_count:
-            return
+            return False
 
         if hive.current_level > self.max_hive_level:
-            return
+            return False
 
         self.hive_list.append(hive)
+        return True

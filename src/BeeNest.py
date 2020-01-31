@@ -3,7 +3,7 @@ from src.Interfaces import Levelable
 
 
 class BeeNest(Levelable):
-    def __init__(self, level=0):
+    def __init__(self, level=0) -> None:
         Levelable.__init__(self)
         self.__bee_list = []
         self.__current_level = level

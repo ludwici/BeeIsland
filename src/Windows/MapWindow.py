@@ -5,13 +5,13 @@ from src.Windows.RenderWindow import RenderWindow
 
 
 class MapWindow(RenderWindow):
-    def __init__(self, width=761, height=761):
+    def __init__(self, width=761, height=761) -> None:
         RenderWindow.__init__(self, width, height)
         self.bg_image = pygame.image.load("../res/images/map1.jpg").convert()
         self.zones = []
         self.initZones()
 
-    def initZones(self):
+    def initZones(self) -> None:
         zone1 = MapZone("Zone1", pos_x=20, pos_y=75)
         zone2 = MapZone("Zone2", pos_x=83, pos_y=375)
         zone3 = MapZone("Zone3", pos_x=488, pos_y=183)

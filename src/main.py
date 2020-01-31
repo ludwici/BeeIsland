@@ -8,12 +8,11 @@ from src.Player import Player
 from src.Reporter import Reporter
 from src.Windows.MapWindow import MapWindow
 
-
 Form, Window = uic.loadUiType("main_form.ui")
 
 
 class Application:
-    def __init__(self, player: Player):
+    def __init__(self, player: Player) -> None:
         self.app = QApplication([])
         self.window = Window()
 
@@ -32,17 +31,19 @@ class Application:
         self.reporter = Reporter(self.board)
         self.map_window = None
 
-    def initMap(self):
+    def initMap(self) -> None:
         self.map_window = MapWindow()
         self.timer = QTimer()
         self.timer.timeout.connect(self.pygameLoop)
         self.timer.start(0)
 
-    def pygameLoop(self):
+    def pygameLoop(self) -> None:
         if self.map_window.loop():
-            self.window.close()
+            # get result after missions
+            pass
+            # self.window.close()
 
-    def start(self):
+    def start(self) -> None:
         self.reporter.post("Вы прибыли на ферму")
 
         self.window.show()

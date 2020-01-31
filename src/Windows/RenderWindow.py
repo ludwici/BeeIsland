@@ -4,7 +4,7 @@ import pygame
 
 
 class RenderWindow(ABC):
-    def __init__(self, width=640, height=480):
+    def __init__(self, width=640, height=480) -> None:
         pygame.init()
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         self.size = self.width, self.height = width, height

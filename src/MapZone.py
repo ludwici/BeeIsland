@@ -4,7 +4,7 @@ import pygame
 
 class MapZone:
 
-    def __init__(self, name, pos_x, pos_y, has_fog=True):
+    def __init__(self, name, pos_x, pos_y, has_fog=True) -> None:
         self.name = name
         self.border_image = pygame.image.load("../res/images/zones/border_{0}.png".format(self.name)).convert_alpha()
 
@@ -27,13 +27,13 @@ class MapZone:
         except:
             self.has_fog = False
 
-    def onMouseOver(self):
+    def onMouseOver(self) -> None:
         self.show_border = True
 
-    def onMouseOut(self):
+    def onMouseOut(self) -> None:
         self.show_border = False
 
-    def draw(self, screen: pygame.Surface):
+    def draw(self, screen: pygame.Surface) -> None:
         if self.show_border:
             screen.blit(self.border_image, self.zone_rect)
         if self.has_fog:
