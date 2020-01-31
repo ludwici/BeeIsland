@@ -12,5 +12,5 @@ class RenderWindow(ABC):
         self.screen = pygame.display.set_mode(self.size)
 
     @abstractmethod
-    def loop(self):
-        pass
+    def loop(self) -> bool:
+        return True
