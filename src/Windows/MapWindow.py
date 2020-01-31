@@ -13,7 +13,7 @@ class MapWindow(RenderWindow):
 
     def initZones(self):
         zone1 = MapZone("Zone1", pos_x=20, pos_y=75)
-        zone2 = MapZone("Zone2", pos_x=83, pos_y=333)
+        zone2 = MapZone("Zone2", pos_x=83, pos_y=375)
         zone3 = MapZone("Zone3", pos_x=488, pos_y=183)
         zone4 = MapZone("Zone4", pos_x=298, pos_y=33)
         zone5 = MapZone("Zone5", pos_x=415, pos_y=465)
@@ -28,16 +28,22 @@ class MapWindow(RenderWindow):
         self.zones.append(zone6)
         self.zones.append(zone7)
 
-    def loop(self):
+    def loop(self) -> bool:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return True
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     print("Space")
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    for z in self.zones:
+                        if z.show_border:
+                            print("Selected zone: {0}".format(z.name))
+                            break
 
             for z in self.zones:
-                if z.zone_rect.collidepoint(pygame.mouse.get_pos()):
+                if z.click_rect.collidepoint(pygame.mouse.get_pos()):
                     z.onMouseOver()
                 else:
                     z.onMouseOut()
