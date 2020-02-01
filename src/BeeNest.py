@@ -1,5 +1,5 @@
 from src.Bee import Bee
-from src.Interfaces import Levelable
+from src.Interfaces.Levelable import Levelable
 
 
 class BeeNest(Levelable):

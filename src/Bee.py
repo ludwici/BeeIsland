@@ -1,4 +1,4 @@
-from src.Interfaces import Levelable
+from src.Interfaces.Levelable import Levelable
 
 
 class Bee(Levelable):
