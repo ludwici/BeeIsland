@@ -51,7 +51,11 @@ class MapZone:
                 popup_pos[0] = mouse_pos[0] - 200
             else:
                 popup_pos[0] = mouse_pos[0]
+
             popup_pos[1] = mouse_pos[1] - 70
+            if popup_pos[1] < 0:
+                popup_pos[1] += 70
+
             position = Rect(popup_pos[0], popup_pos[1], 200, 70)
             map_window.showPopup(position, "Эта зона ещё не открыта")
 
