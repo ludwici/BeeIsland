@@ -7,7 +7,7 @@ class MapZone:
     def __init__(self, name, pos_x, pos_y, has_fog=True) -> None:
         self.name = name
         self.border_image = pygame.image.load("../res/images/zones/border_{0}.png".format(self.name)).convert_alpha()
-
+        self.__is_lock = True
         self.zone_rect = self.border_image.get_rect()
         self.zone_rect.x = pos_x
         self.zone_rect.y = pos_y
@@ -27,11 +27,23 @@ class MapZone:
         except:
             self.has_fog = False
 
+    @property
+    def is_lock(self) -> bool:
+        return self.__is_lock
+
+    def unlock(self) -> None:
+        self.__is_lock = False
+        self.has_fog = False
+
     def onMouseOver(self) -> None:
         self.show_border = True
 
     def onMouseOut(self) -> None:
         self.show_border = False
+
+    def onClick(self) -> None:
+        result = "locked" if self.is_lock else "unlocked"
+        print("This zone is {0}".format(result))
 
     def draw(self, screen: pygame.Surface) -> None:
         if self.show_border:

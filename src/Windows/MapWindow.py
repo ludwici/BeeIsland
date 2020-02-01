@@ -20,6 +20,8 @@ class MapWindow(RenderWindow):
         zone6 = MapZone("Zone6", pos_x=285, pos_y=214)
         zone7 = MapZone("Zone7", pos_x=383, pos_y=578, has_fog=False)
 
+        zone1.unlock()
+
         self.zones.append(zone1)
         self.zones.append(zone2)
         self.zones.append(zone3)
@@ -39,7 +41,7 @@ class MapWindow(RenderWindow):
                 if event.button == 1:
                     for z in self.zones:
                         if z.show_border:
-                            print("Selected zone: {0}".format(z.name))
+                            z.onClick()
                             break
 
             for z in self.zones:
