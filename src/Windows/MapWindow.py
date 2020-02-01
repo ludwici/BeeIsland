@@ -1,6 +1,8 @@
 import pygame
+from pygame.rect import Rect
 
 from src.MapZone import MapZone
+from src.Windows.PopupNotify import PopupNotify
 from src.Windows.RenderWindow import RenderWindow
 
 
@@ -9,7 +11,15 @@ class MapWindow(RenderWindow):
         RenderWindow.__init__(self, width, height)
         self.bg_image = pygame.image.load("../res/images/map1.jpg").convert()
         self.zones = []
+        self.drawable_list = []
         self.initZones()
+
+    def showPopup(self, position, text) -> None:
+        p = PopupNotify()
+        p.rect = position
+        if text:
+            p.setText(text)
+        self.drawable_list.append(p)
 
     def initZones(self) -> None:
         zone1 = MapZone("Zone1", pos_x=20, pos_y=75)
@@ -41,7 +51,7 @@ class MapWindow(RenderWindow):
                 if event.button == 1:
                     for z in self.zones:
                         if z.show_border:
-                            z.onClick()
+                            z.onClick(self)
                             break
 
             for z in self.zones:
@@ -54,5 +64,9 @@ class MapWindow(RenderWindow):
         self.screen.blit(self.bg_image, self.bg_image.get_rect())
         for z in self.zones:
             z.draw(self.screen)
+
+        for d in self.drawable_list:
+            d.draw(self.screen)
+
         pygame.display.flip()
         return False

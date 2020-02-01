@@ -1,9 +1,11 @@
 import copy
 import pygame
+from pygame.rect import Rect
+
+from src.Windows import MapWindow
 
 
 class MapZone:
-
     def __init__(self, name, pos_x, pos_y, has_fog=True) -> None:
         self.name = name
         self.border_image = pygame.image.load("../res/images/zones/border_{0}.png".format(self.name)).convert_alpha()
@@ -41,13 +43,20 @@ class MapZone:
     def onMouseOut(self) -> None:
         self.show_border = False
 
-    def onClick(self) -> None:
-        result = "locked" if self.is_lock else "unlocked"
-        print("This zone is {0}".format(result))
+    def onClick(self, map_window: MapWindow) -> None:
+        if self.is_lock:
+            mouse_pos = pygame.mouse.get_pos()
+            popup_pos = [0, 0]
+            if mouse_pos[0] + 200 + 20 > map_window.size[0]:
+                popup_pos[0] = mouse_pos[0] - 200
+            else:
+                popup_pos[0] = mouse_pos[0]
+            popup_pos[1] = mouse_pos[1] - 70
+            position = Rect(popup_pos[0], popup_pos[1], 200, 70)
+            map_window.showPopup(position, "Эта зона ещё не открыта")
 
     def draw(self, screen: pygame.Surface) -> None:
         if self.show_border:
             screen.blit(self.border_image, self.zone_rect)
         if self.has_fog:
             screen.blit(self.fog_image, self.fog_rect)
-
