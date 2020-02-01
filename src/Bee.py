@@ -18,11 +18,11 @@ class Bee(Levelable):
         return "RandomName"
 
     @property
-    def max_hp(self):
+    def max_hp(self) -> int:
         return self.__max_hp
 
     @property
-    def current_hp(self):
+    def current_hp(self) -> int:
         return self.__current_hp
 
     @current_hp.setter

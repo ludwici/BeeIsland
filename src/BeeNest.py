@@ -28,11 +28,11 @@ class BeeNest(Levelable):
         return True
 
     @property
-    def size(self):
+    def size(self) -> int:
         return len(self.__bee_list)
 
     @property
-    def bee_list(self):
+    def bee_list(self) -> list:
         return self.__bee_list
 
     def addBee(self, bee: Bee) -> bool:

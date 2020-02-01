@@ -8,11 +8,11 @@ class Farm:
         self.max_hive_slots = 6
         self.max_hive_level = 5
 
-    def size(self):
+    def size(self) -> int:
         return len(self.hive_list)
 
     @property
-    def hive_list(self):
+    def hive_list(self) -> list:
         return self.__hive_list
 
     def addHive(self, hive: BeeNest) -> bool:

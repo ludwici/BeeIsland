@@ -10,11 +10,11 @@ class Levelable(ABC):
         self.max_xp = 0
 
     @property
-    def max_level(self):
+    def max_level(self) -> int:
         return self.__max_level
 
     @property
-    def current_xp(self):
+    def current_xp(self) -> int:
         return self.current_xp
 
     @current_xp.setter
@@ -29,7 +29,7 @@ class Levelable(ABC):
             self.changeLevelTo(self.current_level+1)
 
     @property
-    def current_level(self):
+    def current_level(self) -> int:
         return self.__current_level
 
     def changeLevelTo(self, level: int) -> bool:
