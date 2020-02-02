@@ -12,14 +12,17 @@ class PopupNotify(Drawable):
         self.rect.width = self.bg_image.get_rect().width
         self.rect.height = self.bg_image.get_rect().height
         self.time = 0
+        self.start_ticks = pygame.time.get_ticks()
 
-        self.__font = pygame.font.Font("freesansbold.ttf", 14)
+        self.__font = pygame.font.Font("../res/fonts/18480.ttf", 16)
         self.text = ""
         self.text_image = None
         self.text_rect = None
 
         self.color = (255, 255, 255)
         self.close_btn = Button()
+        self.close_btn.rect.x = self.rect.topright[0] - 28
+        self.close_btn.rect.y = self.rect.topright[1] - 10
 
     def setText(self, text: str) -> None:
         self.text = text
@@ -28,7 +31,11 @@ class PopupNotify(Drawable):
         self.text_rect.x = self.rect.x + 10
         self.text_rect.y = self.rect.y + 15
 
+    def handle_event(self, event) -> None:
+        self.close_btn.handle_event(event)
+
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self.bg_image, self.rect)
+        self.close_btn.draw(screen)
         if self.text:
             screen.blit(self.text_image, self.text_rect)
