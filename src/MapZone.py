@@ -25,7 +25,7 @@ class MapZone:
             self.fog_image = pygame.image.load("../res/images/zones/fog_{0}.png".format(self.name)).convert_alpha()
             self.fog_rect = self.fog_image.get_rect()
             self.fog_rect.center = self.zone_rect.center
-        except:
+        except pygame.error:
             self.has_fog = False
 
     @property
