@@ -1,8 +1,7 @@
 import copy
 import pygame
-from pygame.rect import Rect
-
 from src.Windows import MapWindow
+from pygame.rect import Rect
 
 
 class MapZone:

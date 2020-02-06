@@ -1,7 +1,6 @@
 import pygame
-from pygame.rect import Rect
-
 from src.Interfaces.Drawable import Drawable
+from pygame.rect import Rect
 
 
 class Button(Drawable):
