@@ -1,10 +1,6 @@
-from threading import Thread
-
 import pygame
-from pygame.rect import Rect
 
 from src.MapZone import MapZone
-from src.Windows.PopupNotify import PopupNotify
 from src.Windows.RenderWindow import RenderWindow
 
 
@@ -12,29 +8,8 @@ class MapWindow(RenderWindow):
     def __init__(self, width=761, height=761) -> None:
         RenderWindow.__init__(self, width, height)
         self.bg_image = pygame.image.load("../res/images/map1.jpg").convert()
-        self.__popup = None
-        self.__popup_del_thread = Thread(target=self.__popup_daemon, daemon=True)
         self.zones = []
-        self.drawable_list = []
         self.initZones()
-
-    def showPopup(self, position, text) -> None:
-        if self.__popup in self.drawable_list:
-            self.drawable_list.remove(self.__popup)
-        self.__popup = PopupNotify(position)
-        if text:
-            self.__popup.setText(text)
-        self.__popup.time = 5000
-        self.drawable_list.append(self.__popup)
-        self.__popup_del_thread.start()
-
-    def __popup_daemon(self):
-        while True:
-            milliseconds = pygame.time.get_ticks() - self.__popup.start_ticks
-            if milliseconds >= self.__popup.time:
-                print("Destroy")
-                self.drawable_list.remove(self.__popup)
-                break
 
     def initZones(self) -> None:
         zone1 = MapZone("Zone1", pos_x=20, pos_y=75)
@@ -56,9 +31,10 @@ class MapWindow(RenderWindow):
         self.zones.append(zone7)
 
     def loop(self) -> bool:
+        self.clock.tick(60)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return True
+                return False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     print("Space")
@@ -87,4 +63,4 @@ class MapWindow(RenderWindow):
             d.draw(self.screen)
 
         pygame.display.flip()
-        return False
+        return True
