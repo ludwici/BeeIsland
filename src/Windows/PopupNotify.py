@@ -32,18 +32,18 @@ class PopupNotify(Drawable):
         self.text_rect.x = self.rect.x + 10
         self.text_rect.y = self.rect.y + 15
 
-    def __destroy(self):
+    def __destroy(self) -> None:
         while True:
             milliseconds = pygame.time.get_ticks() - self.start_ticks
             if milliseconds >= self.time:
                 self.destroy()
                 break
 
-    def destroy(self):
+    def destroy(self) -> None:
         if self in self.parent.drawable_list:
             self.parent.drawable_list.remove(self)
 
-    def show(self):
+    def show(self) -> None:
         if self not in self.parent.drawable_list:
             self.parent.drawable_list.append(self)
             self.__destroy_thread.start()
