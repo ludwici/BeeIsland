@@ -5,13 +5,15 @@ from pygame.rect import Rect
 
 
 class MapZone:
-    def __init__(self, name, pos_x, pos_y, has_fog=True) -> None:
+    def __init__(self, parent, name, pos_x, pos_y, has_fog=True) -> None:
         self.name = name
+        self.parent = parent
         self.border_image = pygame.image.load("../res/images/zones/border_{0}.png".format(self.name)).convert_alpha()
         self.__is_lock = True
         self.zone_rect = self.border_image.get_rect()
         self.zone_rect.x = pos_x
         self.zone_rect.y = pos_y
+        self.quest_list = []
 
         self.click_rect = copy.copy(self.zone_rect)
         self.click_rect.height -= 30
@@ -57,6 +59,8 @@ class MapZone:
 
             position = Rect(popup_pos[0], popup_pos[1], 200, 70)
             map_window.showPopup(position, "Эта зона ещё не открыта")
+            # zoom_thr = Thread(target=self.__zooming, daemon=True)
+            # zoom_thr.start()
 
     def draw(self, screen: pygame.Surface) -> None:
         if self.show_border:
