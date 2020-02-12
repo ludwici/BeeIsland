@@ -1,6 +1,5 @@
 import copy
 import pygame
-from src.Windows import MapWindow
 from pygame.rect import Rect
 
 
@@ -44,21 +43,27 @@ class MapZone:
     def onMouseOut(self) -> None:
         self.show_border = False
 
-    def onClick(self, map_window: MapWindow) -> None:
+    def __check_position(self) -> Rect:
+        popup_width = 200
+        popup_height = 70
+        mouse_pos = pygame.mouse.get_pos()
+        popup_pos = [0, 0]
+        if mouse_pos[0] + popup_width + 20 > self.parent.main_window.size[0]:
+            popup_pos[0] = mouse_pos[0] - popup_width
+        else:
+            popup_pos[0] = mouse_pos[0]
+
+        popup_pos[1] = mouse_pos[1] - popup_height
+        if popup_pos[1] < 0:
+            popup_pos[1] += popup_height
+
+        correct_position = Rect(popup_pos[0], popup_pos[1], popup_width, popup_height)
+        return correct_position
+
+    def onClick(self) -> None:
         if self.is_lock:
-            mouse_pos = pygame.mouse.get_pos()
-            popup_pos = [0, 0]
-            if mouse_pos[0] + 200 + 20 > map_window.size[0]:
-                popup_pos[0] = mouse_pos[0] - 200
-            else:
-                popup_pos[0] = mouse_pos[0]
-
-            popup_pos[1] = mouse_pos[1] - 70
-            if popup_pos[1] < 0:
-                popup_pos[1] += 70
-
-            position = Rect(popup_pos[0], popup_pos[1], 200, 70)
-            map_window.showPopup(position, "Эта зона ещё не открыта")
+            position = self.__check_position()
+            self.parent.createPopup(position, "Эта зона ещё не открыта")
             # zoom_thr = Thread(target=self.__zooming, daemon=True)
             # zoom_thr.start()
 
