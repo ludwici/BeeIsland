@@ -1,7 +1,7 @@
 from abc import ABC
 
 from src import Player, MapZone
-from src.Windows.QuestIcon import QuestIcon
+from src.UI.QuestIcon import QuestIcon
 
 
 class Questable(ABC):
