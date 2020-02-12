@@ -1,4 +1,5 @@
 .idea
 /venv
 /src/*_rc.py
+/coverage_results
 *.psd
