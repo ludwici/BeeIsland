@@ -1,4 +1,4 @@
-from src.Windows.Button import Button
+from src.UI.Button import Button
 
 
 class QuestIcon(Button):
