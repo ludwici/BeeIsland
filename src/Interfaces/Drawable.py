@@ -18,6 +18,9 @@ class Drawable(ABC):
         self._rect.x = position[0]
         self._rect.y = position[1]
 
+    def update(self, dt) -> None:
+        pass
+
     @abstractmethod
     def draw(self, screen: pygame.Surface) -> None:
         pass
