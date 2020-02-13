@@ -8,7 +8,6 @@ class Scene(ABC):
         self.main_window = main_window
         self.drawable_list = []
         self.timer_list = []
-        pass
 
     @abstractmethod
     def update(self, dt) -> None:
