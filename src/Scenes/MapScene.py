@@ -8,6 +8,7 @@ from src.Scenes.Scene import Scene
 class MapScene(Scene):
     def __init__(self, main_window) -> None:
         Scene.__init__(self, main_window=main_window)
+        self.bg_image = pygame.image.load("../res/images/map1.jpg").convert()
         self.zones = []
         self.initZones()
 
@@ -52,6 +53,7 @@ class MapScene(Scene):
         [d.handle_event(event) for d in self.drawable_list]
 
     def draw(self, surface) -> None:
+        surface.blit(self.bg_image, self.bg_image.get_rect())
         for z in self.zones:
             z.draw(surface)
 
@@ -60,3 +62,4 @@ class MapScene(Scene):
 
     def update(self, dt) -> None:
         self.check_timers()
+        [d.update(dt) for d in self.drawable_list]
