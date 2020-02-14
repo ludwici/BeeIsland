@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-
 from src.UI.PopupNotify import PopupNotify
 
 
@@ -11,6 +10,10 @@ class Scene(ABC):
 
     @abstractmethod
     def update(self, dt) -> None:
+        pass
+
+    @abstractmethod
+    def handle_events(self, event) -> None:
         pass
 
     @abstractmethod
