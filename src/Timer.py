@@ -31,4 +31,5 @@ class Timer:
         self.__start_time = 0
 
     def __del__(self):
-        print("Dtor Timer")
+        if not self.done:
+            self.stop()
