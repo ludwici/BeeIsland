@@ -1,5 +1,6 @@
 import pygame
 
+from pygame.event import Event
 from src.MapZone import MapZone
 from src.Quests.Match3 import Match3
 from src.Scenes.Scene import Scene
@@ -33,7 +34,11 @@ class MapScene(Scene):
 
         self.zones.extend([zone1, zone2, zone3, zone4, zone5, zone6, zone7])
 
-    def handle_events(self, event) -> None:
+    def on_scene_change(self) -> None:
+        super().on_scene_change()
+        self.zones.clear()
+
+    def handle_events(self, event: Event) -> None:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 print("Space")
@@ -50,16 +55,12 @@ class MapScene(Scene):
             else:
                 z.on_mouse_out()
 
-        [d.handle_event(event) for d in self.drawable_list]
+        [d.handle_event(event) for d in self._drawable_list]
 
-    def draw(self, surface) -> None:
+    def draw(self, surface: pygame.Surface) -> None:
         surface.blit(self.bg_image, self.bg_image.get_rect())
-        for z in self.zones:
-            z.draw(surface)
+        [z.draw(surface) for z in self.zones]
+        [d.draw(surface) for d in self._drawable_list]
 
-        for d in self.drawable_list:
-            d.draw(surface)
-
-    def update(self, dt) -> None:
-        self.check_timers()
-        [d.update(dt) for d in self.drawable_list]
+    def update(self, dt: float) -> None:
+        [d.update(dt) for d in self._drawable_list]
