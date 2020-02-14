@@ -1,10 +1,12 @@
 import pygame
+
 from abc import ABC, abstractmethod
+from src.Scenes import Scene
 from pygame.rect import Rect
 
 
 class Drawable(ABC):
-    def __init__(self, parent, position: (int, int)) -> None:
+    def __init__(self, parent: Scene, position: (int, int)) -> None:
         self.parent = parent
         self._rect = Rect((0, 0, 0, 0))
         self.set_position(position)
@@ -18,11 +20,8 @@ class Drawable(ABC):
         self._rect.x = position[0]
         self._rect.y = position[1]
 
-    def update(self, dt) -> None:
-        pass
-
     @abstractmethod
-    def update(self, dt) -> None:
+    def update(self, dt: float) -> None:
         pass
 
     @abstractmethod
