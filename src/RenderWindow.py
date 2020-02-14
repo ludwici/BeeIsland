@@ -12,22 +12,35 @@ class RenderWindow:
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.display.set_caption("Bee Island")
         self.__FPS = 60
-        self.size = self.width, self.height = width, height
-        self.screen = pygame.display.set_mode(self.size)
+        self.__size = self.width, self.height = width, height
+        self.__screen = pygame.display.set_mode(self.size)
 
-        self.scene_map = {
+        self.__scene_map = {
             "Map": MapScene(self),
             "Match3": Match3Scene(self)
         }
 
-        self.current_scene = MapScene(self)
-        self.prev_scene = None
-        self.done = False
-        self.clock = Clock()
+        self.__current_scene = MapScene(self)
+        self.__prev_scene = None
+        self.__done = False
+        self.__clock = Clock()
+
+    @property
+    def size(self) -> (int, int):
+        return self.__size
+
+    @property
+    def screen(self) -> pygame.Surface:
+        return self.__screen
+
+    @property
+    def done(self) -> bool:
+        return self.__done
 
     def change_scene(self, scene_name: str) -> None:
-        self.prev_scene = self.current_scene
-        self.current_scene = self.scene_map[scene_name]
+        self.__prev_scene = self.__current_scene
+        self.__current_scene.on_scene_change()
+        self.__current_scene = self.__scene_map[scene_name]
 
     def start(self) -> None:
         while not self.done:
@@ -38,12 +51,12 @@ class RenderWindow:
     def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.done = True
-            self.current_scene.handle_events(event)
+                self.__done = True
+            self.__current_scene.handle_events(event)
 
     def loop(self) -> None:
-        dt = self.clock.tick(self.__FPS) / 1000
+        dt = self.__clock.tick(self.__FPS) / 1000
         self.handle_events()
-        self.current_scene.update(dt)
-        self.current_scene.draw(surface=self.screen)
+        self.__current_scene.update(dt)
+        self.__current_scene.draw(surface=self.screen)
         pygame.display.flip()
