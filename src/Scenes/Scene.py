@@ -1,32 +1,35 @@
+import pygame
+
 from abc import ABC, abstractmethod
-from src.UI.PopupNotify import PopupNotify
+from src.Interfaces import Drawable
+
+from pygame.event import Event
 
 
 class Scene(ABC):
     def __init__(self, main_window) -> None:
         self.main_window = main_window
-        self.drawable_list = []
-        self.timer_list = []
+        self._drawable_list = []
 
     @abstractmethod
-    def update(self, dt) -> None:
+    def update(self, dt: float) -> None:
         pass
 
     @abstractmethod
-    def handle_events(self, event) -> None:
+    def handle_events(self, event: Event) -> None:
         pass
 
     @abstractmethod
-    def draw(self, surface) -> None:
+    def draw(self, surface: pygame.Surface) -> None:
         pass
 
-    def check_timers(self) -> None:
-        for t in self.timer_list:
-            if t.done:
-                self.timer_list.remove(t)
+    @abstractmethod
+    def on_scene_change(self):
+        self._drawable_list.clear()
 
-    def create_popup(self, position, text) -> None:
-        popup = PopupNotify(parent=self, position=position)
-        if text:
-            popup.set_text(text)
-        popup.show()
+    def add_drawable(self, d: Drawable) -> None:
+        self._drawable_list.append(d)
+
+    def remove_drawable(self, d: Drawable) -> None:
+        if d in self._drawable_list:
+            self._drawable_list.remove(d)
