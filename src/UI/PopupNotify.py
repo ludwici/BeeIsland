@@ -17,7 +17,6 @@ class PopupNotify(Drawable):
         self.text_image = None
         self.text_rect = None
 
-        self.color = (255, 255, 255)
         # self.close_btn = Button()
         # self.close_btn.rect.x = self.rect.topright[0] - 28
         # self.close_btn.rect.y = self.rect.topright[1] - 10
@@ -48,8 +47,10 @@ class PopupNotify(Drawable):
         pass
         # self.close_btn.handle_event(event)
 
+    def update(self, dt) -> None:
+        pass
+
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self.bg_image, self._rect)
         # self.close_btn.draw(screen)
-        if self.text:
-            screen.blit(self.text_image, self.text_rect)
+        screen.blit(self.text_image, self.text_rect)
