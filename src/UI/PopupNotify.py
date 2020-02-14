@@ -1,18 +1,17 @@
 import pygame
-
 from src.Interfaces.Drawable import Drawable
-from src.Timer import Timer
+from src.Scenes import Scene
 
 
 class PopupNotify(Drawable):
-    def __init__(self, parent, position: (int, int) = (0, 0)) -> None:
+    def __init__(self, parent: Scene, position: (int, int) = (0, 0), time_to_kill: int = 3) -> None:
         Drawable.__init__(self, parent, position)
         self.bg_image = pygame.image.load("../res/images/popup1.png").convert_alpha()
         self._rect.width = self.bg_image.get_rect().width
         self._rect.height = self.bg_image.get_rect().height
         self.__font = pygame.font.Font("../res/fonts/18480.ttf", 16)
-        self.timer = Timer(mills=3000)
-        self.timer.after_times_actions.append(self.destroy)
+        self.__time_to_kill = time_to_kill
+        self.__start_time = pygame.time.get_ticks()
         self.text = ""
         self.text_image = None
         self.text_rect = None
@@ -36,8 +35,6 @@ class PopupNotify(Drawable):
             if type(p) is PopupNotify:
                 p.destroy()
         self.parent.drawable_list.append(self)
-        self.parent.timer_list.append(self.timer)
-        self.timer.start()
 
     def destroy(self) -> None:
         if self in self.parent.drawable_list:
@@ -48,7 +45,10 @@ class PopupNotify(Drawable):
         # self.close_btn.handle_event(event)
 
     def update(self, dt) -> None:
-        pass
+        mills = (pygame.time.get_ticks() - self.__start_time) / 1000
+        print(mills)
+        if mills >= self.__time_to_kill:
+            self.destroy()
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self.bg_image, self._rect)
