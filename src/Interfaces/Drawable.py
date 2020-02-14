@@ -18,6 +18,7 @@ class Drawable(ABC):
         self._rect.x = position[0]
         self._rect.y = position[1]
 
+    @abstractmethod
     def update(self, dt) -> None:
         pass
 
