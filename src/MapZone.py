@@ -1,10 +1,12 @@
 import copy
 import pygame
+
+from src.Scenes import MapScene
 from pygame.rect import Rect
 
 
 class MapZone:
-    def __init__(self, parent, name, pos_x, pos_y, has_fog=True) -> None:
+    def __init__(self, parent: MapScene, name: str, pos_x: int, pos_y: int, has_fog: bool = True) -> None:
         self.name = name
         self.parent = parent
         self.border_image = pygame.image.load("../res/images/zones/border_{0}.png".format(self.name)).convert_alpha()
