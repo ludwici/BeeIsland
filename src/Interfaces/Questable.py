@@ -24,5 +24,5 @@ class Questable(ABC):
         self.__is_allow = self.condition
         return self.__is_allow
 
-    def get_rewards_to_player(self, player: Player) -> None:
+    def give_rewards_to_player(self, player: Player) -> None:
         pass

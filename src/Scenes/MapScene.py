@@ -10,9 +10,9 @@ class MapScene(Scene):
         Scene.__init__(self, main_window=main_window)
         self.bg_image = pygame.image.load("../res/images/map1.jpg").convert()
         self.zones = []
-        self.initZones()
+        self.init_zones()
 
-    def initZones(self) -> None:
+    def init_zones(self) -> None:
         zone1 = MapZone(self, "Zone1", pos_x=20, pos_y=75)
         zone2 = MapZone(self, "Zone2", pos_x=83, pos_y=375)
         zone3 = MapZone(self, "Zone3", pos_x=488, pos_y=183)
@@ -41,14 +41,14 @@ class MapScene(Scene):
             if event.button == 1:
                 for z in self.zones:
                     if z.show_border:
-                        z.onClick()
+                        z.on_click()
                         break
 
         for z in self.zones:
             if z.click_rect.collidepoint(pygame.mouse.get_pos()):
-                z.onMouseOver()
+                z.on_mouse_over()
             else:
-                z.onMouseOut()
+                z.on_mouse_out()
 
         [d.handle_event(event) for d in self.drawable_list]
 

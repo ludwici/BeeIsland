@@ -23,16 +23,16 @@ class Levelable(ABC):
             return
         if self.current_xp > self.max_xp:
             over_xp = self.current_xp = self.max_xp
-            self.changeLevelTo(self.current_level+1)
+            self.change_level_to(self.current_level + 1)
             self.current_xp += over_xp
         elif self.current_xp == self.max_xp:
-            self.changeLevelTo(self.current_level+1)
+            self.change_level_to(self.current_level + 1)
 
     @property
     def current_level(self) -> int:
         return self.__current_level
 
-    def changeLevelTo(self, level: int) -> bool:
+    def change_level_to(self, level: int) -> bool:
         if level < 0 or level > self.max_level:
             return False
 

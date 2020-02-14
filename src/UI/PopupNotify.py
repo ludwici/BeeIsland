@@ -24,7 +24,7 @@ class PopupNotify(Drawable):
     def __del__(self):
         print("Destroy Popup")
 
-    def setText(self, text: str) -> None:
+    def set_text(self, text: str) -> None:
         self.text = text
         self.text_image = self.__font.render(self.text, True, (164, 107, 60))
         self.text_rect = self.text_image.get_rect()

@@ -25,8 +25,8 @@ class Scene(ABC):
             if t.done:
                 self.timer_list.remove(t)
 
-    def createPopup(self, position, text) -> None:
+    def create_popup(self, position, text) -> None:
         popup = PopupNotify(parent=self, position=position)
         if text:
-            popup.setText(text)
+            popup.set_text(text)
         popup.show()

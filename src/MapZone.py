@@ -39,10 +39,10 @@ class MapZone:
         self.__is_lock = False
         self.has_fog = False
 
-    def onMouseOver(self) -> None:
+    def on_mouse_over(self) -> None:
         self.show_border = True
 
-    def onMouseOut(self) -> None:
+    def on_mouse_out(self) -> None:
         self.show_border = False
 
     def __check_position(self) -> Rect:
@@ -62,10 +62,10 @@ class MapZone:
         correct_position = Rect(popup_pos[0], popup_pos[1], popup_width, popup_height)
         return correct_position
 
-    def onClick(self) -> None:
+    def on_click(self) -> None:
         if self.is_lock:
             position = self.__check_position()
-            self.parent.createPopup(position, "Эта зона ещё не открыта")
+            self.parent.create_popup(position, "Эта зона ещё не открыта")
             # zoom_thr = Thread(target=self.__zooming, daemon=True)
             # zoom_thr.start()
 

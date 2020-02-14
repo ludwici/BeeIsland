@@ -25,7 +25,7 @@ class RenderWindow:
         self.done = False
         self.clock = Clock()
 
-    def changeScene(self, scene_name: str) -> None:
+    def change_scene(self, scene_name: str) -> None:
         self.prev_scene = self.current_scene
         self.current_scene = self.scene_map[scene_name]
 

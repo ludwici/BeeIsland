@@ -7,7 +7,7 @@ class Button(Drawable):
     def __init__(self, parent, path_to_image: str, text: str = "", position: (int, int) = (0, 0)) -> None:
         Drawable.__init__(self, parent=parent, position=position)
         self.image = None
-        self.setImage(path_to_image)
+        self.set_image(path_to_image)
         self.action_list = []
         self.text = text
         self.hovered = False
@@ -15,18 +15,18 @@ class Button(Drawable):
     def update(self, dt) -> None:
         pass
 
-    def addAction(self, action: Callable) -> None:
+    def add_action(self, action: Callable) -> None:
         self.action_list.append(action)
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self.image, self._rect)
 
-    def setImage(self, path: str) -> None:
+    def set_image(self, path: str) -> None:
         self.image = pygame.image.load(path).convert_alpha()
         self._rect.width = self.image.get_rect().width
         self._rect.height = self.image.get_rect().height
 
-    def onClick(self) -> None:
+    def on_click(self) -> None:
         [a() for a in self.action_list]
 
     def handle_event(self, event) -> None:
@@ -35,7 +35,7 @@ class Button(Drawable):
 
         if event.type == pygame.MOUSEBUTTONDOWN and self.hovered:
             if event.button == 1:
-                self.onClick()
+                self.on_click()
 
         # if self.hovered:
         #     self.image = self.bg_image_hovered

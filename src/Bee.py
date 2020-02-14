@@ -11,7 +11,7 @@ class Bee(Levelable):
         self.min_hp = 0
         self.need_hive_level = 0
         self.name = Bee.getRandomName()
-        self.changeLevelTo(level)
+        self.change_level_to(level)
 
     @staticmethod
     def getRandomName() -> str:
@@ -34,8 +34,8 @@ class Bee(Levelable):
         else:
             self.current_hp = value
 
-    def changeLevelTo(self, level: int) -> bool:
-        if not super().changeLevelTo(level):
+    def change_level_to(self, level: int) -> bool:
+        if not super().change_level_to(level):
             return False
 
         if level == 0:

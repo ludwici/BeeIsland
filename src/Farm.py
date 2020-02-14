@@ -15,7 +15,7 @@ class Farm:
     def hive_list(self) -> list:
         return self.__hive_list
 
-    def addHive(self, hive: BeeNest) -> bool:
+    def add_hive(self, hive: BeeNest) -> bool:
         if self.size() >= self.max_active_hive_count:
             return False
 
