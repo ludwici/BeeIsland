@@ -4,6 +4,8 @@ import pygame
 from src.Scenes import MapScene
 from pygame.rect import Rect
 
+from src.UI.PopupNotify import PopupNotify
+
 
 class MapZone:
     def __init__(self, parent: MapScene, name: str, pos_x: int, pos_y: int, has_fog: bool = True) -> None:
@@ -65,9 +67,7 @@ class MapZone:
     def on_click(self) -> None:
         if self.is_lock:
             position = self.__check_position()
-            self.parent.create_popup(position, "Эта зона ещё не открыта")
-            # zoom_thr = Thread(target=self.__zooming, daemon=True)
-            # zoom_thr.start()
+            PopupNotify.create(scene=self.parent, position=position, text="Эта зона ещё не открыта")
 
     def draw(self, screen: pygame.Surface) -> None:
         if self.show_border:
