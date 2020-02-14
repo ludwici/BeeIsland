@@ -1,11 +1,13 @@
 import pygame
+
+from pygame.event import Event
 from src.Interfaces.Drawable import Drawable
 from src.Scenes import Scene
 
 
 class PopupNotify(Drawable):
     def __init__(self, parent: Scene, position: (int, int) = (0, 0), time_to_kill: int = 3) -> None:
-        Drawable.__init__(self, parent, position)
+        Drawable.__init__(self, parent=parent, position=position)
         self.bg_image = pygame.image.load("../res/images/popup1.png").convert_alpha()
         self._rect.width = self.bg_image.get_rect().width
         self._rect.height = self.bg_image.get_rect().height
@@ -23,6 +25,14 @@ class PopupNotify(Drawable):
     def __del__(self):
         print("Destroy Popup")
 
+    @staticmethod
+    def create(scene: Scene, position: (int, int), text: str) -> "PopupNotify":
+        p = PopupNotify(parent=scene, position=position)
+        if text:
+            p.set_text(text)
+        p.show()
+        return p
+
     def set_text(self, text: str) -> None:
         self.text = text
         self.text_image = self.__font.render(self.text, True, (164, 107, 60))
@@ -31,22 +41,17 @@ class PopupNotify(Drawable):
         self.text_rect.y = self.position[1] + 15
 
     def show(self) -> None:
-        for p in self.parent.drawable_list:
-            if type(p) is PopupNotify:
-                p.destroy()
-        self.parent.drawable_list.append(self)
+        self.parent.add_drawable(self)
 
     def destroy(self) -> None:
-        if self in self.parent.drawable_list:
-            self.parent.drawable_list.remove(self)
+        self.parent.remove_drawable(self)
 
-    def handle_event(self, event) -> None:
+    def handle_event(self, event: Event) -> None:
         pass
         # self.close_btn.handle_event(event)
 
-    def update(self, dt) -> None:
+    def update(self, dt: float) -> None:
         mills = (pygame.time.get_ticks() - self.__start_time) / 1000
-        print(mills)
         if mills >= self.__time_to_kill:
             self.destroy()
 
