@@ -28,11 +28,11 @@ class Bee(Levelable):
     @current_hp.setter
     def current_hp(self, value) -> None:
         if value < self.min_hp:
-            self.current_hp = self.min_hp
+            self.__current_hp = self.min_hp
         elif value >= self.max_hp:
-            self.current_hp = self.max_hp
+            self.__current_hp = self.max_hp
         else:
-            self.current_hp = value
+            self.__current_hp = value
 
     def change_level_to(self, level: int) -> bool:
         if not super().change_level_to(level):
