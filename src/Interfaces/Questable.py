@@ -1,5 +1,4 @@
 from abc import ABC
-
 from src import Player, MapZone
 from src.UI.QuestIcon import QuestIcon
 
@@ -14,7 +13,7 @@ class Questable(ABC):
         self.icon_btn = QuestIcon(parent=self.zone.parent, path_to_image="../res/images/quest_icon1.png",
                                   position=icon_position)
         self.zone.quest_list.append(self)
-        self.zone.parent.drawable_list.append(self.icon_btn)
+        self.zone.parent.add_drawable(self.icon_btn)
 
     @property
     def is_allow(self) -> bool:
