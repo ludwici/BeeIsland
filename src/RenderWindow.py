@@ -10,10 +10,9 @@ class RenderWindow:
         pygame.init()
         os.environ['SDL_VIDEO_CENTERED'] = '1'
         pygame.display.set_caption("Bee Island")
+        self.__FPS = 60
         self.size = self.width, self.height = width, height
         self.screen = pygame.display.set_mode(self.size)
-        self.bg_color = 0, 0, 0
-        self.bg_image = pygame.image.load("../res/images/map1.jpg").convert()
         self.current_scene = MapScene(self)
         self.done = False
         self.clock = Clock()
@@ -31,10 +30,8 @@ class RenderWindow:
             self.current_scene.handle_events(event)
 
     def loop(self) -> None:
-        dt = self.clock.tick(60)
+        dt = self.clock.tick(self.__FPS) / 1000
         self.handle_events()
-        self.screen.fill(self.bg_color)
-        self.screen.blit(self.bg_image, self.bg_image.get_rect())
         self.current_scene.update(dt)
         self.current_scene.draw(surface=self.screen)
         pygame.display.flip()
