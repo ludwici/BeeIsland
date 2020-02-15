@@ -17,7 +17,7 @@ class Levelable(ABC):
     def current_xp(self) -> int:
         return self.__current_xp
 
-    def give_xp(self, value) -> None:
+    def give_xp(self, value: int) -> None:
         if not self.xp_enabled:
             return
         if (self.current_xp + value) >= self.max_xp:
