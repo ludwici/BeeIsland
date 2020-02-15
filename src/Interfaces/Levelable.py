@@ -15,18 +15,17 @@ class Levelable(ABC):
 
     @property
     def current_xp(self) -> int:
-        return self.current_xp
+        return self.__current_xp
 
-    @current_xp.setter
-    def current_xp(self, value) -> None:
+    def give_xp(self, value) -> None:
         if not self.xp_enabled:
             return
-        if self.current_xp > self.max_xp:
-            over_xp = self.current_xp = self.max_xp
+        if (self.current_xp + value) >= self.max_xp:
+            over_xp = self.current_xp + value - self.max_xp
             self.change_level_to(self.current_level + 1)
-            self.current_xp += over_xp
-        elif self.current_xp == self.max_xp:
-            self.change_level_to(self.current_level + 1)
+            value = over_xp
+        self.__current_xp = value
+        # print("Xp: {0}/{1}".format(self.current_xp, self.max_xp))
 
     @property
     def current_level(self) -> int:
@@ -37,8 +36,8 @@ class Levelable(ABC):
             return False
 
         self.__current_level = level
+        self.__current_xp = 0
         if level == self.max_level:
             self.xp_enabled = False
-            self.current_xp = 0
             self.max_xp = 0
         return True

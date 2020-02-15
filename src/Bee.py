@@ -54,4 +54,9 @@ class Bee(Levelable):
             self.need_hive_level = 1
 
         self.current_hp = self.max_hp
+        # print("Speed: {}".format(self.speed))
+        # print("Hp: {0}/{1}".format(self.current_hp, self.max_hp))
+        # print("Xp: {0}/{1}".format(self.current_xp, self.max_xp))
+        # print("Xp enabled: {}".format(self.xp_enabled))
+        # print("---")
         return True
