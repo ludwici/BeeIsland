@@ -1,4 +1,7 @@
 language: python
+
+if: branch = master
+
 jobs:
   include:
     - name: "Linux"
