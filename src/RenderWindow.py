@@ -2,7 +2,7 @@ import os
 import pygame
 
 from src.Scenes.MapScene import MapScene
-from src.Scenes.Match3Scene import Match3Scene
+from src.Scenes.Match3.Match3Scene import Match3Scene
 from pygame.time import Clock
 
 

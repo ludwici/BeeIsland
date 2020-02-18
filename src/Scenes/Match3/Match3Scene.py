@@ -1,6 +1,8 @@
 import pygame
 
 from pygame.event import Event
+
+from src.FlowersGrid import FlowersGrid
 from src.Scenes.Scene import Scene
 
 
@@ -8,6 +10,7 @@ class Match3Scene(Scene):
     def __init__(self, main_window) -> None:
         Scene.__init__(self, main_window=main_window)
         self.bg_image = pygame.image.load("../res/images/quest_bg1.png").convert_alpha()
+        self.grid = FlowersGrid(position=(124, 124), size=(8, 8))
 
     def update(self, dt: float) -> None:
         pass
@@ -20,3 +23,4 @@ class Match3Scene(Scene):
 
     def draw(self, surface: pygame.Surface) -> None:
         surface.blit(self.bg_image, self.bg_image.get_rect())
+        self.grid.draw(surface)
