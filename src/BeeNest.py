@@ -3,7 +3,7 @@ from src.Interfaces.Levelable import Levelable
 
 
 class BeeNest(Levelable):
-    def __init__(self, level=0) -> None:
+    def __init__(self, level=1) -> None:
         Levelable.__init__(self)
         self.__bee_list = []
         self.__current_level = level
@@ -15,13 +15,13 @@ class BeeNest(Levelable):
         if not super().change_level_to(level):
             return False
 
-        if level == 0:
+        if level == 1:
             self.max_size = 3
             self.max_xp = 3
-        elif level == 1:
+        elif level == 2:
             self.max_size += 2
             self.max_xp = 5
-        elif level == 2:
+        elif level == 3:
             self.max_size += 2
             self.max_xp = 10
 

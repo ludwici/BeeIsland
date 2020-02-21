@@ -38,16 +38,16 @@ class Bee(Levelable):
         if not super().change_level_to(level):
             return False
 
-        if level == 0:
+        if level == 1:
             self.speed = 5
             self.__max_hp = 70
             self.max_xp = 100
             self.need_hive_level = 0
-        elif level == 1:
+        elif level == 2:
             self.speed = 10
             self.__max_hp = 100
             self.max_xp = 150
-        elif level == 2:
+        elif level == 3:
             self.speed += 2
             self.__max_hp = 120
             self.max_xp = 200
