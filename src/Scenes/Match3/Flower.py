@@ -6,9 +6,10 @@ from pygame.sprite import Sprite
 
 class FlowersData(Enum):
     YELLOW = 1
-    RED = 2
+    PURPLE = 2
     BLUE = 3
     GREEN = 4
+    TURQUOISE = 5
 
 
 class Flower(Sprite):
