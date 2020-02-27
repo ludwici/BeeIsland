@@ -1,6 +1,8 @@
 import pygame
 
 from pygame.event import Event
+
+from src.Interfaces.Questable import QuestDifficult
 from src.MapZone import MapZone
 from src.Quests.Match3 import Match3
 from src.Scenes.Scene import Scene
@@ -22,11 +24,11 @@ class MapScene(Scene):
         zone6 = MapZone(self, "Zone6", pos_x=285, pos_y=214)
         zone7 = MapZone(self, "Zone7", pos_x=383, pos_y=578, has_fog=False)
 
-        q1 = Match3(zone=zone1, icon_position=(110, 120))
+        q1 = Match3(zone=zone1, icon_position=(110, 120), difficult=QuestDifficult.EASY)
         q1.condition = True
         q1.check_allow()
 
-        q2 = Match3(zone=zone1, icon_position=(90, 160))
+        q2 = Match3(zone=zone1, icon_position=(90, 160), difficult=QuestDifficult.EASY)
         q2.condition = True
         q2.check_allow()
 
@@ -49,12 +51,7 @@ class MapScene(Scene):
                         z.on_click()
                         break
 
-        for z in self.zones:
-            if z.click_rect.collidepoint(pygame.mouse.get_pos()):
-                z.on_mouse_over()
-            else:
-                z.on_mouse_out()
-
+        [z.handle_event(event) for z in self.zones]
         [d.handle_event(event) for d in self._drawable_list]
 
     def draw(self, surface: pygame.Surface) -> None:

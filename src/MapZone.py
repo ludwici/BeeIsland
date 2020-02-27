@@ -37,6 +37,12 @@ class MapZone:
     def is_lock(self) -> bool:
         return self.__is_lock
 
+    def handle_event(self, event):
+        if self.click_rect.collidepoint(pygame.mouse.get_pos()):
+            self.on_mouse_over()
+        else:
+            self.on_mouse_out()
+
     def unlock(self) -> None:
         self.__is_lock = False
         self.has_fog = False
