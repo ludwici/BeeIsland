@@ -27,6 +27,12 @@ class Scene(ABC):
     def on_scene_change(self):
         self._drawable_list.clear()
 
+    def find_drawable_by_type(self, t) -> Drawable:
+        for d in self._drawable_list:
+            if type(d) is t:
+                return d
+        return None
+
     def add_drawable(self, d: Drawable) -> None:
         self._drawable_list.append(d)
 
