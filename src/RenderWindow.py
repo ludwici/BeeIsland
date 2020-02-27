@@ -2,7 +2,7 @@ import os
 import pygame
 
 from src.Scenes.MapScene import MapScene
-from src.Scenes.Match3Scene import Match3Scene
+from src.Scenes.Match3.Match3Scene import Match3Scene
 from pygame.time import Clock
 
 
@@ -55,7 +55,7 @@ class RenderWindow:
             self.__current_scene.handle_events(event)
 
     def loop(self) -> None:
-        dt = self.__clock.tick(self.__FPS) / 1000
+        dt = self.__clock.tick(self.__FPS)
         self.handle_events()
         self.__current_scene.update(dt)
         self.__current_scene.draw(surface=self.screen)
