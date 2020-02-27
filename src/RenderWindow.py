@@ -55,7 +55,7 @@ class RenderWindow:
             self.__current_scene.handle_events(event)
 
     def loop(self) -> None:
-        dt = self.__clock.tick(self.__FPS) / 1000
+        dt = self.__clock.tick(self.__FPS)
         self.handle_events()
         self.__current_scene.update(dt)
         self.__current_scene.draw(surface=self.screen)
