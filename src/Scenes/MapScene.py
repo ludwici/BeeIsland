@@ -24,15 +24,20 @@ class MapScene(Scene):
         zone6 = MapZone(self, "Zone6", pos_x=285, pos_y=214)
         zone7 = MapZone(self, "Zone7", pos_x=383, pos_y=578, has_fog=False)
 
-        q1 = Match3(zone=zone1, icon_position=(110, 120), difficult=QuestDifficult.EASY)
-        q1.condition = True
-        q1.check_allow()
-
-        q2 = Match3(zone=zone1, icon_position=(90, 160), difficult=QuestDifficult.EASY)
-        q2.condition = True
-        q2.check_allow()
+        q1 = Match3(icon_position=(110, 120), difficult=QuestDifficult.EASY)
+        q1.rewards.extend(["Пыльца: 100", "Опыт: 100"])
+        # q1.condition = True
+        # q1.check_allow()
+        #
+        q2 = Match3(icon_position=(90, 160), difficult=QuestDifficult.EASY)
+        q2.rewards.extend(["Пыльца: 200", "Опыт: 200"])
+        # q2.condition = True
+        # q2.check_allow()
 
         zone1.unlock()
+        zone1.add_quest(q1)
+        zone1.add_quest(q2)
+        # zone1.add_quests([q1, q2])
 
         self.zones.extend([zone1, zone2, zone3, zone4, zone5, zone6, zone7])
 
