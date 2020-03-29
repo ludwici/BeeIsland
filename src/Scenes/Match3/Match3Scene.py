@@ -93,8 +93,10 @@ class Match3Scene(Scene):
                 if cell.rect.collidepoint(event.pos) and cell.flower:
                     self.grabbed = cell
                     self.grid.score_multiplier = 1
-                    self.grab_point = (
-                        event.pos[0] - self.grabbed.flower.rect.left, event.pos[1] - self.grabbed.flower.rect.top)
+                    self.grab_point = \
+                        (
+                            event.pos[0] - self.grabbed.flower.rect.left, event.pos[1] - self.grabbed.flower.rect.top
+                        )
         elif event.type == pygame.MOUSEBUTTONUP:
             if self.grabbed:
                 if self.dest_tile and not self.dest_tile.flower:

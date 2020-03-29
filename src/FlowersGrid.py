@@ -187,8 +187,8 @@ class FlowersGrid:
             delay += 250
             print("Score: {}".format(self.score))
             centers = [self.cells[i].rect.center for i in m]
-            cx = sum((c[0] for c in centers)) / len(centers)
-            cy = sum((c[1] for c in centers)) / len(centers)
+            # cx = sum((c[0] for c in centers)) / len(centers)
+            # cy = sum((c[1] for c in centers)) / len(centers)
             # self.add_points_label((cx, cy), score)
             for i in m:
                 self.cells[i].flower = None
@@ -215,8 +215,11 @@ class FlowersGrid:
                         return cell.index, d
 
     def reseat_flower(self, cell) -> None:
-        flower = cell.flower
-        if not flower:
+        try:
+            flower = cell.flower
+            if not flower:
+                return
+        except AttributeError:
             return
 
         dist = get_distance(flower.rect.topleft, cell.rect.topleft)
