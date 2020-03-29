@@ -24,7 +24,9 @@ class MapScene(Scene):
         zone6 = MapZone(self, "Zone6", pos_x=285, pos_y=214)
         zone7 = MapZone(self, "Zone7", pos_x=383, pos_y=578, has_fog=False)
 
-        q1 = Match3(icon_position=(110, 120), difficult=QuestDifficult.EASY)
+        q1 = Match3(icon_position=(110, 120), difficult=QuestDifficult.EASY, quest_title="Три в ряд")
+        q1.description = \
+            "Соберите как можно больше нектара, комбинируя в одну линию три или более цветка одного цвета."
         q1.rewards.extend(["Пыльца: 100", "Опыт: 100"])
         # q1.condition = True
         # q1.check_allow()
