@@ -5,20 +5,18 @@ from pygame.rect import Rect
 
 from src.Interfaces.Drawable import Drawable
 from src.Scenes import Scene
+from src.UI.TextLabel import TextLabel
 
 
 class PopupNotify(Drawable):
     def __init__(self, parent: Scene, position: (int, int) = (0, 0), time_to_kill: int = 3, text: str = "") -> None:
-        self.text = text
-        self.text_image = None
-        self.text_rect = None
-        # self.__font = pygame.font.Font("../res/fonts/18480.ttf", 16)
-        self.__font = pygame.font.SysFont("segoeprint", 12)
         Drawable.__init__(self, parent=parent, position=position)
         self._bg_image = None
         self.set_background("../res/images/popup1.png")
         self._time_to_kill = time_to_kill
         self.__start_time = pygame.time.get_ticks()
+        self.text_label = TextLabel(parent=self, text=text, position=self.position, font_name="segoeprint",
+                                    font_size=12, color=(159, 80, 17))
         self.set_text(text=text)
 
     def __del__(self):
@@ -34,18 +32,14 @@ class PopupNotify(Drawable):
         self._rect.height = self._bg_image.get_rect().height
 
     @classmethod
-    def create(cls, scene: Scene, position: (int, int), text: str) -> "PopupNotify":
-        p = cls(parent=scene, position=position, text=text)
+    def create(cls, scene: Scene, position: (int, int), *args, **kwargs) -> "PopupNotify":
+        p = cls(parent=scene, position=position, text=kwargs["text"])
         p.show()
         return p
 
     def set_text(self, text: str) -> None:
-        if not text:
-            return
-        self.text_image = self.__font.render(self.text, True, (159, 80, 17))
-        self.text_rect = self.text_image.get_rect()
-        self.text_rect.x = self.position[0] + 15
-        self.text_rect.y = self.position[1] + 10
+        self.text_label.text = text
+        self.text_label.set_position((self.position[0] + 15, self.position[1] + 10))
 
     def show(self) -> None:
         self.parent.add_drawable(self)
@@ -55,7 +49,6 @@ class PopupNotify(Drawable):
 
     def set_position(self, position: (int, int)) -> None:
         super().set_position(position)
-        self.set_text(self.text)
 
     def handle_event(self, event: Event) -> None:
         pass
@@ -68,5 +61,4 @@ class PopupNotify(Drawable):
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self._bg_image, self._rect)
-        if self.text:
-            screen.blit(self.text_image, self.text_rect)
+        self.text_label.draw(screen)
