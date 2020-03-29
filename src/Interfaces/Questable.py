@@ -1,6 +1,8 @@
 from abc import ABC
 from enum import Enum
 
+from pygame.rect import Rect
+
 from src import Player, MapZone
 from src.UI.QuestIcon import QuestIcon
 from src.UI.QuestPopup import QuestPopup
@@ -27,7 +29,7 @@ class Questable(ABC):
         return self.__is_allow
 
     def show_popup(self) -> None:
-        position = self.zone.check_position()
+        position = Rect(0, 70, 0, 0)
         QuestPopup.create(scene=self.zone.parent, position=position, text=str(self.rewards))
 
     def check_allow(self) -> bool:
