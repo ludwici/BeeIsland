@@ -20,7 +20,7 @@ class RenderWindow:
             "Match3": Match3Scene(self)
         }
 
-        self.__current_scene = MapScene(self)
+        self.__current_scene = self.__scene_map["Map"]
         self.__prev_scene = None
         self.__done = False
         self.__clock = Clock()
