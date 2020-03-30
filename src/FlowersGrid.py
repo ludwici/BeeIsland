@@ -186,9 +186,9 @@ class FlowersGrid:
             self.score_multiplier += 1
             delay += 250
             print("Score: {}".format(self.score))
-            centers = [self.cells[i].rect.center for i in m]
-            cx = sum((c[0] for c in centers)) / len(centers)
-            cy = sum((c[1] for c in centers)) / len(centers)
+            # centers = [self.cells[i].rect.center for i in m]
+            # cx = sum((c[0] for c in centers)) / len(centers)
+            # cy = sum((c[1] for c in centers)) / len(centers)
             # self.add_points_label((cx, cy), score)
             for i in m:
                 self.cells[i].flower = None
