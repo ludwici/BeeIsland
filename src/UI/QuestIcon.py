@@ -7,6 +7,3 @@ class QuestIcon(Button):
 
     def on_click(self) -> None:
         self.parent.show_popup()
-
-    def update(self, dt) -> None:
-        pass
