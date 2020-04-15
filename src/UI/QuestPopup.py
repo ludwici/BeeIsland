@@ -1,10 +1,11 @@
 import pygame
 from pygame.event import Event
 
+from src.QuestSettings import QuestSettings, QuestDifficult
+from src.Scenes import Scene
 from src.UI.Button import Button
 from src.UI.MultilineTextLabel import MultilineTextLabel
 from src.UI.PopupNotify import PopupNotify
-from src.Scenes import Scene
 from src.UI.TextButton import TextButton
 from src.UI.TextLabel import TextLabel
 
@@ -19,20 +20,23 @@ class QuestPopup(PopupNotify):
         self.close_btn.set_position(position=(0, 0))
         self.close_btn.add_action(lambda: self.destroy())
         self._time_to_kill = 0
-
-        self.rewards_text = text
+        self.quest = None
 
         self.set_background("../res/images/popup3.png")
         position.x = self.parent.main_window.width / 2 - self.bg_rect.width / 2
         self.set_position(position)
+        self.quest_settings = QuestSettings()
         self.quest_label = TextLabel(parent=self, text="Title", position=self.position, font_name="segoeprint",
                                      font_size=16, bold=True, color=(159, 80, 17))
         self.description_label = MultilineTextLabel(parent=self, text="description", position=position,
                                                     font_name="segoeprint", font_size=14, color=(159, 80, 17),
                                                     line_length=self.bg_rect.width - 35 * 2)
-        self.panel_rect = pygame.Rect((self.position[0] + 15, self.position[1], self.get_size()[0] - 15 * 2, 200))
-        self.difficult_label = TextLabel(parent=self, text="difficult", position=position, font_name="segoeprint",
-                                         font_size=14, color=(159, 80, 17))
+        self.panel_rect = pygame.Rect((self.position[0] + 15, self.position[1], self.get_size()[0] - 15 * 2, 277))
+        self.difficult_label = TextLabel(parent=self, text="Уровень сложности", position=position,
+                                         font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        self.bonus_label = TextLabel(parent=self, text="Бонусы", position=position, font_name="segoeprint",
+                                     font_size=14, color=(159, 80, 17))
+
         easy_label = TextLabel(parent=self, text="Лёгкий", position=(0, 0), font_name="segoeprint", font_size=14,
                                color=(159, 80, 17))
         self.easy_button = TextButton(parent=self, path_to_image="../res/images/buttons/difficult/easy_normal.png",
@@ -49,7 +53,23 @@ class QuestPopup(PopupNotify):
                                       hovered_image="../res/images/buttons/difficult/hard_hover.png",
                                       text_label=hard_label, text_padding=(19, 0))
         self.rewards_panel = pygame.image.load("../res/images/buttons/difficult/rewards.png").convert_alpha()
+        self.bonus_panel = pygame.image.load("../res/images/bonus_list_bg.png")
         self.rewards_rect = self.rewards_panel.get_rect()
+        self.bonus_rect = self.bonus_panel.get_rect()
+
+        start_label = TextLabel(parent=self, text="Начать", position=(0, 0), font_name="segoeprint", font_size=24,
+                                color=(159, 80, 17))
+        self.start_button = TextButton(parent=self, path_to_image="../res/images/buttons/start_quest_btn.png",
+                                       text_label=start_label, text_padding=(44, 0))
+
+        self.rewards_labels = []
+
+        self.easy_button.add_action(lambda d=QuestDifficult.EASY: self.change_difficult(d))
+        self.medium_button.add_action(lambda d=QuestDifficult.MEDIUM: self.change_difficult(d))
+        self.hard_button.add_action(lambda d=QuestDifficult.HARD: self.change_difficult(d))
+        self.start_button.add_action(
+            lambda name="Match3", s=self.quest_settings: self.parent.main_window.change_scene(scene_name=name,
+                                                                                              settings=s))
 
     @classmethod
     def create(cls, scene: Scene, position: (int, int), *args, **kwargs) -> "QuestPopup":
@@ -60,17 +80,16 @@ class QuestPopup(PopupNotify):
             q = scene.find_drawable_by_type(QuestPopup)
             position.x = q.parent.main_window.width / 2 - q.bg_rect.width / 2
             q.set_position(position)
-        quest_data = kwargs["quest"]
-        q.quest_label.set_text(quest_data.title)
+        q.quest = kwargs["quest"]
+        q.quest_label.set_text(q.quest.title)
         q.quest_label.set_position(
             (q.position[0] + q.bg_rect.centerx - q.quest_label.get_size()[0] / 2, q.position[1] + 3)
         )
         q.description_label.set_position((q.position[0] + 35, q.position[1] + 74))
-        q.description_label.set_text(quest_data.description)
+        q.description_label.set_text(q.quest.description)
         q.panel_rect.y = q.description_label.position[1] + q.description_label.get_size()[1] + 45
-        q.difficult_label.set_text("Уровень сложности")
         q.difficult_label.set_position(
-            (q.position[0] + q.bg_rect.centerx - q.difficult_label.get_size()[0] / 2, q.panel_rect.y + 16)
+            (q.position[0] + q.bg_rect.centerx - q.difficult_label.get_size()[0] / 2, q.panel_rect.y + 8)
         )
         q.easy_button.set_position(
             (q.position[0] + 35, q.difficult_label.position[1] + q.difficult_label.get_size()[1] + 9)
@@ -81,9 +100,47 @@ class QuestPopup(PopupNotify):
         q.hard_button.set_position(
             (q.medium_button.position[0], q.medium_button.position[1] + q.medium_button.get_size()[1])
         )
+        q.start_button.set_position(
+            (q.position[0] + q.bg_rect.centerx - q.start_button.get_size()[0] / 2,
+             q.panel_rect.y + q.panel_rect.height + 40)
+        )
         q.rewards_rect.x = q.easy_button.position[0] + q.easy_button.get_size()[0]
         q.rewards_rect.y = q.easy_button.position[1]
+
+        q.generate_reward_labels((q.rewards_rect.x + 33, q.rewards_rect.y))
+
+        q.bonus_label.set_position(
+            (q.position[0] + q.bg_rect.centerx - q.bonus_label.get_size()[0] / 2,
+             q.rewards_rect.y + q.rewards_rect.height + 8)
+        )
+
+        q.bonus_rect.x = q.position[0] + 35
+        q.bonus_rect.y = q.bonus_label.position[1] + q.bonus_label.get_size()[1] + 9
+
         return q
+
+    def generate_reward_labels(self, start_pos: (int, int)) -> None:
+        pos_y = start_pos[1]
+        for r in self.quest.rewards.get_bag_copy():
+            r_l = TextLabel(parent=self, text="{0}: {1}".format(r.locale_name, int(r.value)), position=(0, 0),
+                            font_name="segoeprint", font_size=12, color=(159, 80, 17))
+            r_l.set_position((start_pos[0], pos_y))
+            pos_y += r_l.get_size()[1]
+            self.rewards_labels.append(r_l)
+
+    def change_difficult(self, difficult: QuestDifficult) -> None:
+        self.quest_settings.set_difficult(difficult)
+        bag = self.quest.rewards.get_bag_copy()
+        for r in bag:
+            if difficult == QuestDifficult.EASY:
+                r.increaseByPercent(0)
+            elif difficult == QuestDifficult.MEDIUM:
+                r.increaseByPercent(20)
+            elif difficult == QuestDifficult.HARD:
+                r.increaseByPercent(30)
+
+        self.rewards_labels.clear()
+        self.generate_reward_labels((self.rewards_rect.x + 33, self.rewards_rect.y))
 
     def show(self) -> None:
         QuestPopup.count += 1
@@ -107,13 +164,18 @@ class QuestPopup(PopupNotify):
         self.easy_button.draw(screen)
         self.medium_button.draw(screen)
         self.hard_button.draw(screen)
+        self.start_button.draw(screen)
         screen.blit(self.rewards_panel, self.rewards_rect)
+        [r_l.draw(screen) for r_l in self.rewards_labels]
+        self.bonus_label.draw(screen)
+        screen.blit(self.bonus_panel, self.bonus_rect)
 
     def handle_event(self, event: Event) -> None:
         self.close_btn.handle_event(event)
         self.easy_button.handle_event(event)
         self.medium_button.handle_event(event)
         self.hard_button.handle_event(event)
+        self.start_button.handle_event(event)
         if self._rect.collidepoint(pygame.mouse.get_pos()):
             for z in self.parent.zones:
                 z.on_mouse_out()
