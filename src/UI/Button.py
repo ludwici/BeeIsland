@@ -1,5 +1,7 @@
-import pygame
 from typing import Callable
+
+import pygame
+
 from src.Interfaces.Drawable import Drawable
 
 
@@ -28,6 +30,7 @@ class Button(Drawable):
 
     def set_image(self, path: str) -> None:
         self.image = pygame.image.load(path).convert_alpha()
+        self.normal_image = self.image
         self._rect.width = self.image.get_rect().width
         self._rect.height = self.image.get_rect().height
 
