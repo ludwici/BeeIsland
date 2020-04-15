@@ -1,6 +1,7 @@
 import pygame
 from pygame.event import Event
 
+from src import Constants
 from src.BeeSocket import BeeSocket
 from src.QuestSettings import QuestSettings, QuestDifficult
 from src.Scenes import Scene
@@ -14,17 +15,17 @@ from src.UI.TextLabel import TextLabel
 class QuestPopup(PopupNotify):
     count = 0
 
-    def __init__(self, parent: Scene, position: (int, int), text: str = "") -> None:
+    def __init__(self, parent: Scene) -> None:
         self.close_btn = Button(parent=self, path_to_image="../res/images/buttons/close_button1.png",
                                 hovered_image="../res/images/buttons/close_button1_hover.png")
-        PopupNotify.__init__(self, parent=parent, position=position)
+        PopupNotify.__init__(self, parent=parent)
         self.close_btn.set_position(position=(0, 0))
         self.close_btn.add_action(lambda: self.destroy())
         self._time_to_kill = 0
         self.quest = None
 
         self.set_background("../res/images/popup3.png")
-        position.x = self.parent.main_window.width / 2 - self.bg_rect.width / 2
+        position = (Constants.WINDOW_W / 2 - self.bg_rect.width / 2, 70)
         self.set_position(position)
         self.quest_settings = QuestSettings()
         self.quest_label = TextLabel(parent=self, text="Title", position=self.position, font_name="segoeprint",
@@ -81,14 +82,14 @@ class QuestPopup(PopupNotify):
                                                                                               settings=s))
 
     @classmethod
-    def create(cls, scene: Scene, position: (int, int), *args, **kwargs) -> "QuestPopup":
+    def create(cls, scene: Scene, *args, **kwargs) -> "QuestPopup":
         if QuestPopup.count == 0:
-            q = cls(parent=scene, position=position)
+            q = cls(parent=scene)
             q.show()
         else:
             q = scene.find_drawable_by_type(QuestPopup)
-            position.x = q.parent.main_window.width / 2 - q.bg_rect.width / 2
-            q.set_position(position)
+            # position.x = q.parent.main_window.width / 2 - q.bg_rect.width / 2
+            q.set_position((Constants.WINDOW_W / 2 - q.bg_rect.width / 2, 70))
         q.quest = kwargs["quest"]
         q.quest_label.set_text(q.quest.title)
         q.quest_label.set_position(

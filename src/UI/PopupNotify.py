@@ -1,26 +1,44 @@
 import pygame
-
 from pygame.event import Event
 from pygame.rect import Rect
 
+from src import Constants
 from src.Interfaces.Drawable import Drawable
 from src.Scenes import Scene
-from src.UI.TextLabel import TextLabel
+from src.UI.MultilineTextLabel import MultilineTextLabel
 
 
 class PopupNotify(Drawable):
-    def __init__(self, parent: Scene, position: (int, int) = (0, 0), time_to_kill: int = 3, text: str = "") -> None:
-        Drawable.__init__(self, parent=parent, position=position)
+    def __init__(self, parent: Scene, time_to_kill: int = 3, text: str = "") -> None:
+        self._rect = self.__check_position()
+        Drawable.__init__(self, parent=parent, position=(self._rect.x, self._rect.y))
         self._bg_image = None
         self.set_background("../res/images/popup1.png")
         self._time_to_kill = time_to_kill
         self.__start_time = pygame.time.get_ticks()
-        self.text_label = TextLabel(parent=self, text=text, position=self.position, font_name="segoeprint",
-                                    font_size=12, color=(159, 80, 17))
+        self.__text_label = MultilineTextLabel(parent=self, text=text, position=(20, 20), font_name="segoeprint",
+                                    font_size=12, color=(159, 80, 17), line_length=self.bg_rect.width - 15 * 2)
         self.set_text(text=text)
 
     def __del__(self):
         print("Destroy Popup")
+
+    def __check_position(self) -> Rect:
+        popup_width = 200
+        popup_height = 70
+        mouse_pos = pygame.mouse.get_pos()
+        popup_pos = [0, 0]
+        if mouse_pos[0] + popup_width + 20 > Constants.WINDOW_W:
+            popup_pos[0] = mouse_pos[0] - popup_width
+        else:
+            popup_pos[0] = mouse_pos[0]
+
+        popup_pos[1] = mouse_pos[1] - popup_height
+        if popup_pos[1] < 0:
+            popup_pos[1] += popup_height
+
+        correct_position = Rect(popup_pos[0], popup_pos[1], popup_width, popup_height)
+        return correct_position
 
     @property
     def bg_rect(self) -> Rect:
@@ -32,14 +50,14 @@ class PopupNotify(Drawable):
         self._rect.height = self._bg_image.get_rect().height
 
     @classmethod
-    def create(cls, scene: Scene, position: (int, int), *args, **kwargs) -> "PopupNotify":
-        p = cls(parent=scene, position=position, text=kwargs["text"])
+    def create(cls, scene: Scene, *args, **kwargs) -> "PopupNotify":
+        p = cls(parent=scene, text=kwargs["text"])
         p.show()
         return p
 
     def set_text(self, text: str) -> None:
-        self.text_label.text = text
-        self.text_label.set_position((self.position[0] + 15, self.position[1] + 10))
+        self.__text_label.set_position((self.position[0] + 15, self.position[1] + 10))
+        self.__text_label.set_text(text)
 
     def show(self) -> None:
         self.parent.add_drawable(self)
@@ -61,4 +79,4 @@ class PopupNotify(Drawable):
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self._bg_image, self._rect)
-        self.text_label.draw(screen)
+        self.__text_label.draw(screen)
