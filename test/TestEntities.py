@@ -10,7 +10,16 @@ class TestEntities(unittest.TestCase):
         b = Bee(1)
         xp = 160
         b.give_xp(xp)
-        self.assertEqual(b.current_xp, 60)
+        self.assertEqual(b.current_xp, 61)
+
+    def test_nest_xp_1(self):
+        n = BeeNest(1)
+        xp = 3
+        n.give_xp(xp)
+        # print(n.current_level)
+        n.give_xp(xp)
+        # print(n.current_level)
+        self.test_nest_min_max(n)
 
     def test_bee_xp_2(self):
         b = Bee(1)
@@ -28,14 +37,14 @@ class TestEntities(unittest.TestCase):
         b = Bee(1)
         n = BeeNest(1)
 
-        n.add_bee(b)
-        n.add_bee(b)
-        n.add_bee(b)
-        n.add_bee(b)
+        for i in range(n.max_size):
+            if not n.add_bee(b):
+                self.fail("Too many bees")
+
         self.test_nest_min_max(n)
 
     def test_nest_min_max(self, n=BeeNest()):
-        self.assertGreaterEqual(n.current_xp, 0)
+        self.assertGreaterEqual(n.current_xp, 1)
         self.assertGreaterEqual(n.current_level, 1)
 
         self.assertLessEqual(n.current_xp, n.max_xp)
@@ -43,7 +52,7 @@ class TestEntities(unittest.TestCase):
         self.assertLessEqual(n.size, n.max_size)
 
     def test_bee_min_max(self, b=Bee()):
-        self.assertGreaterEqual(b.current_xp, 0)
+        self.assertGreaterEqual(b.current_xp, 1)
         self.assertGreaterEqual(b.current_level, 1)
         self.assertGreaterEqual(b.current_hp, 0)
 
