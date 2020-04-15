@@ -1,3 +1,5 @@
+from copy import copy
+
 from src.Bee import Bee
 from src.Interfaces.Levelable import Levelable
 
@@ -33,10 +35,10 @@ class BeeNest(Levelable):
 
     @property
     def bee_list(self) -> list:
-        return self.__bee_list
+        return copy(self.__bee_list)
 
     def add_bee(self, bee: Bee) -> bool:
-        if self.size >= self.max_size:
+        if self.size > self.max_size:
             return False
 
         if bee.need_hive_level > self.current_level:

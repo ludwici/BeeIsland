@@ -42,7 +42,7 @@ class Bee(Levelable):
             self.speed = 5
             self.__max_hp = 70
             self.max_xp = 100
-            self.need_hive_level = 0
+            self.need_hive_level = 1
         elif level == 2:
             self.speed = 10
             self.__max_hp = 100
@@ -51,7 +51,7 @@ class Bee(Levelable):
             self.speed += 2
             self.__max_hp = 120
             self.max_xp = 200
-            self.need_hive_level = 1
+            self.need_hive_level = 2
 
         self.current_hp = self.max_hp
         # print("Speed: {}".format(self.speed))

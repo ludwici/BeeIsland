@@ -1,3 +1,5 @@
+from copy import copy
+
 from src.BeeNest import BeeNest
 
 
@@ -8,19 +10,20 @@ class Farm:
         self.max_hive_slots = 6
         self.max_hive_level = 5
 
-    def size(self) -> int:
+    @property
+    def active_hives_count(self) -> int:
         return len(self.hive_list)
 
     @property
     def hive_list(self) -> list:
-        return self.__hive_list
+        return copy(self.__hive_list)
 
     def add_hive(self, hive: BeeNest) -> bool:
-        if self.size() >= self.max_active_hive_count:
+        if self.active_hives_count > self.max_active_hive_count:
             return False
 
         if hive.current_level > self.max_hive_level:
             return False
 
-        self.hive_list.append(hive)
+        self.__hive_list.append(hive)
         return True
