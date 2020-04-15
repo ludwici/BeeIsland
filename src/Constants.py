@@ -1,0 +1,2 @@
+WINDOW_W = 761
+WINDOW_H = 761
