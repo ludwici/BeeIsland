@@ -23,6 +23,8 @@ class MultilineTextLabel(TextLabel):
         return msg, rect
 
     def set_text(self, value) -> None:
+        if not value:
+            return
         self._text = value
         self.__rendered_text.clear()
         tmp = deque(self._text.split())
