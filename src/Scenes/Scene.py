@@ -5,10 +5,15 @@ from src.Interfaces import Drawable
 
 from pygame.event import Event
 
+from src.Player import Player
+from src.QuestSettings import QuestSettings
+
 
 class Scene(ABC):
-    def __init__(self, main_window) -> None:
+    def __init__(self, main_window, player: Player) -> None:
         self.main_window = main_window
+        self.player = player
+        self.scene_settings = QuestSettings()
         self._drawable_list = []
 
     @abstractmethod
@@ -21,6 +26,10 @@ class Scene(ABC):
 
     @abstractmethod
     def draw(self, surface: pygame.Surface) -> None:
+        pass
+
+    @abstractmethod
+    def on_scene_started(self) -> None:
         pass
 
     @abstractmethod

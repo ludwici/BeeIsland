@@ -9,8 +9,8 @@ from src.Utils import get_distance
 
 
 class Match3Scene(Scene):
-    def __init__(self, main_window) -> None:
-        Scene.__init__(self, main_window=main_window)
+    def __init__(self, main_window, player) -> None:
+        Scene.__init__(self, main_window=main_window, player=player)
         self.bg_image = pygame.image.load("../res/images/quest_bg1.png").convert_alpha()
         self.grid = FlowersGrid(position=(124, 124), size=(8, 8))
         self.grabbed = None
@@ -18,6 +18,10 @@ class Match3Scene(Scene):
         self.dest_tile = None
         self.last_click = 0
         self.click_cooldown = 250
+
+    def on_scene_started(self) -> None:
+        # TODO: Start timer and other mechanics
+        print(self.scene_settings)
 
     def update(self, dt: float) -> None:
         self.last_click += dt

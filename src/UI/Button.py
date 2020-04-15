@@ -4,7 +4,7 @@ from src.Interfaces.Drawable import Drawable
 
 
 class Button(Drawable):
-    def __init__(self, parent, path_to_image: str, hovered_image: str = "", text: str = "", position: (int, int) = (0, 0)) -> None:
+    def __init__(self, parent, path_to_image: str, hovered_image: str = "", position: (int, int) = (0, 0)) -> None:
         Drawable.__init__(self, parent=parent, position=position)
         self.image = pygame.image.load(path_to_image).convert_alpha()
         self.normal_image = self.image
@@ -15,7 +15,6 @@ class Button(Drawable):
             self.hovered_image = self.image
         self.set_image(path_to_image)
         self.action_list = []
-        self.text = text
         self.hovered = False
 
     def update(self, dt) -> None:

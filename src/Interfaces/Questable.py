@@ -1,17 +1,12 @@
 from abc import ABC
-from enum import Enum
 
 from pygame.rect import Rect
 
 from src import Player
+from src.QuestSettings import QuestDifficult
+from src.ResourceBag import ResourceBag
 from src.UI.QuestIcon import QuestIcon
 from src.UI.QuestPopup import QuestPopup
-
-
-class QuestDifficult(Enum):
-    EASY = 1
-    MEDIUM = 2
-    HARD = 3
 
 
 class Questable(ABC):
@@ -21,7 +16,7 @@ class Questable(ABC):
         self._description = "description"
         self.zone = None
         self.condition = None
-        self.rewards = []
+        self.rewards = ResourceBag()
         self.difficult = difficult
         self.icon_btn = QuestIcon(parent=self.zone, path_to_image="../res/images/quest_icon1.png",
                                   position=icon_position)
@@ -47,4 +42,4 @@ class Questable(ABC):
         return self.__is_allow
 
     def give_rewards_to_player(self, player: Player) -> None:
-        pass
+        player.resources += self.rewards
