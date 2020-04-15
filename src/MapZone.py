@@ -1,12 +1,9 @@
 import copy
-from typing import List
 
 import pygame
 
 from src.Interfaces import Questable
 from src.Scenes import MapScene
-from pygame.rect import Rect
-
 from src.UI.PopupNotify import PopupNotify
 
 
@@ -60,27 +57,9 @@ class MapZone:
     def on_mouse_out(self) -> None:
         self.show_border = False
 
-    def check_position(self) -> Rect:
-        popup_width = 200
-        popup_height = 70
-        mouse_pos = pygame.mouse.get_pos()
-        popup_pos = [0, 0]
-        if mouse_pos[0] + popup_width + 20 > self.parent.main_window.size[0]:
-            popup_pos[0] = mouse_pos[0] - popup_width
-        else:
-            popup_pos[0] = mouse_pos[0]
-
-        popup_pos[1] = mouse_pos[1] - popup_height
-        if popup_pos[1] < 0:
-            popup_pos[1] += popup_height
-
-        correct_position = Rect(popup_pos[0], popup_pos[1], popup_width, popup_height)
-        return correct_position
-
     def on_click(self) -> None:
         if self.is_lock:
-            position = self.check_position()
-            PopupNotify.create(scene=self.parent, position=position, text="Эта зона ещё не открыта")
+            PopupNotify.create(scene=self.parent, text="Эта зона ещё не открыта")
 
     def handle_event(self, event) -> None:
         if self.click_rect.collidepoint(pygame.mouse.get_pos()):
