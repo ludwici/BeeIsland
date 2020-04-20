@@ -5,6 +5,7 @@ from src import Constants
 from src.Scenes.Scene import Scene
 from src.UI.BeeNestButton import BeeNestButton
 from src.UI.Button import Button
+from src.UI.ModifyPopup import ModifyPopup
 
 
 class FarmScene(Scene):
@@ -17,7 +18,10 @@ class FarmScene(Scene):
         self.bee_nest_list = []
         self.to_map_button = Button(parent=self, path_to_image="../res/images/buttons/to_map_normal.png",
                                     hovered_image="../res/images/buttons/to_map_hover.png", position=(0, 0))
+        self.to_upgrade_button = Button(parent=self, path_to_image="../res/images/buttons/to_upgrade_normal.png",
+                                        hovered_image="../res/images/buttons/to_upgrade_hover.png", position=(0, 100))
         self.to_map_button.add_action(lambda: self.main_window.change_scene("Map"))
+        self.to_upgrade_button.add_action(lambda: ModifyPopup.create(scene=self))
         bg_x = self.main_image_rect.x
         bg_y = self.main_image_rect.y
         positions = [(194, 104), (501, 104), (111, 340), (584, 340), (194, 577), (501, 577)]
@@ -32,7 +36,9 @@ class FarmScene(Scene):
 
     def handle_events(self, event: Event) -> None:
         [bn.handle_event(event) for bn in self.bee_nest_list]
+        [d.handle_event(event) for d in self._drawable_list]
         self.to_map_button.handle_event(event)
+        self.to_upgrade_button.handle_event(event)
 
     def draw(self, surface: pygame.Surface) -> None:
         surface.fill((0, 0, 0))
@@ -41,9 +47,11 @@ class FarmScene(Scene):
         [bn.draw(surface) for bn in self.bee_nest_list]
         [d.draw(surface) for d in self._drawable_list]
         self.to_map_button.draw(surface)
+        self.to_upgrade_button.draw(surface)
 
     def on_scene_started(self) -> None:
         pass
 
     def on_scene_change(self) -> None:
+        ModifyPopup.count = 0
         super().on_scene_change()
