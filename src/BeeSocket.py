@@ -1,11 +1,10 @@
-from src.UI.Button import Button
+from src.UI.RadioButton import RadioButton
 
 
-class BeeSocket(Button):
-    def __init__(self, parent, path_to_image: str, position: (int, int), is_active=True) -> None:
-        Button.__init__(self, parent=parent, path_to_image=path_to_image, position=position)
-        self.is_active = is_active
+class BeeSocket(RadioButton):
+    def __init__(self, parent, group, path_to_image: str, selected_image: str, is_selected: bool = False,
+                 is_locked: bool = False, position: (int, int) = (0, 0)) -> None:
+        RadioButton.__init__(self, parent=parent, group=group, path_to_image=path_to_image,
+                             selected_image=selected_image, is_selected=is_selected, is_locked=is_locked,
+                             position=position)
         self.bee = None
-
-    def on_click(self) -> None:
-        print("Select bee")
