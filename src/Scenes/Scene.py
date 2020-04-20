@@ -1,12 +1,12 @@
-import pygame
-
 from abc import ABC, abstractmethod
-from src.Interfaces import Drawable
 
+import pygame
 from pygame.event import Event
 
+from src.Interfaces import Drawable
 from src.Player import Player
 from src.QuestSettings import QuestSettings
+from src.UI.QuestPopup import QuestPopup
 
 
 class Scene(ABC):
@@ -33,8 +33,9 @@ class Scene(ABC):
         pass
 
     @abstractmethod
-    def on_scene_change(self):
+    def on_scene_change(self) -> None:
         self._drawable_list.clear()
+        QuestPopup.count = 0
 
     def find_drawable_by_type(self, t) -> Drawable:
         for d in self._drawable_list:
