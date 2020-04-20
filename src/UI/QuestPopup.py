@@ -8,6 +8,7 @@ from src.Scenes import Scene
 from src.UI.Button import Button
 from src.UI.MultilineTextLabel import MultilineTextLabel
 from src.UI.PopupNotify import PopupNotify
+from src.UI.RadioGroup import RadioGroup
 from src.UI.TextButton import TextButton
 from src.UI.TextLabel import TextLabel
 
@@ -59,13 +60,15 @@ class QuestPopup(PopupNotify):
         self.rewards_rect = self.rewards_panel.get_rect()
         self.bonus_rect = self.bonus_panel.get_rect()
 
-        self.bee_sockets = []
+        self.bee_socket_group = RadioGroup()
         for i in range(3):
-            b = BeeSocket(parent=self, path_to_image="../res/images/buttons/socket1_normal.png", position=(0, 0))
-            self.bee_sockets.append(b)
+            BeeSocket(parent=self, path_to_image="../res/images/buttons/socket1_normal.png",
+                      group=self.bee_socket_group, selected_image="../res/images/buttons/socket1_normal.png",
+                      position=(0, 0))
 
         self.bee_socket_hard = BeeSocket(parent=self, path_to_image="../res/images/buttons/socket2_normal.png",
-                                         position=(0, 0))
+                                         group=self.bee_socket_group, is_locked=True,
+                                         selected_image="../res/images/buttons/socket2_normal.png", position=(0, 0))
 
         start_label = TextLabel(parent=self, text="Начать", position=(0, 0), font_name="segoeprint", font_size=24,
                                 color=(159, 80, 17))
@@ -79,7 +82,8 @@ class QuestPopup(PopupNotify):
         self.hard_button.add_action(lambda d=QuestDifficult.HARD: self.change_difficult(d))
         self.start_button.add_action(
             lambda name="Match3", s=self.quest_settings: self.parent.main_window.change_scene(scene_name=name,
-                                                                                              settings=s))
+                                                                                              settings=s)
+        )
 
     @classmethod
     def create(cls, scene: Scene, *args, **kwargs) -> "QuestPopup":
@@ -88,7 +92,6 @@ class QuestPopup(PopupNotify):
             q.show()
         else:
             q = scene.find_drawable_by_type(QuestPopup)
-            # position.x = q.parent.main_window.width / 2 - q.bg_rect.width / 2
             q.set_position((Constants.WINDOW_W / 2 - q.bg_rect.width / 2, 70))
         q.quest = kwargs["quest"]
         q.quest_label.set_text(q.quest.title)
@@ -118,11 +121,12 @@ class QuestPopup(PopupNotify):
         q.rewards_rect.y = q.easy_button.position[1]
 
         bs_start_y = q.rewards_rect.y
-        for bs in q.bee_sockets:
+        for bs in q.bee_socket_group.buttons[:-1]:
             bs.set_position(
                 (q.rewards_rect.x + q.rewards_rect.width + 46, bs_start_y)
             )
             bs_start_y += bs.get_size()[1] + 8
+
         q.bee_socket_hard.set_position(
             (q.rewards_rect.x + q.rewards_rect.width + 46, bs_start_y + 15)
         )
@@ -137,6 +141,7 @@ class QuestPopup(PopupNotify):
         q.bonus_rect.x = q.position[0] + 35
         q.bonus_rect.y = q.bonus_label.position[1] + q.bonus_label.get_size()[1] + 9
 
+        q.change_difficult(QuestDifficult.EASY)
         return q
 
     def generate_reward_labels(self, start_pos: (int, int)) -> None:
@@ -157,7 +162,9 @@ class QuestPopup(PopupNotify):
             elif difficult == QuestDifficult.MEDIUM:
                 r.increaseByPercent(15)
             elif difficult == QuestDifficult.HARD:
-                r.increaseByPercent(25)
+                r.increaseByPercent(35)
+
+        self.bee_socket_hard.is_locked = not difficult == QuestDifficult.HARD
 
         self.rewards_labels.clear()
         self.generate_reward_labels((self.rewards_rect.x + 33, self.rewards_rect.y))
@@ -189,9 +196,7 @@ class QuestPopup(PopupNotify):
         [r_l.draw(screen) for r_l in self.rewards_labels]
         self.bonus_label.draw(screen)
         screen.blit(self.bonus_panel, self.bonus_rect)
-        [bs.draw(screen) for bs in self.bee_sockets]
-        if self.quest_settings.difficult == QuestDifficult.HARD:
-            self.bee_socket_hard.draw(screen)
+        self.bee_socket_group.draw(screen)
 
     def handle_event(self, event: Event) -> None:
         self.close_btn.handle_event(event)
@@ -199,9 +204,7 @@ class QuestPopup(PopupNotify):
         self.medium_button.handle_event(event)
         self.hard_button.handle_event(event)
         self.start_button.handle_event(event)
-        [bs.handle_event(event) for bs in self.bee_sockets]
-        if self.quest_settings.difficult == QuestDifficult.HARD:
-            self.bee_socket_hard.handle_event(event)
+        self.bee_socket_group.handle_event(event)
         if self._rect.collidepoint(pygame.mouse.get_pos()):
             for z in self.parent.zones:
                 z.on_mouse_out()
