@@ -10,20 +10,22 @@ from src.UI.MultilineTextLabel import MultilineTextLabel
 
 class PopupNotify(Drawable):
     def __init__(self, parent: Scene, time_to_kill: int = 3, text: str = "") -> None:
-        self._rect = self.__check_position()
+        self._rect = PopupNotify._check_position()
         Drawable.__init__(self, parent=parent, position=(self._rect.x, self._rect.y))
         self._bg_image = None
         self.set_background("../res/images/popup1.png")
         self._time_to_kill = time_to_kill
         self.__start_time = pygame.time.get_ticks()
         self.__text_label = MultilineTextLabel(parent=self, text=text, position=(20, 20), font_name="segoeprint",
-                                    font_size=12, color=(159, 80, 17), line_length=self.bg_rect.width - 15 * 2)
+                                               font_size=12, color=(159, 80, 17),
+                                               line_length=self.bg_rect.width - 15 * 2)
         self.set_text(text=text)
 
     def __del__(self):
         print("Destroy Popup")
 
-    def __check_position(self) -> Rect:
+    @staticmethod
+    def _check_position() -> Rect:
         popup_width = 200
         popup_height = 70
         mouse_pos = pygame.mouse.get_pos()
