@@ -1,6 +1,7 @@
-import pygame
-
 from abc import ABC, abstractmethod
+from copy import copy
+
+import pygame
 from pygame.rect import Rect
 
 
@@ -17,6 +18,9 @@ class Drawable(ABC):
 
     def get_size(self) -> (int, int):
         return self._rect.width, self._rect.height
+
+    def get_rect(self) -> Rect:
+        return copy(self._rect)
 
     def set_position(self, position: (int, int)) -> None:
         self._rect.x = position[0]
