@@ -9,11 +9,11 @@ class Button(Drawable):
     def __init__(self, parent, path_to_image: str, hovered_image: str = "", position: (int, int) = (0, 0)) -> None:
         Drawable.__init__(self, parent=parent, position=position)
         self.image = pygame.image.load(path_to_image).convert_alpha()
+        self._path_to_image = path_to_image
         self.normal_image = self.image
         try:
             self.hovered_image = pygame.image.load(hovered_image).convert_alpha()
         except pygame.error:
-            print("Cannot load image")
             self.hovered_image = self.image
         self.set_image(path_to_image)
         self.action_list = []
