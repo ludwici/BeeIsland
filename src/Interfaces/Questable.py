@@ -1,7 +1,5 @@
 from abc import ABC
 
-from pygame.rect import Rect
-
 from src import Player
 from src.QuestSettings import QuestDifficult
 from src.ResourceBag import ResourceBag
@@ -34,8 +32,7 @@ class Questable(ABC):
         self._description = value
 
     def show_popup(self) -> None:
-        position = Rect(0, 70, 0, 0)
-        QuestPopup.create(scene=self.zone.parent, position=position, quest=self)
+        QuestPopup.create(scene=self.zone.parent, quest=self)
 
     def check_allow(self) -> bool:
         self.__is_allow = self.condition
