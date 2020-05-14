@@ -16,7 +16,7 @@ class Questable(ABC):
         self.condition = None
         self.rewards = ResourceBag()
         self.difficult = difficult
-        self.icon_btn = QuestIcon(parent=self.zone, path_to_image="../res/images/quest_icon1.png",
+        self.icon_btn = QuestIcon(parent=self.zone, normal_image_path="../res/images/quest_icon1.png",
                                   position=icon_position)
 
     @property

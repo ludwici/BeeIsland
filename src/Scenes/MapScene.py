@@ -7,7 +7,7 @@ from src.MapZone import MapZone
 from src.Quests.Match3 import Match3
 from src.ResourceBag import ResourceBag, Resource
 from src.Scenes.Scene import Scene
-from src.UI.Button import Button
+from src.UI.Button import Button, ButtonState, ButtonEventType
 
 
 class MapScene(Scene):
@@ -17,9 +17,9 @@ class MapScene(Scene):
         self.bg_image_rect = self.bg_image.get_rect()
         self.bg_image_rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
         self.zones = []
-        self.to_farm_button = Button(parent=self, path_to_image="../res/images/buttons/to_farm_normal.png",
-                                     hovered_image="../res/images/buttons/to_farm_hover.png", position=(0, 0))
-        self.to_farm_button.add_action(lambda: self.main_window.change_scene("Farm"))
+        self.to_farm_button = Button(parent=self, normal_image_path="../res/images/buttons/to_farm_normal.png")
+        self.to_farm_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/to_farm_hover.png")
+        self.to_farm_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.main_window.change_scene("Farm")})
 
     def on_scene_started(self) -> None:
         self.init_zones()
@@ -56,7 +56,7 @@ class MapScene(Scene):
         zone1.unlock()
         zone1.add_quest(q1)
         zone1.add_quest(q2)
-        # zone1.add_quests([q1, q2])
+        zone1.add_quests([q1, q2])
 
         self.zones.extend([zone1, zone2, zone3, zone4, zone5, zone6, zone7])
 

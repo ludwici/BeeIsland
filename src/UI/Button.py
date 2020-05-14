@@ -55,8 +55,6 @@ class Button(Drawable):
     @state.setter
     def state(self, value: ButtonState) -> None:
         self._state = value
-        if len(self._state) > 1:
-            print(repr(self._state))
         try:
             if self._state & ButtonState.HOVERED or self._state & ButtonState.SELECTED:
                 self._current_image = self._images[[s for s in self._state][-1]]
@@ -71,17 +69,18 @@ class Button(Drawable):
     def is_locked(self) -> bool:
         return self.state == ButtonState.LOCKED
 
-    def lock(self):
+    def lock(self) -> None:
         self.state = ButtonState.LOCKED
 
-    def unlock(self):
+    def unlock(self) -> None:
         self.state = ButtonState.NORMAL
 
-    def select(self):
+    def select(self) -> None:
         self.state = ButtonState.SELECTED
 
-    def unselect(self):
+    def unselect(self) -> None:
         self.state = ButtonState.NORMAL
+        print("Unselected")
 
     def update(self, dt) -> None:
         pass
@@ -100,12 +99,12 @@ class Button(Drawable):
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self._current_image, self._rect)
 
-    def on_hover_on(self):
+    def on_hover_on(self) -> None:
         self.state |= ButtonState.HOVERED
         self._can_call_out = True
         [a() for a in self.on_hover_list]
 
-    def on_hover_out(self):
+    def on_hover_out(self) -> None:
         self.state ^= ButtonState.HOVERED
         [a() for a in self.on_hover_out_list]
         self._can_call_out = False
