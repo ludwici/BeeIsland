@@ -5,7 +5,7 @@ from src import Constants
 from src.BeeSocket import BeeSocket
 from src.QuestSettings import QuestSettings, QuestDifficult
 from src.Scenes import Scene
-from src.UI.Button import Button
+from src.UI.Button import Button, ButtonState, ButtonEventType
 from src.UI.MultilineTextLabel import MultilineTextLabel
 from src.UI.PopupNotify import PopupNotify
 from src.UI.RadioGroup import RadioGroup
@@ -17,11 +17,11 @@ class QuestPopup(PopupNotify):
     count = 0
 
     def __init__(self, parent: Scene) -> None:
-        self.close_btn = Button(parent=self, path_to_image="../res/images/buttons/close_button1.png",
-                                hovered_image="../res/images/buttons/close_button1_hover.png")
+        self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")
+        self.close_btn.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/close_button1_hover.png")
         PopupNotify.__init__(self, parent=parent)
         self.close_btn.set_position(position=(0, 0))
-        self.close_btn.add_action(lambda: self.destroy())
+        self.close_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.destroy()})
         self._time_to_kill = 0
         self.quest = None
 
@@ -42,19 +42,20 @@ class QuestPopup(PopupNotify):
 
         easy_label = TextLabel(parent=self, text="Лёгкий", position=(0, 0), font_name="segoeprint", font_size=14,
                                color=(159, 80, 17))
-        self.easy_button = TextButton(parent=self, path_to_image="../res/images/buttons/difficult/easy_normal.png",
-                                      hovered_image="../res/images/buttons/difficult/easy_hover.png",
+        self.easy_button = TextButton(parent=self, normal_image_path="../res/images/buttons/difficult/easy_normal.png",
                                       text_label=easy_label, text_padding=(19, 0))
+        self.easy_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/difficult/easy_hover.png")
         medium_label = TextLabel(parent=self, text="Средний", position=(0, 0), font_name="segoeprint", font_size=14,
                                  color=(138, 36, 12))
-        self.medium_button = TextButton(parent=self, path_to_image="../res/images/buttons/difficult/medium_normal.png",
-                                        hovered_image="../res/images/buttons/difficult/medium_hover.png",
+        self.medium_button = TextButton(parent=self,
+                                        normal_image_path="../res/images/buttons/difficult/medium_normal.png",
                                         text_label=medium_label, text_padding=(19, 0))
+        self.medium_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/difficult/medium_hover.png")
         hard_label = TextLabel(parent=self, text="Сложный", position=(0, 0), font_name="segoeprint", font_size=14,
                                color=(159, 17, 17))
-        self.hard_button = TextButton(parent=self, path_to_image="../res/images/buttons/difficult/hard_normal.png",
-                                      hovered_image="../res/images/buttons/difficult/hard_hover.png",
+        self.hard_button = TextButton(parent=self, normal_image_path="../res/images/buttons/difficult/hard_normal.png",
                                       text_label=hard_label, text_padding=(19, 0))
+        self.hard_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/difficult/hard_hover.png")
         self.rewards_panel = pygame.image.load("../res/images/buttons/difficult/rewards.png").convert_alpha()
         self.bonus_panel = pygame.image.load("../res/images/bonus_list_bg.png")
         self.rewards_rect = self.rewards_panel.get_rect()
@@ -62,28 +63,34 @@ class QuestPopup(PopupNotify):
 
         self.bee_socket_group = RadioGroup()
         for i in range(3):
-            BeeSocket(parent=self, path_to_image="../res/images/buttons/socket1_normal.png",
-                      group=self.bee_socket_group, selected_image="../res/images/buttons/socket1_normal.png",
-                      position=(0, 0))
+            b = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket1_normal.png",
+                          group=self.bee_socket_group, position=(0, 0))
+            b.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
 
-        self.bee_socket_hard = BeeSocket(parent=self, path_to_image="../res/images/buttons/socket2_normal.png",
-                                         group=self.bee_socket_group, is_locked=True,
-                                         selected_image="../res/images/buttons/socket2_normal.png", position=(0, 0))
+        self.bee_socket_hard = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket2_normal.png",
+                                         group=self.bee_socket_group, state=ButtonState.LOCKED, position=(0, 0))
+        self.bee_socket_hard.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
+        self.bee_socket_hard.set_image_by_state(ButtonState.LOCKED, "../res/images/buttons/socket3_normal.png")
 
         start_label = TextLabel(parent=self, text="Начать", position=(0, 0), font_name="segoeprint", font_size=24,
                                 color=(159, 80, 17))
-        self.start_button = TextButton(parent=self, path_to_image="../res/images/buttons/start_quest_btn.png",
+        self.start_button = TextButton(parent=self, normal_image_path="../res/images/buttons/start_quest_btn.png",
                                        text_label=start_label, text_padding=(44, 0))
 
         self.rewards_labels = []
 
-        self.easy_button.add_action(lambda d=QuestDifficult.EASY: self.change_difficult(d))
-        self.medium_button.add_action(lambda d=QuestDifficult.MEDIUM: self.change_difficult(d))
-        self.hard_button.add_action(lambda d=QuestDifficult.HARD: self.change_difficult(d))
-        self.start_button.add_action(
-            lambda name="Match3", s=self.quest_settings: self.parent.main_window.change_scene(scene_name=name,
-                                                                                              settings=s)
+        self.easy_button.add_action(
+            {ButtonEventType.ON_CLICK_LB: lambda d=QuestDifficult.EASY: self.change_difficult(d)}
         )
+        self.medium_button.add_action(
+            {ButtonEventType.ON_CLICK_LB: lambda d=QuestDifficult.MEDIUM: self.change_difficult(d)}
+        )
+        self.hard_button.add_action(
+            {ButtonEventType.ON_CLICK_LB: lambda d=QuestDifficult.HARD: self.change_difficult(d)}
+        )
+        self.start_button.add_action({ButtonEventType.ON_CLICK_LB: lambda name="Match3",
+                                                                          s=self.quest_settings: self.parent.main_window.change_scene(
+            scene_name=name, settings=s)})
 
     @classmethod
     def create(cls, scene: Scene, *args, **kwargs) -> "QuestPopup":
@@ -164,7 +171,7 @@ class QuestPopup(PopupNotify):
             elif difficult == QuestDifficult.HARD:
                 r.increaseByPercent(35)
 
-        self.bee_socket_hard.is_locked = not difficult == QuestDifficult.HARD
+        self.bee_socket_hard.lock() if difficult != QuestDifficult.HARD else self.bee_socket_hard.unlock()
 
         self.rewards_labels.clear()
         self.generate_reward_labels((self.rewards_rect.x + 33, self.rewards_rect.y))
