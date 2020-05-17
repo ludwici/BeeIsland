@@ -2,7 +2,7 @@ import sys
 import unittest
 sys.path.append('../')
 from src.BeeNest import BeeNest
-from src.Bee import Bee
+from src.BeeFamily.Bee import Bee
 
 
 class TestEntities(unittest.TestCase):
