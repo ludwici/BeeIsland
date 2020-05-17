@@ -41,7 +41,8 @@ class QuestPopup(PopupNotify):
         self.difficult_label = TextLabel(parent=self, text="Уровень сложности", position=position,
                                          font_name="segoeprint", font_size=14, color=(159, 80, 17))
         self.difficult_label.set_position(
-            (self.position[0] + self.bg_rect.centerx - self.difficult_label.get_size()[0] / 2, self.panel_rect.y + 8))
+            (self.position[0] + self.bg_rect.centerx - self.difficult_label.get_size()[0] / 2, self.panel_rect.y + 8)
+        )
         self.bonus_label = TextLabel(parent=self, text="Бонусы", position=position, font_name="segoeprint",
                                      font_size=14, color=(159, 80, 17))
 
