@@ -80,7 +80,6 @@ class Button(Drawable):
 
     def unselect(self) -> None:
         self.state = ButtonState.NORMAL
-        print("Unselected")
 
     def update(self, dt) -> None:
         pass
@@ -95,6 +94,16 @@ class Button(Drawable):
                 self.on_hover_out_list.append(v)
             elif k == ButtonEventType.ON_CLICK_RB:
                 self.action_list_rb.append(v)
+
+    @classmethod
+    def register_event(cls, state: ButtonEventType):
+        def process(handler):
+            def wrapper(*args):
+                args[0].add_action({state: lambda: handler(args[0])})
+
+            return wrapper
+
+        return process
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self._current_image, self._rect)
