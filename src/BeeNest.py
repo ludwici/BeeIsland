@@ -1,6 +1,6 @@
 from copy import copy
 
-from src.Bee import Bee
+from src.BeeFamily.Bee import Bee
 from src.Interfaces.Levelable import Levelable
 
 
