@@ -10,7 +10,6 @@ class RadioButton(Button):
         self.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.select()})
 
     def select(self) -> None:
-        print("select")
         self.group.unselect_all()
         super().select()
         self.group.current_button = self
