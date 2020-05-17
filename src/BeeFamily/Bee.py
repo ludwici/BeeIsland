@@ -1,9 +1,17 @@
+import random
+
+import pygame
+
+from src.Interfaces.Drawable import Drawable
 from src.Interfaces.Levelable import Levelable
 
 
-class Bee(Levelable):
-    def __init__(self, level=1) -> None:
+class Bee(Levelable, Drawable):
+    names = ["Джонни", "Ричард", "Пол", "Лили", "Сара", "Бонни"]
+
+    def __init__(self, parent, position: (int, int), level: int = 1) -> None:
         Levelable.__init__(self)
+        Drawable.__init__(self, parent=parent, position=position)
         self.max_xp = 100
         self.speed = 0
         self.__current_hp = 0
@@ -12,10 +20,22 @@ class Bee(Levelable):
         self.need_hive_level = 0
         self.name = Bee.getRandomName()
         self.change_level_to(level)
+        self._image = None
+
+    def draw(self, screen: pygame.Surface) -> None:
+        if self._image:
+            screen.blit(self._image, self._rect)
+
+    def set_image(self, path: str) -> None:
+        self._image = pygame.image.load(path)
+        self._rect.width = self._image.get_rect().width
+        self._rect.height = self._image.get_rect().height
 
     @staticmethod
     def getRandomName() -> str:
-        return "RandomName"
+        result = random.choice(Bee.names)
+        Bee.names.remove(result)
+        return result
 
     @property
     def max_hp(self) -> int:
