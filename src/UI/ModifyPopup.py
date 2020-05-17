@@ -142,12 +142,12 @@ class ModifyPopup(PopupNotify):
         if self.socket_group.current_button is not None:
             if self.socket_group.current_button.bee is not None:
                 self.add_bee_to_list(self.socket_group.current_button.bee)
-                self.socket_group.current_button.bee = None
+                del self.socket_group.current_button.bee
                 self.clear_bee_info()
 
     def select_bee(self, list_item: ListItem) -> None:
         if self.socket_group.current_button is not None:
-            self.socket_group.current_button.set_bee(list_item.data)
+            self.socket_group.current_button.bee = list_item.data
             self.bee_list_view.remove_item(list_item)
 
     def add_bee_to_socket(self) -> None:
