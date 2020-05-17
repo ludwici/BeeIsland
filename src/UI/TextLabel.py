@@ -19,10 +19,7 @@ class TextLabel(Drawable):
     def set_text(self, text: str) -> None:
         self._text = text
         self._image = self._font.render(self._text, True, self._color)
-        self._rect = self._image.get_rect()
-
-    def update(self, dt: float) -> None:
-        pass
+        self._rect.w, self._rect.h = self._image.get_rect().w, self._image.get_rect().h
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self._image, self._rect)
