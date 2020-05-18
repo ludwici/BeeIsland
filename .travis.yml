@@ -11,7 +11,7 @@ jobs:
         - sudo apt install libsdl2-dev libfreetype6-dev libsdl2-mixer-dev libsdl2-image-dev libsdl2-ttf-dev libjpeg-dev libpng-dev libportmidi-dev
         - sudo apt-get build-dep python-pygame
         - sudo apt-get install python-dev
-        - PIP3=pip
+        - PIP3="pip"
       after_script:
         - python -m flake8 --max-complexity 10 src --ignore E501
     - name: "Windows"
@@ -19,7 +19,7 @@ jobs:
       language: shell
       before_install:
         - choco install python --version 3.8.0
-        - PIP3=python -m pip
+        - PIP3="python -m pip"
 #        - python -m pip install --upgrade pip
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
 
