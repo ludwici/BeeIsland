@@ -7,13 +7,15 @@ from src.UI.ListItem import ListItem
 
 
 class ListView(Drawable):
-    def __init__(self, parent, position: (int, int), padding: (int, int) = (0, 0),
+    def __init__(self, parent, position: (int, int), size: (int, int), padding: (int, int) = (0, 0),
                  item_padding: (int, int) = (15, 15)) -> None:
         Drawable.__init__(self, parent=parent, position=position)
         self._data = []
         self._item_padding = item_padding
         self.padding = padding
         self.bg_image = None
+        self._rect.width = size[0]
+        self._rect.height = size[1]
         self._items_pos = self.position + self.padding
         self.set_position(position)
 
@@ -31,8 +33,6 @@ class ListView(Drawable):
 
     def set_image(self, path: str) -> None:
         self.bg_image = pygame.image.load(path).convert_alpha()
-        self._rect.width = self.bg_image.get_rect().width
-        self._rect.height = self.bg_image.get_rect().height
 
     def set_position(self, position: (int, int)) -> None:
         super().set_position(position)
