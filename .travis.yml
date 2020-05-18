@@ -13,7 +13,7 @@ jobs:
         - sudo apt-get install python-dev
         - PY="python3"
       before_script:
-        - py -m flake8 --max-complexity 10 src --ignore E501
+        - $PY -m flake8 --max-complexity 10 src --ignore E501
     - name: "Windows"
       os: windows
       language: shell
