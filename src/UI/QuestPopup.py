@@ -133,9 +133,9 @@ class QuestPopup(PopupNotify):
         self.hard_button.add_action(
             {ButtonEventType.ON_CLICK_LB: lambda d=QuestDifficult.HARD: self.change_difficult(d)}
         )
-        self.start_button.add_action({ButtonEventType.ON_CLICK_LB: lambda name="Match3",
-                                                                          s=self.quest_settings: self.parent.main_window.change_scene(
-            scene_name=name, settings=s)})
+        self.start_button.add_action(
+            {ButtonEventType.ON_CLICK_LB: lambda: self.parent.main_window.change_scene("Match3", self.quest_settings)}
+        )
 
     @classmethod
     def create(cls, scene: Scene, *args, **kwargs) -> "QuestPopup":
