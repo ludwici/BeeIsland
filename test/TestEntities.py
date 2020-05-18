@@ -6,59 +6,55 @@ from src.BeeFamily.Bee import Bee
 
 
 class TestEntities(unittest.TestCase):
+    def setUp(self) -> None:
+        self.bee = Bee(parent=None)
+        self.nest = BeeNest()
+
     def test_bee_xp_1(self):
-        b = Bee(1)
         xp = 160
-        b.give_xp(xp)
-        self.assertEqual(b.current_xp, 61)
+        self.bee.give_xp(xp)
+        self.assertEqual(self.bee.current_xp, 61)
+        self.check_bee_min_max()
 
     def test_nest_xp_1(self):
-        n = BeeNest(1)
         xp = 3
-        n.give_xp(xp)
-        # print(n.current_level)
-        n.give_xp(xp)
-        # print(n.current_level)
-        self.test_nest_min_max(n)
+        self.nest.give_xp(xp)
+        self.nest.give_xp(xp)
+        self.check_nest_min_max()
 
     def test_bee_xp_2(self):
-        b = Bee(1)
-        b.give_xp(70)
-        self.assertEqual(b.current_level, 1)
-        b.give_xp(100)
-        self.assertEqual(b.current_level, 2)
-        self.test_bee_min_max(b)
-
-    def test_bee(self):
-        b = Bee(1)
-        b.give_xp(150)
+        self.bee.change_level_to(1)
+        self.bee.give_xp(70)
+        self.assertEqual(self.bee.current_level, 1)
+        self.bee.give_xp(100)
+        self.assertEqual(self.bee.current_level, 2)
+        self.check_bee_min_max()
 
     def test_add_bee_to_nest(self):
         b = Bee(1)
-        n = BeeNest(1)
 
-        for i in range(n.max_size):
-            if not n.add_bee(b):
+        for i in range(self.nest.max_size):
+            if not self.nest.add_bee(b):
                 self.fail("Too many bees")
 
-        self.test_nest_min_max(n)
+        self.check_nest_min_max()
 
-    def test_nest_min_max(self, n=BeeNest()):
-        self.assertGreaterEqual(n.current_xp, 1)
-        self.assertGreaterEqual(n.current_level, 1)
+    def check_nest_min_max(self):
+        self.assertGreaterEqual(self.nest.current_xp, 1)
+        self.assertGreaterEqual(self.nest.current_level, 1)
 
-        self.assertLessEqual(n.current_xp, n.max_xp)
-        self.assertLessEqual(n.current_level, n.max_level)
-        self.assertLessEqual(n.size, n.max_size)
+        self.assertLessEqual(self.nest.current_xp, self.nest.max_xp)
+        self.assertLessEqual(self.nest.current_level, self.nest.max_level)
+        self.assertLessEqual(self.nest.size, self.nest.max_size)
 
-    def test_bee_min_max(self, b=Bee()):
-        self.assertGreaterEqual(b.current_xp, 1)
-        self.assertGreaterEqual(b.current_level, 1)
-        self.assertGreaterEqual(b.current_hp, 0)
+    def check_bee_min_max(self):
+        self.assertGreaterEqual(self.bee.current_xp, 1)
+        self.assertGreaterEqual(self.bee.current_level, 1)
+        self.assertGreaterEqual(self.bee.current_hp, 0)
 
-        self.assertLessEqual(b.current_xp, b.max_xp)
-        self.assertLessEqual(b.current_level, b.max_level)
-        self.assertLessEqual(b.current_hp, b.max_hp)
+        self.assertLessEqual(self.bee.current_xp, self.bee.max_xp)
+        self.assertLessEqual(self.bee.current_level, self.bee.max_level)
+        self.assertLessEqual(self.bee.current_hp, self.bee.max_hp)
 
 
 if __name__ == '__main__':

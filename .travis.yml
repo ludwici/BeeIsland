@@ -24,5 +24,5 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - cd test
+  - cd tests
   - python -m unittest -v TestEntities.py

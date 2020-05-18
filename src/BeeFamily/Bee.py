@@ -9,7 +9,7 @@ from src.Interfaces.Levelable import Levelable
 class Bee(Levelable, Drawable):
     names = ["Джонни", "Ричард", "Пол", "Лили", "Сара", "Бонни"]
 
-    def __init__(self, parent, position: (int, int), level: int = 1) -> None:
+    def __init__(self, parent, position: (int, int) = (0, 0), level: int = 1) -> None:
         Levelable.__init__(self)
         Drawable.__init__(self, parent=parent, position=position)
         self.max_xp = 100
