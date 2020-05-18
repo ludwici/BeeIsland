@@ -1,0 +1,8 @@
+[flake8]
+exclude = .git, __pycache__
+ignore =
+    # E501: line too long (greater than 79)
+    E501,
+    # E126: continuation line over-indented for hanging indent
+    E126
+max-complexity = 10
