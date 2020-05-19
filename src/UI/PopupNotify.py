@@ -21,9 +21,6 @@ class PopupNotify(Drawable):
                                                line_length=self.bg_rect.width - 15 * 2)
         self.set_text(text=text)
 
-    def __del__(self):
-        print("Destroy Popup")
-
     @staticmethod
     def _check_position() -> Rect:
         popup_width = 200
