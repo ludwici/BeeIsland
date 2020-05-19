@@ -69,6 +69,10 @@ class Button(Drawable):
     def is_locked(self) -> bool:
         return self.state == ButtonState.LOCKED
 
+    @property
+    def is_selected(self) -> bool:
+        return ButtonState.SELECTED in self._state
+
     def lock(self) -> None:
         self.state = ButtonState.LOCKED
 
