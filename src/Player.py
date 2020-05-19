@@ -8,9 +8,8 @@ class Player:
         self.name = "Player"
         self.resources = ResourceBag()
         self.farm = Farm()
-        self.farm.add_out_of_hive_bee(BeeWorker(parent=self, position=(0, 0)))
-        self.farm.add_out_of_hive_bee(BeeWorker(parent=self, position=(0, 0)))
-        self.farm.add_out_of_hive_bee(BeeWorker(parent=self, position=(0, 0)))
+        for i in range(3):
+            self.farm.add_out_of_hive_bee(BeeWorker(parent=self))
 
     @property
     def can_buy_new_hive(self) -> bool:
