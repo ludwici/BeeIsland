@@ -1,11 +1,10 @@
 import pygame
 from pygame.event import Event
 
+from Database.Database import Database
+from Scenes.Map.MapZone import MapZone
 from src import Constants
-from src.Interfaces.Questable import QuestDifficult
-from src.MapZone import MapZone
 from src.Quests.Match3 import Match3
-from src.ResourceBag import ResourceBag, Resource
 from src.Scenes.Scene import Scene
 from src.UI.Button import Button, ButtonState, ButtonEventType
 
@@ -34,29 +33,13 @@ class MapScene(Scene):
         zone5 = MapZone(self, "Zone5", pos_x=bg_x + 415, pos_y=bg_y + 465)
         zone6 = MapZone(self, "Zone6", pos_x=bg_x + 285, pos_y=bg_y + 214)
         zone7 = MapZone(self, "Zone7", pos_x=bg_x + 383, pos_y=bg_y + 578, has_fog=False)
-
-        q1 = Match3(icon_position=(bg_x + 110, bg_y + 120), difficult=QuestDifficult.EASY, quest_title="Три в ряд")
-        q1.description = \
-            "Соберите как можно больше нектара, комбинируя в одну линию три или более цветка одного цвета."
-        r = ResourceBag()
-        r.append(Resource(name="Gold", locale_name="Золото", amount=100))
-        r.append(Resource(name="Pollen", locale_name="Пыльца", amount=20))
-        q1.rewards = r
-        # q1.condition = True
-        # q1.check_allow()
-        #
-        r = ResourceBag()
-        r.append(Resource(name="Gold", locale_name="Золото", amount=200))
-        r.append(Resource(name="Pollen", locale_name="Пыльца", amount=200))
-        q2 = Match3(icon_position=(bg_x + 90, bg_y + 160), difficult=QuestDifficult.EASY)
-        q2.rewards = r
-        # q2.condition = True
-        # q2.check_allow()
-
         zone1.unlock()
-        zone1.add_quest(q1)
-        zone1.add_quest(q2)
-        zone1.add_quests([q1, q2])
+
+        db = Database.get_instance()
+        quest_data = db.get_all_quests()
+        for qd in quest_data:
+            quest = Match3(quest_template=qd, icon_offset=(bg_x, bg_y))
+            zone1.add_quest(quest)
 
         self.zones.extend([zone1, zone2, zone3, zone4, zone5, zone6, zone7])
 
