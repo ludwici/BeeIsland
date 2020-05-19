@@ -33,11 +33,11 @@ class QuestPopup(PopupNotify):
 
         self.quest_label = TextLabel(parent=self, text="Title", position=self.position, font_name="segoeprint",
                                      font_size=16, bold=True, color=(159, 80, 17))
-        self.description_label = MultilineTextLabel(parent=self, text="description", position=position,
+        self.description_label = MultilineTextLabel(parent=self, text="", position=position,
                                                     font_name="segoeprint", font_size=14, color=(159, 80, 17),
                                                     line_length=self.bg_rect.width - 35 * 2)
-        self.description_label.set_position((self.position[0] + 35, self.position[1] + 74))
-        self.panel_rect.y = self.description_label.position[1] + self.description_label.get_size()[1] + 45
+        self.description_label.set_position((self.position[0] + 35, self.position[1] + 65))
+        self.panel_rect.y = self.description_label.position[1] + self.description_label.get_size()[1] + 65
         self.difficult_label = TextLabel(parent=self, text="Уровень сложности", position=position,
                                          font_name="segoeprint", font_size=14, color=(159, 80, 17))
         self.difficult_label.set_position(
@@ -107,12 +107,14 @@ class QuestPopup(PopupNotify):
 
         start_label = TextLabel(parent=self, text="Начать", position=(0, 0), font_name="segoeprint", font_size=24,
                                 color=(159, 80, 17))
-        self.start_button = TextButton(parent=self, normal_image_path="../res/images/buttons/start_quest_btn.png",
+        self.start_button = TextButton(parent=self,
+                                       normal_image_path="../res/images/buttons/start_quest_btn_normal.png",
                                        text_label=start_label, text_padding=(44, 0))
         self.start_button.set_position(
             (self.position[0] + self.bg_rect.centerx - self.start_button.get_size()[0] / 2,
              self.panel_rect.y + self.panel_rect.height + 40)
         )
+        self.start_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/start_quest_btn_hover.png")
 
         self.rewards_labels = []
 
@@ -159,7 +161,7 @@ class QuestPopup(PopupNotify):
         pos_y = start_pos[1]
         for r in self.quest.rewards.get_bag_copy():
             r_l = TextLabel(parent=self, text="{0}: {1}".format(r.locale_name, int(r.value)), position=(0, 0),
-                            font_name="segoeprint", font_size=12, color=(159, 80, 17))
+                            font_name="segoeprint", bold=True, font_size=12, color=(159, 80, 17))
             r_l.set_position((start_pos[0], pos_y))
             pos_y += r_l.get_size()[1]
             self.rewards_labels.append(r_l)

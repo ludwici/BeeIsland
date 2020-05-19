@@ -2,8 +2,8 @@ import copy
 
 import pygame
 
-from src.Interfaces import Questable
-from src.Scenes import MapScene
+from Quests import Questable
+from Scenes.Map import MapScene
 from src.UI.PopupNotify import PopupNotify
 
 
