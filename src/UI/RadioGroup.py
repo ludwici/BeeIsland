@@ -1,5 +1,3 @@
-from copy import copy
-
 import pygame
 
 from src.UI.Button import ButtonState
@@ -11,9 +9,12 @@ class RadioGroup:
         self.__buttons = []
         self.current_button = None
 
+    def __getitem__(self, index):
+        return self.__buttons[index]
+
     @property
     def buttons(self) -> list:
-        return copy(self.__buttons)
+        return self.__buttons
 
     def unselect_all(self) -> None:
         [b.unselect() for b in self.__buttons if b.state != ButtonState.LOCKED]
