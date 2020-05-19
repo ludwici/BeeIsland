@@ -1,23 +1,23 @@
 from abc import ABC
 
+from Quests.QuestTemplate import QuestTemplate
+from Scenes.Map.QuestPopup import QuestPopup
 from src import Player
-from src.QuestSettings import QuestDifficult
-from src.ResourceBag import ResourceBag
 from src.UI.QuestIcon import QuestIcon
-from src.UI.QuestPopup import QuestPopup
 
 
 class Questable(ABC):
-    def __init__(self, icon_position: (int, int), difficult: QuestDifficult, quest_title: str) -> None:
+    def __init__(self, quest_template: QuestTemplate, icon_offset: (int, int)) -> None:
         self.__is_allow = False
-        self.title = quest_title
-        self._description = "description"
+        self.title = quest_template.title
+        self._description = quest_template.desc
         self.zone = None
         self.condition = None
-        self.rewards = ResourceBag()
-        self.difficult = difficult
+        self.rewards = quest_template.resources_bag
+        self.difficult = None
+        icon_pos = quest_template.icon_pos[0] + icon_offset[0], quest_template.icon_pos[1] + icon_offset[1]
         self.icon_btn = QuestIcon(parent=self.zone, normal_image_path="../res/images/quest_icon1.png",
-                                  position=icon_position)
+                                  position=icon_pos)
 
     @property
     def is_allow(self) -> bool:
