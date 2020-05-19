@@ -1,9 +1,8 @@
 import pygame
-
 from pygame.event import Event
 
+from Scenes.Match3.FlowersGrid import FlowersGrid
 from src.Animation import Animation
-from src.FlowersGrid import FlowersGrid
 from src.Scenes.Scene import Scene
 from src.Utils import get_distance
 

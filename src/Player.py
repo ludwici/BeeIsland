@@ -1,6 +1,6 @@
+from InGameResources.ResourceBag import ResourceBag
 from src.BeeFamily.BeeWorker import BeeWorker
 from src.Farm import Farm
-from src.ResourceBag import ResourceBag
 
 
 class Player:

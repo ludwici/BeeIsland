@@ -3,10 +3,10 @@ from abc import ABC, abstractmethod
 import pygame
 from pygame.event import Event
 
+from Scenes.Map.QuestPopup import QuestPopup
 from src.Interfaces import Drawable
 from src.Player import Player
 from src.QuestSettings import QuestSettings
-from src.UI.QuestPopup import QuestPopup
 
 
 class Scene(ABC):

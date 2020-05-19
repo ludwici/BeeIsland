@@ -1,12 +1,12 @@
-import pygame
-
-from src.Animation import Animation
-from src.Scenes.Match3.Flower import FlowersData, Flower
 from itertools import cycle
 from random import shuffle, choice
 from typing import List, Tuple, Union, Generator, Any
+
+import pygame
 from pygame.rect import Rect
 
+from src.Animation import Animation
+from src.Scenes.Match3.Flower import FlowersData, Flower
 from src.Utils import get_distance
 
 
