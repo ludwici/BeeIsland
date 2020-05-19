@@ -3,9 +3,11 @@ import os
 import pygame
 from pygame.time import Clock
 
+from Database.Database import Database
+from Database.Localization import Localization, LocalList
+from Scenes.Map.MapScene import MapScene
 from src.Player import Player
 from src.Scenes.FarmScene import FarmScene
-from src.Scenes.MapScene import MapScene
 from src.Scenes.Match3.Match3Scene import Match3Scene
 
 
@@ -18,6 +20,10 @@ class RenderWindow:
         self.__size = self.width, self.height = width, height
         self.__screen = pygame.display.set_mode(self.size)
 
+        self.localization = Localization(LocalList.RU)
+        self.database = Database()
+        self.database.localization = self.localization
+
         self.main_player = Player()
         self.__scene_map = {
             "Map": MapScene(self, self.main_player),
@@ -25,8 +31,7 @@ class RenderWindow:
             "Farm": FarmScene(self, self.main_player)
         }
         self.__current_scene = self.__scene_map["Map"]
-        self.__current_scene.on_scene_started()
-        self.change_scene("Farm")
+        self.change_scene("Map")
         self.__prev_scene = None
         self.__done = False
         self.__clock = Clock()
