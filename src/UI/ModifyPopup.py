@@ -50,10 +50,15 @@ class ModifyPopup(PopupNotify):
 
         upgrade_label = TextLabel(parent=self, text="Улучшить", position=(0, 0), font_name="segoeprint", font_size=18,
                                   color=(159, 80, 17))
-        self.upgrade_button = TextButton(parent=self, normal_image_path="../res/images/buttons/start_quest_btn.png",
+        self.upgrade_button = TextButton(parent=self,
+                                         normal_image_path="../res/images/buttons/start_quest_btn_normal.png",
                                          text_label=upgrade_label, text_padding=(40, 4))
+        self.upgrade_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/start_quest_btn_hover.png")
+        self.upgrade_button.set_image_by_state(ButtonState.LOCKED, "../res/images/buttons/start_quest_btn_locked.png")
+        self.upgrade_button.lock()
         self.upgrade_button.set_position((self.socket1.position[0],
                                           self.socket2.position[1] + self.socket2.get_size()[1] + 15))
+        self.upgrade_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.upgrade()})
 
         self.result_socket = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket1_normal.png",
                                        group=self.socket_group, position=(0, 0))
@@ -79,7 +84,6 @@ class ModifyPopup(PopupNotify):
         self.name_label = TextLabel(parent=self, text="",
                                     position=(self.info_block_rect.x + 25, self.info_block_rect.y + 40),
                                     font_name="segoeprint", font_size=14, color=(159, 80, 17))
-        print(self.name_label.position)
 
         self.level_label = TextLabel(parent=self, text="",
                                      position=(self.name_label.position[0],
@@ -116,6 +120,7 @@ class ModifyPopup(PopupNotify):
                                       position=(
                                           self.position[0] + 9,
                                           self.info_block_rect.y + self.info_block_rect.height - 6),
+                                      size=(625, 253),
                                       padding=(45, 24))
         self.bee_list_view.set_image("../res/images/modify_popup1_bee_list.png")
 
@@ -123,11 +128,23 @@ class ModifyPopup(PopupNotify):
             self.add_bee_to_list(b)
 
         self.socket1.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.add_bee_to_socket()})
-        self.socket1.add_action({ButtonEventType.ON_CLICK_RB: lambda: self.remove_bee_from_socket()})
+        self.socket1.add_action({ButtonEventType.ON_CLICK_RB: lambda: self.remove_bee_from_socket(self.socket1)})
+        self.socket1.add_action({ButtonEventType.ON_HOVER_OUT: lambda: self.reload_bee_info(self.socket1.bee)})
+
         self.socket2.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.add_bee_to_socket()})
-        self.socket2.add_action({ButtonEventType.ON_CLICK_RB: lambda: self.remove_bee_from_socket()})
+        self.socket2.add_action({ButtonEventType.ON_CLICK_RB: lambda: self.remove_bee_from_socket(self.socket2)})
+        self.socket2.add_action({ButtonEventType.ON_HOVER_OUT: lambda: self.reload_bee_info(self.socket2.bee)})
 
         self.clear_bee_info()
+
+    def upgrade(self):
+        self.upgrade_button.lock()
+        self.parent.player.farm.remove_out_of_hive_bee(self.socket1.bee)
+        self.parent.player.farm.remove_out_of_hive_bee(self.socket2.bee)
+        del self.socket1.bee
+        del self.socket2.bee
+        self.result_socket.unlock()
+        self.result_socket.select()
 
     def add_bee_to_list(self, b: Bee) -> None:
         i = ListItem(parent=self, data=b, normal_image_path="../res/images/holder1.png")
@@ -135,25 +152,35 @@ class ModifyPopup(PopupNotify):
         i.set_image_by_state(ButtonState.HOVERED, "../res/images/holder1_hover.png")
         i.add_action({ButtonEventType.ON_CLICK_LB: lambda e=i: self.select_bee(e)})
         i.add_action({ButtonEventType.ON_HOVER_ON: lambda e=i.data: self.reload_bee_info(e)})
-        i.add_action({ButtonEventType.ON_HOVER_OUT: lambda: self.clear_bee_info()})
+        i.add_action({ButtonEventType.ON_HOVER_OUT: lambda: self.reload_bee_info()})
         self.bee_list_view.add_item(i)
 
-    def remove_bee_from_socket(self) -> None:
-        if self.socket_group.current_button is not None:
-            if self.socket_group.current_button.bee is not None:
-                self.add_bee_to_list(self.socket_group.current_button.bee)
-                del self.socket_group.current_button.bee
-                self.clear_bee_info()
+    def remove_bee_from_socket(self, socket: BeeSocket) -> None:
+        socket.select()
+        if self.socket_group.current_button.bee:
+            self.add_bee_to_list(self.socket_group.current_button.bee)
+            del self.socket_group.current_button.bee
+            self.clear_bee_info()
+            self.upgrade_button.lock()
 
     def select_bee(self, list_item: ListItem) -> None:
-        if self.socket_group.current_button is not None:
+        if self.socket_group.current_button:
+            if self.socket_group.current_button.bee:
+                self.remove_bee_from_socket(self.socket_group.current_button)
+
             self.socket_group.current_button.bee = list_item.data
             self.bee_list_view.remove_item(list_item)
 
+        if self.socket1.bee and self.socket2.bee:
+            self.upgrade_button.unlock()
+        else:
+            self.upgrade_button.lock()
+
+        self.reload_bee_info()
+
     def add_bee_to_socket(self) -> None:
-        print(self.socket_group.current_button.bee)
-        if self.socket_group.current_button is not None:
-            if self.socket_group.current_button.bee is not None:
+        if self.socket_group.current_button:
+            if self.socket_group.current_button.bee:
                 self.reload_bee_info()
             else:
                 self.clear_bee_info()
@@ -167,8 +194,10 @@ class ModifyPopup(PopupNotify):
         self.bonus_list_label.set_text("Бонусы:")
 
     def reload_bee_info(self, b: Bee = None) -> None:
-        if b is None and self.socket_group.current_button is not None:
+        if b is None and self.socket_group.current_button:
             b = self.socket_group.current_button.bee
+        if not b:
+            return
         self.name_label.set_text("Имя: {}".format(b.name))
         self.level_label.set_text("Уровень: {}".format(b.current_level))
         self.xp_label.set_text("Опыт: {0}/{1}".format(b.current_xp, b.max_xp))
@@ -216,3 +245,6 @@ class ModifyPopup(PopupNotify):
         self.socket_group.handle_event(event)
         self.upgrade_button.handle_event(event)
         self.bee_list_view.handle_event(event)
+        # if event.type == pygame.KEYDOWN:
+        #     if event.key == pygame.K_SPACE:
+        #         self.bee_list_view.item_padding = (30, 8)
