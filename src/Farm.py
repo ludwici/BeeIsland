@@ -24,6 +24,9 @@ class Farm:
     def out_of_hive_bee_list(self) -> list:
         return copy(self.__out_of_hive_bee_list)
 
+    def remove_out_of_hive_bee(self, b: Bee) -> None:
+        self.__out_of_hive_bee_list.remove(b)
+
     def add_out_of_hive_bee(self, b: Bee) -> None:
         self.__out_of_hive_bee_list.append(b)
 
