@@ -29,9 +29,11 @@ class BeeNestButton(Button):
             bs.set_image_by_state(ButtonState.LOCKED, "../res/images/buttons/socket3_normal.png")
             bs.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
             bs.lock()
-        bs = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket4_normal.png", group=self.nest_group,
-                       position=((self.position[0] + positions[2][0] + 18 + 48), self.position[1] + positions[2][1]))
-        bs.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
+        self.queen_socket = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket4_normal.png",
+                                      group=self.nest_group,
+                                      position=((self.position[0] + positions[2][0] + 18 + 48),
+                                                self.position[1] + positions[2][1]))
+        self.queen_socket.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
 
     def show_honeycombs(self) -> None:
         print("{0}/{1} пчёл".format(self.hive.size, self.hive.max_size))
