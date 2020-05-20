@@ -64,9 +64,6 @@ class PopupNotify(Drawable):
     def destroy(self) -> None:
         self.parent.remove_drawable(self)
 
-    def set_position(self, position: (int, int)) -> None:
-        super().set_position(position)
-
     def handle_event(self, event: Event) -> None:
         pass
 
