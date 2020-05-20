@@ -3,17 +3,28 @@ from abc import ABC, abstractmethod
 import pygame
 from pygame.event import Event
 
+from Database.Localization import Localization
 from src.Interfaces import Drawable
 from src.Player import Player
 from src.QuestSettings import QuestSettings
 
 
 class Scene(ABC):
-    def __init__(self, main_window, player: Player) -> None:
+    def __init__(self, main_window, name: str, player: Player) -> None:
         self.main_window = main_window
         self.player = player
         self.scene_settings = QuestSettings()
+        self._name = name
         self._drawable_list = []
+        self._localization = None
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def localization(self):
+        return self._localization
 
     @abstractmethod
     def update(self, dt: float) -> None:
@@ -28,12 +39,11 @@ class Scene(ABC):
         pass
 
     @abstractmethod
-    def on_scene_started(self) -> None:
-        pass
-
-    @abstractmethod
     def on_scene_change(self) -> None:
         self._drawable_list.clear()
+
+    def on_scene_started(self) -> None:
+        self._localization = Localization(scene_name=self.name)
 
     def find_drawable_by_type(self, t) -> Drawable:
         for d in self._drawable_list:

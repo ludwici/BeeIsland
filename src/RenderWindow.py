@@ -20,18 +20,17 @@ class RenderWindow:
         self.__size = self.width, self.height = width, height
         self.__screen = pygame.display.set_mode(self.size)
 
-        self.localization = Localization(LocalList.RU)
+        Localization.set_locale(LocalList.RU)
         self.database = Database()
-        self.database.localization = self.localization
 
         self.main_player = Player()
         self.__scene_map = {
-            "Map": MapScene(self, self.main_player),
-            "Match3": Match3Scene(self, self.main_player),
-            "Farm": FarmScene(self, self.main_player)
+            "Map": MapScene(self, name="Map", player=self.main_player),
+            "Match3": Match3Scene(self, name="Match3", player=self.main_player),
+            "Farm": FarmScene(self, name="Farm", player=self.main_player)
         }
         self.__current_scene = self.__scene_map["Map"]
-        self.change_scene("Map")
+        self.change_scene("Farm")
         self.__prev_scene = None
         self.__done = False
         self.__clock = Clock()

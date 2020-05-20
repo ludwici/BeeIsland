@@ -11,8 +11,8 @@ from src.UI.Button import Button, ButtonState, ButtonEventType
 
 
 class MapScene(Scene):
-    def __init__(self, main_window, player) -> None:
-        Scene.__init__(self, main_window=main_window, player=player)
+    def __init__(self, main_window, name, player) -> None:
+        Scene.__init__(self, main_window=main_window, player=player, name=name)
         self.bg_image = pygame.image.load("../res/images/map1.jpg").convert()
         self.bg_image_rect = self.bg_image.get_rect()
         self.bg_image_rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
@@ -22,6 +22,7 @@ class MapScene(Scene):
         self.to_farm_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.main_window.change_scene("Farm")})
 
     def on_scene_started(self) -> None:
+        super().on_scene_started()
         self.init_zones()
 
     def init_zones(self) -> None:

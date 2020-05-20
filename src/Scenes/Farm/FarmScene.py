@@ -9,8 +9,8 @@ from src.UI.Button import Button, ButtonEventType, ButtonState
 
 
 class FarmScene(Scene):
-    def __init__(self, main_window, player) -> None:
-        Scene.__init__(self, main_window=main_window, player=player)
+    def __init__(self, main_window, name, player) -> None:
+        Scene.__init__(self, main_window=main_window, player=player, name=name)
         self.main_image = pygame.image.load("../res/images/farm1.jpg").convert()
         self.bg_image = pygame.image.load("../res/images/farm1_bg.jpg").convert()
         self.main_image_rect = self.main_image.get_rect()
@@ -56,7 +56,7 @@ class FarmScene(Scene):
         self.to_upgrade_button.draw(surface)
 
     def on_scene_started(self) -> None:
-        pass
+        super().on_scene_started()
 
     def on_scene_change(self) -> None:
         ModifyPopup.count = 0
