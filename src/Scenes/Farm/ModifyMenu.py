@@ -1,6 +1,7 @@
 import pygame
 from pygame.event import Event
 
+from Interfaces.Drawable import Drawable
 from src import Constants
 from src.BeeFamily.Bee import Bee
 from src.BeeSocket import BeeSocket
@@ -9,24 +10,22 @@ from src.UI.Button import Button, ButtonEventType, ButtonState
 from src.UI.ListItem import ListItem
 from src.UI.ListView import ListView
 from src.UI.MultilineTextLabel import MultilineTextLabel
-from src.UI.PopupNotify import PopupNotify
 from src.UI.RadioGroup import RadioGroup
 from src.UI.TextButton import TextButton
 from src.UI.TextLabel import TextLabel
 
 
-class ModifyPopup(PopupNotify):
-    count = 0
-
+class ModifyMenu(Drawable):
     def __init__(self, parent: Scene) -> None:
-        PopupNotify.__init__(self, parent=parent)
+        Drawable.__init__(self, parent=parent)
         self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")
         self.close_btn.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/close_button1_hover.png")
         self.close_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.destroy()})
 
-        self._time_to_kill = 0
-        self.set_background("../res/images/modify_popup1.png")
-        position = (Constants.WINDOW_W / 2 - self.bg_rect.width / 2, 70)
+        self._bg_image = pygame.image.load("../res/images/modify_popup1.png").convert_alpha()
+        self._rect.width = self._bg_image.get_rect().width
+        self._rect.height = self._bg_image.get_rect().height
+        position = (Constants.WINDOW_W / 2 - self._bg_image.get_rect().width / 2, 70)
         self.set_position(position)
         self.close_btn.set_position(position=(self._rect.topright[0] - 50, self._rect.topright[1] - 10))
 
@@ -34,7 +33,8 @@ class ModifyPopup(PopupNotify):
                                      position=self.position, font_name="segoeprint",
                                      font_size=16, bold=True, color=(159, 80, 17))
         self.title_label.set_position(
-            (self.position[0] + self.bg_rect.centerx - self.title_label.get_size()[0] / 2 + 10, self.position[1] + 3)
+            (self.position[0] + self._bg_image.get_rect().centerx - self.title_label.get_size()[0] / 2 + 10,
+             self.position[1] + 3)
         )
         self.socket_group = RadioGroup()
         self.socket1 = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket1_normal.png",
@@ -212,26 +212,12 @@ class ModifyPopup(PopupNotify):
         self.bonus_list_label.set_text(
             text="{0} {1}".format(self.parent.localization.get_string("b_bonuses"), "+10% очков"))
 
-    @classmethod
-    def create(cls, scene: Scene, *args, **kwargs) -> "ModifyPopup":
-        if ModifyPopup.count == 0:
-            m = cls(parent=scene)
-            m.show()
-        else:
-            m = scene.find_drawable_by_type(ModifyPopup)
-
-        return m
-
-    def show(self) -> None:
-        ModifyPopup.count += 1
-        super().show()
-
     def destroy(self) -> None:
-        ModifyPopup.count -= 1
-        super().destroy()
+        self.parent.remove_drawable(self)
 
     def draw(self, screen: pygame.Surface) -> None:
         super().draw(screen)
+        screen.blit(self._bg_image, self._rect)
         self.close_btn.draw(screen)
         self.title_label.draw(screen)
         self.socket_group.draw(screen)
