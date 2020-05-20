@@ -3,7 +3,7 @@ from pygame.event import Event
 
 from Database.Database import Database
 from Scenes.Map.MapZone import MapZone
-from Scenes.Map.QuestPopup import QuestPopup
+from Scenes.Map.QuestMenu import QuestMenu
 from src import Constants
 from src.Quests.Match3 import Match3
 from src.Scenes.Scene import Scene
@@ -24,6 +24,10 @@ class MapScene(Scene):
     def on_scene_started(self) -> None:
         super().on_scene_started()
         self.init_zones()
+
+    def show_quest_menu(self, quest):
+        q = QuestMenu(parent=self, quest=quest)
+        self.add_drawable(q)
 
     def init_zones(self) -> None:
         bg_x = self.bg_image_rect.x
@@ -46,7 +50,6 @@ class MapScene(Scene):
         self.zones.extend([zone1, zone2, zone3, zone4, zone5, zone6, zone7])
 
     def on_scene_change(self) -> None:
-        QuestPopup.count = 0
         super().on_scene_change()
         self.zones.clear()
 
