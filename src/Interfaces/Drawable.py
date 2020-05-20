@@ -5,7 +5,7 @@ from pygame.rect import Rect
 
 
 class Drawable(ABC):
-    def __init__(self, parent, position: (int, int)) -> None:
+    def __init__(self, parent, position: (int, int) = (0, 0)) -> None:
         self.parent = parent
         self._rect = Rect((0, 0, 0, 0))
         self._rect.x = position[0]
