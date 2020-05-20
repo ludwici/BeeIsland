@@ -182,7 +182,6 @@ class QuestMenu(Drawable):
         self.close_btn.set_position(position=(self._rect.topright[0] - 50, self._rect.topright[1] - 10))
 
     def draw(self, screen: pygame.Surface) -> None:
-        super().draw(screen)
         screen.blit(self._bg_image, self._rect)
         pygame.draw.rect(screen, (24, 15, 7), self.panel_rect)
         self.close_btn.draw(screen)

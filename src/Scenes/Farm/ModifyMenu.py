@@ -216,7 +216,6 @@ class ModifyMenu(Drawable):
         self.parent.remove_drawable(self)
 
     def draw(self, screen: pygame.Surface) -> None:
-        super().draw(screen)
         screen.blit(self._bg_image, self._rect)
         self.close_btn.draw(screen)
         self.title_label.draw(screen)
