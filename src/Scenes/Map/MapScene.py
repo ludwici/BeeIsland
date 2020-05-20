@@ -3,6 +3,7 @@ from pygame.event import Event
 
 from Database.Database import Database
 from Scenes.Map.MapZone import MapZone
+from Scenes.Map.QuestPopup import QuestPopup
 from src import Constants
 from src.Quests.Match3 import Match3
 from src.Scenes.Scene import Scene
@@ -44,6 +45,7 @@ class MapScene(Scene):
         self.zones.extend([zone1, zone2, zone3, zone4, zone5, zone6, zone7])
 
     def on_scene_change(self) -> None:
+        QuestPopup.count = 0
         super().on_scene_change()
         self.zones.clear()
 

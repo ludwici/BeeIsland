@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 import pygame
 from pygame.event import Event
 
-from Scenes.Map.QuestPopup import QuestPopup
 from src.Interfaces import Drawable
 from src.Player import Player
 from src.QuestSettings import QuestSettings
@@ -35,7 +34,6 @@ class Scene(ABC):
     @abstractmethod
     def on_scene_change(self) -> None:
         self._drawable_list.clear()
-        QuestPopup.count = 0
 
     def find_drawable_by_type(self, t) -> Drawable:
         for d in self._drawable_list:
