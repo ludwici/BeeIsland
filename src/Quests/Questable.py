@@ -1,9 +1,8 @@
 from abc import ABC
 
 from Quests.QuestTemplate import QuestTemplate
-from Scenes.Map.QuestPopup import QuestPopup
+from UI.Button import Button
 from src import Player
-from src.UI.QuestIcon import QuestIcon
 
 
 class Questable(ABC):
@@ -16,8 +15,7 @@ class Questable(ABC):
         self.rewards = quest_template.resources_bag
         self.difficult = None
         icon_pos = quest_template.icon_pos[0] + icon_offset[0], quest_template.icon_pos[1] + icon_offset[1]
-        self.icon_btn = QuestIcon(parent=self.zone, normal_image_path="../res/images/quest_icon1.png",
-                                  position=icon_pos)
+        self.icon_btn = Button(parent=self.zone, normal_image_path="../res/images/quest_icon1.png", position=icon_pos)
 
     @property
     def is_allow(self) -> bool:
@@ -30,9 +28,6 @@ class Questable(ABC):
     @description.setter
     def description(self, value) -> None:
         self._description = value
-
-    def show_popup(self) -> None:
-        QuestPopup.create(scene=self.zone.parent, quest=self)
 
     def check_allow(self) -> bool:
         self.__is_allow = self.condition
