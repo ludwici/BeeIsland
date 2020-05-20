@@ -38,7 +38,6 @@ class Scene(ABC):
     def draw(self, surface: pygame.Surface) -> None:
         pass
 
-    @abstractmethod
     def on_scene_change(self) -> None:
         self._drawable_list.clear()
 
