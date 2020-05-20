@@ -4,6 +4,7 @@ import pygame
 
 from Quests import Questable
 from Scenes.Map import MapScene
+from UI.Button import ButtonEventType
 from src.UI.PopupNotify import PopupNotify
 
 
@@ -41,6 +42,7 @@ class MapZone:
     def add_quest(self, quest: Questable) -> None:
         quest.icon_btn.parent = quest
         quest.zone = self
+        quest.icon_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.parent.show_quest_menu(quest)})
         self.quest_list.append(quest)
         self.quest_icons.append(quest.icon_btn)
 
