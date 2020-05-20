@@ -1,7 +1,7 @@
 import pygame
 from pygame.event import Event
 
-from Scenes.Farm.ModifyPopup import ModifyPopup
+from Scenes.Farm.ModifyMenu import ModifyMenu
 from src import Constants
 from src.Scenes.Scene import Scene
 from src.UI.BeeNestButton import BeeNestButton
@@ -25,7 +25,7 @@ class FarmScene(Scene):
         self.to_upgrade_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/to_upgrade_hover.png")
 
         self.to_map_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.main_window.change_scene("Map")})
-        self.to_upgrade_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: ModifyPopup.create(scene=self)})
+        self.to_upgrade_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show_modify()})
         bg_x = self.main_image_rect.x
         bg_y = self.main_image_rect.y
         positions = [(194, 104), (501, 104), (111, 340), (584, 340), (194, 577), (501, 577)]
@@ -36,12 +36,15 @@ class FarmScene(Scene):
             bee_nest.set_image_by_state(ButtonState.HOVERED, "../res/images/bee/hive/hive1_empty_hover.png")
             self.bee_nest_list.append(bee_nest)
 
+    def show_modify(self):
+        m = ModifyMenu(parent=self)
+        self.add_drawable(m)
+
     def update(self, dt: float) -> None:
         [d.update(dt) for d in self._drawable_list]
 
     def handle_events(self, event: Event) -> None:
-        if ModifyPopup.count == 0:
-            [bn.handle_event(event) for bn in self.bee_nest_list]
+        [bn.handle_event(event) for bn in self.bee_nest_list]
         [d.handle_event(event) for d in self._drawable_list]
         self.to_map_button.handle_event(event)
         self.to_upgrade_button.handle_event(event)
@@ -57,7 +60,3 @@ class FarmScene(Scene):
 
     def on_scene_started(self) -> None:
         super().on_scene_started()
-
-    def on_scene_change(self) -> None:
-        ModifyPopup.count = 0
-        super().on_scene_change()
