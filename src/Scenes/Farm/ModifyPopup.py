@@ -30,7 +30,8 @@ class ModifyPopup(PopupNotify):
         self.set_position(position)
         self.close_btn.set_position(position=(self._rect.topright[0] - 50, self._rect.topright[1] - 10))
 
-        self.title_label = TextLabel(parent=self, text="Улучшение", position=self.position, font_name="segoeprint",
+        self.title_label = TextLabel(parent=self, text=self.parent.localization.get_string("modify_title"),
+                                     position=self.position, font_name="segoeprint",
                                      font_size=16, bold=True, color=(159, 80, 17))
         self.title_label.set_position(
             (self.position[0] + self.bg_rect.centerx - self.title_label.get_size()[0] / 2 + 10, self.position[1] + 3)
@@ -48,7 +49,8 @@ class ModifyPopup(PopupNotify):
                                  position=(self.dna_rect.x + self.dna_rect.width + 7, self.socket1.position[1]))
         self.socket2.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
 
-        upgrade_label = TextLabel(parent=self, text="Улучшить", position=(0, 0), font_name="segoeprint", font_size=18,
+        upgrade_label = TextLabel(parent=self, text=self.parent.localization.get_string("upgrade_button"),
+                                  position=(0, 0), font_name="segoeprint", font_size=18,
                                   color=(159, 80, 17))
         self.upgrade_button = TextButton(parent=self,
                                          normal_image_path="../res/images/buttons/start_quest_btn_normal.png",
@@ -72,7 +74,8 @@ class ModifyPopup(PopupNotify):
 
         self.info_block_image = pygame.image.load("../res/images/modify_popup1_info.png")
         self.info_block_rect = self.info_block_image.get_rect()
-        self.info_text_label = TextLabel(parent=self, text="Информация", position=(0, 0), font_name="segoeprint",
+        self.info_text_label = TextLabel(parent=self, text=self.parent.localization.get_string("upgrade_button"),
+                                         position=(0, 0), font_name="segoeprint",
                                          font_size=14, color=(159, 80, 17))
 
         self.info_block_rect.x = self.upgrade_button.position[0] + self.upgrade_button.get_size()[0] + 95
@@ -186,24 +189,28 @@ class ModifyPopup(PopupNotify):
                 self.clear_bee_info()
 
     def clear_bee_info(self) -> None:
-        self.name_label.set_text("Имя:")
-        self.level_label.set_text("Уровень:")
-        self.xp_label.set_text("Опыт:")
-        self.speed_label.set_text("Скорость:")
-        self.hp_label.set_text("Здоровье:")
-        self.bonus_list_label.set_text("Бонусы:")
+        self.name_label.set_text(text=self.parent.localization.get_string("b_name"))
+        self.level_label.set_text(text=self.parent.localization.get_string("b_level"))
+        self.xp_label.set_text(text=self.parent.localization.get_string("b_exp"))
+        self.speed_label.set_text(text=self.parent.localization.get_string("b_speed"))
+        self.hp_label.set_text(text=self.parent.localization.get_string("b_hp"))
+        self.bonus_list_label.set_text(text=self.parent.localization.get_string("b_bonuses"))
 
     def reload_bee_info(self, b: Bee = None) -> None:
         if b is None and self.socket_group.current_button:
             b = self.socket_group.current_button.bee
         if not b:
             return
-        self.name_label.set_text("Имя: {}".format(b.name))
-        self.level_label.set_text("Уровень: {}".format(b.current_level))
-        self.xp_label.set_text("Опыт: {0}/{1}".format(b.current_xp, b.max_xp))
-        self.speed_label.set_text("Скорость: {}".format(b.speed))
-        self.hp_label.set_text("Здоровье: {0}/{1}".format(b.current_hp, b.max_hp))
-        self.bonus_list_label.set_text("Бонусы: +10% очков")
+        self.name_label.set_text(text="{0} {1}".format(self.parent.localization.get_string("b_name"), b.name))
+        self.level_label.set_text(
+            text="{0} {1}".format(self.parent.localization.get_string("b_level"), b.current_level))
+        self.xp_label.set_text(
+            text="{0} {1}/{2}".format(self.parent.localization.get_string("b_exp"), b.current_xp, b.max_xp))
+        self.speed_label.set_text(text="{0} {1}".format(self.parent.localization.get_string("b_speed"), b.speed))
+        self.hp_label.set_text(
+            text="{0} {1}/{2}".format(self.parent.localization.get_string("b_hp"), b.current_hp, b.max_hp))
+        self.bonus_list_label.set_text(
+            text="{0} {1}".format(self.parent.localization.get_string("b_bonuses"), "+10% очков"))
 
     @classmethod
     def create(cls, scene: Scene, *args, **kwargs) -> "ModifyPopup":

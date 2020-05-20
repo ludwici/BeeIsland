@@ -58,4 +58,4 @@ class BeeNestButton(Button):
             self.action_list.clear()
             self.add_action({ButtonEventType.ON_CLICK_LB: self.show_honeycombs})
         else:
-            PopupNotify.create(scene=self.parent, text="Вы пока не можете купить это гнездо")
+            PopupNotify.create(scene=self.parent, text=self.parent.localization.get_string("locked_nest"))

@@ -38,16 +38,18 @@ class QuestPopup(PopupNotify):
                                                     line_length=self.bg_rect.width - 35 * 2)
         self.description_label.set_position((self.position[0] + 35, self.position[1] + 65))
         self.panel_rect.y = self.description_label.position[1] + self.description_label.get_size()[1] + 65
-        self.difficult_label = TextLabel(parent=self, text="Уровень сложности", position=position,
-                                         font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        self.difficult_label = TextLabel(parent=self, text=self.parent.localization.get_string("difficult_label"),
+                                         position=position, font_name="segoeprint", font_size=14, color=(159, 80, 17))
         self.difficult_label.set_position(
             (self.position[0] + self.bg_rect.centerx - self.difficult_label.get_size()[0] / 2, self.panel_rect.y + 8)
         )
-        self.bonus_label = TextLabel(parent=self, text="Бонусы", position=position, font_name="segoeprint",
+        self.bonus_label = TextLabel(parent=self, text=self.parent.localization.get_string("bonus_label"),
+                                     position=position,
+                                     font_name="segoeprint",
                                      font_size=14, color=(159, 80, 17))
 
-        easy_label = TextLabel(parent=self, text="Лёгкий", position=(0, 0), font_name="segoeprint", font_size=14,
-                               color=(159, 80, 17))
+        easy_label = TextLabel(parent=self, text=self.parent.localization.get_string("easy"), position=(0, 0),
+                               font_name="segoeprint", font_size=14, color=(159, 80, 17))
         self.easy_button = TextButton(parent=self, normal_image_path="../res/images/buttons/difficult/easy_normal.png",
                                       text_label=easy_label, text_padding=(19, 0))
         self.easy_button.set_position(
@@ -55,7 +57,8 @@ class QuestPopup(PopupNotify):
         )
         self.easy_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/difficult/easy_hovered.png")
 
-        medium_label = TextLabel(parent=self, text="Средний", position=(0, 0), font_name="segoeprint", font_size=14,
+        medium_label = TextLabel(parent=self, text=self.parent.localization.get_string("medium"), position=(0, 0),
+                                 font_name="segoeprint", font_size=14,
                                  color=(138, 36, 12))
         self.medium_button = TextButton(parent=self,
                                         normal_image_path="../res/images/buttons/difficult/medium_normal.png",
@@ -66,7 +69,8 @@ class QuestPopup(PopupNotify):
         self.medium_button.set_image_by_state(ButtonState.HOVERED,
                                               "../res/images/buttons/difficult/medium_hovered.png")
 
-        hard_label = TextLabel(parent=self, text="Сложный", position=(0, 0), font_name="segoeprint", font_size=14,
+        hard_label = TextLabel(parent=self, text=self.parent.localization.get_string("hard"), position=(0, 0),
+                               font_name="segoeprint", font_size=14,
                                color=(159, 17, 17))
         self.hard_button = TextButton(parent=self, normal_image_path="../res/images/buttons/difficult/hard_normal.png",
                                       text_label=hard_label, text_padding=(19, 0))
@@ -105,11 +109,12 @@ class QuestPopup(PopupNotify):
             (self.rewards_rect.x + self.rewards_rect.width + 46, bs_start_y + 15)
         )
 
-        start_label = TextLabel(parent=self, text="Начать", position=(0, 0), font_name="segoeprint", font_size=24,
+        start_label = TextLabel(parent=self, text=self.parent.localization.get_string("start_button"), position=(0, 0),
+                                font_name="segoeprint", font_size=24,
                                 color=(159, 80, 17))
-        self.start_button = TextButton(parent=self,
-                                       normal_image_path="../res/images/buttons/start_quest_btn_normal.png",
-                                       text_label=start_label, text_padding=(44, 0))
+        self.start_button = TextButton(parent=self, text_label=start_label, text_padding=(
+            self.parent.localization.get_params_by_string("start_button")["x_off"], 0),
+                                       normal_image_path="../res/images/buttons/start_quest_btn_normal.png", )
         self.start_button.set_position(
             (self.position[0] + self.bg_rect.centerx - self.start_button.get_size()[0] / 2,
              self.panel_rect.y + self.panel_rect.height + 40)

@@ -1,0 +1,47 @@
+{
+  "ru": {
+    "difficult_label": {
+      "text": "Уровень сложности"
+    },
+    "bonus_label": {
+      "text": "Бонусы"
+    },
+    "easy": {
+      "text": "Лёгкий"
+    },
+    "medium": {
+      "text": "Средний"
+    },
+    "hard": {
+      "text": "Сложный"
+    },
+    "start_button": {
+      "text": "Начать",
+      "x_off": 44
+    },
+    "locked_zone": {
+      "text": "Эта зона ещё не открыта"
+    }
+  },
+  "en": {
+    "difficult_label": {
+      "text": "Level of difficulty"
+    },
+    "bonus_label": {
+      "text": "Bonuses"
+    },
+    "easy": {
+      "text": "Easy"
+    },
+    "medium": {
+      "text": "Medium"
+    },
+    "hard": {
+      "text": "Hard"
+    },
+    "start_button": {
+      "text": "Start",
+      "x_off": 55
+    }
+  }
+}

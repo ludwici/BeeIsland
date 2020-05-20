@@ -59,7 +59,7 @@ class MapZone:
 
     def on_click(self) -> None:
         if self.is_lock:
-            PopupNotify.create(scene=self.parent, text="Эта зона ещё не открыта")
+            PopupNotify.create(scene=self.parent, text=self.parent.localization.get_string("locked_zone"))
 
     def handle_event(self, event) -> None:
         if self.click_rect.collidepoint(pygame.mouse.get_pos()):

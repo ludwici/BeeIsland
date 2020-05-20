@@ -1,0 +1,34 @@
+{
+  "ru": {
+    "locked_nest": {
+      "text": "Вы пока не можете купить это гнездо"
+    },
+    "upgrade_button": {
+      "text": "Улучшить"
+    },
+    "modify_title": {
+      "text": "Улучшение"
+    },
+    "info_label": {
+      "text": "Информация"
+    },
+    "b_name": {
+      "text": "Имя:"
+    },
+    "b_level": {
+      "text": "Уровень:"
+    },
+    "b_exp": {
+      "text": "Опыт:"
+    },
+    "b_speed": {
+      "text": "Скорость:"
+    },
+    "b_hp": {
+      "text": "Здоровье:"
+    },
+    "b_bonuses": {
+      "text": "Бонусы:"
+    }
+  }
+}
