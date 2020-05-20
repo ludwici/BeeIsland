@@ -21,23 +21,15 @@ class Database:
         else:
             Database.__instance = self
         self._db_location_dir = "../res/db"
-        self.__localization = None
+        self.__localization = Localization.get_current_locale()
         self.conn = sqlite3.connect("{0}/main.db".format(self._db_location_dir))
 
     def __del__(self):
         self.conn.close()
 
-    @property
-    def localization(self) -> Localization:
-        return self.__localization
-
-    @localization.setter
-    def localization(self, value):
-        self.__localization = value
-
     def get_all_quests(self) -> list:
         query = open("{0}/scripts/get_all_quests.sql".format(self._db_location_dir), 'r').read()
-        cursor = self.conn.execute(query, (self.localization.current_locale, self.localization.current_locale))
+        cursor = self.conn.execute(query, (self.__localization, self.__localization))
         all_quests = cursor.fetchall()
         template_list = []
         for i in all_quests:
@@ -53,13 +45,13 @@ class Database:
 
     def get_rewards_by_quest_id(self, quest_id: int):
         query = open("{0}/scripts/get_rewards_by_quest_id.sql".format(self._db_location_dir), 'r').read()
-        cursor = self.conn.execute(query, (self.localization.current_locale, quest_id))
+        cursor = self.conn.execute(query, (self.__localization, quest_id))
         rewards = cursor.fetchall()
         return rewards
 
     def get_resource_by_id(self, res_id: int) -> Resource:
         query = open("{0}/scripts/get_resource_by_id.sql".format(self._db_location_dir), 'r').read()
-        cursor = self.conn.execute(query, (self.localization.current_locale, res_id))
+        cursor = self.conn.execute(query, (self.__localization, res_id))
         template = cursor.fetchone()
         r = Resource(locale_name=template[1], max_value=template[2])
         return r
