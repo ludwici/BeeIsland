@@ -22,10 +22,10 @@ class MultilineTextLabel(TextLabel):
         rect = msg.get_rect(topleft=msg_center)
         return msg, rect
 
-    def set_text(self, value) -> None:
-        if not value:
+    def set_text(self, text) -> None:
+        if not text:
             return
-        self._text = value
+        self._text = text
         self.__rendered_text.clear()
         tmp = deque(self._text.split())
         str_tmp = ""
