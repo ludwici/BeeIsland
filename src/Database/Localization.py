@@ -16,8 +16,7 @@ class Localization:
         self.__data = self.__read_locale()
 
     def __read_locale(self):
-        locale_path = "../res/locales/scenes/{0}.json".format(self.__scene_name,
-                                                              Localization.get_current_locale())
+        locale_path = "../res/locales/scenes/{0}.json".format(self.__scene_name)
         with open(locale_path, encoding="utf-8") as json_file:
             data = json.load(json_file)
         return data
