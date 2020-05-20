@@ -5,9 +5,9 @@ from pygame.time import Clock
 
 from Database.Database import Database
 from Database.Localization import Localization, LocalList
+from Scenes.Farm.FarmScene import FarmScene
 from Scenes.Map.MapScene import MapScene
 from src.Player import Player
-from src.Scenes.FarmScene import FarmScene
 from src.Scenes.Match3.Match3Scene import Match3Scene
 
 

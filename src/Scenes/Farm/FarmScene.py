@@ -1,11 +1,11 @@
 import pygame
 from pygame.event import Event
 
+from Scenes.Farm.ModifyPopup import ModifyPopup
 from src import Constants
 from src.Scenes.Scene import Scene
 from src.UI.BeeNestButton import BeeNestButton
 from src.UI.Button import Button, ButtonEventType, ButtonState
-from src.UI.ModifyPopup import ModifyPopup
 
 
 class FarmScene(Scene):
