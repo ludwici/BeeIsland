@@ -54,5 +54,4 @@ class MultilineTextLabel(TextLabel):
         self._rect = r
 
     def draw(self, screen: pygame.Surface) -> None:
-        for msg in self.__rendered_text:
-            screen.blit(*msg)
+        [screen.blit(*msg) for msg in self.__rendered_text]
