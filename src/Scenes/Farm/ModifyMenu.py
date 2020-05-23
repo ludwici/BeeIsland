@@ -2,6 +2,7 @@ import pygame
 from pygame.event import Event
 
 from Interfaces.Drawable import Drawable
+from UI.DrawablesGroup import DrawablesGroup
 from src import Constants
 from src.BeeFamily.Bee import Bee
 from src.BeeSocket import BeeSocket
@@ -84,47 +85,51 @@ class ModifyMenu(Drawable):
             (self.info_block_rect.centerx - self.info_text_label.get_size()[0] / 2, self.info_block_rect.y)
         )
 
-        self.name_label = TextLabel(parent=self, text="",
-                                    position=(self.info_block_rect.x + 25, self.info_block_rect.y + 40),
-                                    font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        name_label = TextLabel(parent=self,
+                               position=(self.info_block_rect.x + 25, self.info_block_rect.y + 40),
+                               font_name="segoeprint", font_size=14, color=(159, 80, 17))
 
-        self.level_label = TextLabel(parent=self, text="",
-                                     position=(self.name_label.position[0],
-                                               self.name_label.position[1] + self.name_label.get_size()[1]),
-                                     font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        level_label = TextLabel(parent=self,
+                                position=(name_label.position[0],
+                                          name_label.position[1] + name_label.get_size()[1]),
+                                font_name="segoeprint", font_size=14, color=(159, 80, 17))
 
-        self.xp_label = TextLabel(parent=self, text="",
-                                  position=(
-                                      self.level_label.position[0],
-                                      self.level_label.position[1] + self.level_label.get_size()[1]),
-                                  font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        xp_label = TextLabel(parent=self,
+                             position=(
+                                 level_label.position[0],
+                                 level_label.position[1] + level_label.get_size()[1]),
+                             font_name="segoeprint", font_size=14, color=(159, 80, 17))
 
-        self.speed_label = TextLabel(parent=self, text="",
-                                     position=(
-                                         self.xp_label.position[0],
-                                         self.xp_label.position[1] + self.xp_label.get_size()[1]),
-                                     font_name="segoeprint",
-                                     font_size=14, color=(159, 80, 17))
+        speed_label = TextLabel(parent=self,
+                                position=(
+                                    xp_label.position[0],
+                                    xp_label.position[1] + xp_label.get_size()[1]),
+                                font_name="segoeprint",
+                                font_size=14, color=(159, 80, 17))
 
-        self.hp_label = TextLabel(parent=self, text="",
-                                  position=(
-                                      self.speed_label.position[0],
-                                      self.speed_label.position[1] + self.speed_label.get_size()[1]),
-                                  font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        hp_label = TextLabel(parent=self,
+                             position=(
+                                 speed_label.position[0],
+                                 speed_label.position[1] + speed_label.get_size()[1]),
+                             font_name="segoeprint", font_size=14, color=(159, 80, 17))
 
-        self.bonus_list_label = MultilineTextLabel(parent=self, text="",
-                                                   position=(
-                                                       self.hp_label.position[0],
-                                                       self.hp_label.position[1] + self.hp_label.get_size()[1]),
-                                                   font_name="segoeprint",
-                                                   font_size=14, color=(159, 80, 17), line_length=230)
+        bonus_list_label = MultilineTextLabel(parent=self, text="",
+                                              position=(
+                                                  hp_label.position[0],
+                                                  hp_label.position[1] + hp_label.get_size()[1]),
+                                              font_name="segoeprint",
+                                              font_size=14, color=(159, 80, 17), line_length=230)
 
-        self.bee_list_view = ListView(parent=self,
+        self.info_group = DrawablesGroup(parent=self,
+                                         data={"b_name": name_label, "b_level": level_label, "b_exp": xp_label,
+                                               "b_speed": speed_label, "b_hp": hp_label,
+                                               "b_bonuses": bonus_list_label})
+
+        self.bee_list_view = ListView(parent=self, size=(625, 253), item_padding=(15, 15), padding=(45, 24),
                                       position=(
                                           self.position[0] + 9,
                                           self.info_block_rect.y + self.info_block_rect.height - 6),
-                                      size=(625, 253),
-                                      padding=(45, 24))
+                                      )
         self.bee_list_view.set_image("../res/images/modify_popup1_bee_list.png")
 
         for b in self.parent.player.farm.out_of_hive_bee_list:
@@ -189,28 +194,58 @@ class ModifyMenu(Drawable):
                 self.clear_bee_info()
 
     def clear_bee_info(self) -> None:
-        self.name_label.set_text(text=self.parent.localization.get_string("b_name"))
-        self.level_label.set_text(text=self.parent.localization.get_string("b_level"))
-        self.xp_label.set_text(text=self.parent.localization.get_string("b_exp"))
-        self.speed_label.set_text(text=self.parent.localization.get_string("b_speed"))
-        self.hp_label.set_text(text=self.parent.localization.get_string("b_hp"))
-        self.bonus_list_label.set_text(text=self.parent.localization.get_string("b_bonuses"))
+        for k, v in self.info_group.group.items():
+            v.set_text(text=self.parent.localization.get_string(k))
+        self.set_info_position()
+
+    def set_info_position(self):
+        self.info_group["b_name"].set_position((self.info_block_rect.x + 25, self.info_block_rect.y + 40))
+
+        self.info_group["b_level"].set_position((self.info_group["b_name"].position[0],
+                                                 self.info_group["b_name"].position[1] +
+                                                 self.info_group["b_name"].get_size()[1]))
+        self.info_group["b_exp"].set_position((self.info_group["b_level"].position[0],
+                                               self.info_group["b_level"].position[1] +
+                                               self.info_group["b_level"].get_size()[1]))
+        self.info_group["b_speed"].set_position((self.info_group["b_exp"].position[0],
+                                                 self.info_group["b_exp"].position[1] +
+                                                 self.info_group["b_exp"].get_size()[1]))
+        self.info_group["b_hp"].set_position((self.info_group["b_speed"].position[0],
+                                              self.info_group["b_speed"].position[1] +
+                                              self.info_group["b_speed"].get_size()[1]))
+        self.info_group["b_bonuses"].set_position((self.info_group["b_hp"].position[0],
+                                                   self.info_group["b_hp"].position[1] +
+                                                   self.info_group["b_hp"].get_size()[1]))
+        # TODO: Bonuses has bad position
 
     def reload_bee_info(self, b: Bee = None) -> None:
         if b is None and self.socket_group.current_button:
             b = self.socket_group.current_button.bee
         if not b:
             return
-        self.name_label.set_text(text="{0} {1}".format(self.parent.localization.get_string("b_name"), b.name))
-        self.level_label.set_text(
-            text="{0} {1}".format(self.parent.localization.get_string("b_level"), b.current_level))
-        self.xp_label.set_text(
-            text="{0} {1}/{2}".format(self.parent.localization.get_string("b_exp"), b.current_xp, b.max_xp))
-        self.speed_label.set_text(text="{0} {1}".format(self.parent.localization.get_string("b_speed"), b.speed))
-        self.hp_label.set_text(
-            text="{0} {1}/{2}".format(self.parent.localization.get_string("b_hp"), b.current_hp, b.max_hp))
-        self.bonus_list_label.set_text(
-            text="{0} {1}".format(self.parent.localization.get_string("b_bonuses"), "+10% очков"))
+
+        self.info_group["b_name"].set_text(
+            text="{0} {1}".format(self.parent.localization.get_string("b_name"), b.name))
+
+        self.info_group["b_level"].set_text(
+            text="{0} {1}".format(self.parent.localization.get_string("b_level"), b.current_level)
+        )
+
+        self.info_group["b_exp"].set_text(
+            text="{0} {1}/{2}".format(self.parent.localization.get_string("b_exp"), b.current_xp, b.max_xp)
+        )
+
+        self.info_group["b_speed"].set_text(
+            text="{0} {1}".format(self.parent.localization.get_string("b_speed"), b.speed))
+
+        self.info_group["b_hp"].set_text(
+            text="{0} {1}/{2}".format(self.parent.localization.get_string("b_hp"), b.current_hp, b.max_hp)
+        )
+
+        self.info_group["b_bonuses"].set_text(
+            text="{0} {1}".format(self.parent.localization.get_string("b_bonuses"), "+10% очков")
+        )
+        # self.set_info_position()
 
     def destroy(self) -> None:
         self.parent.remove_drawable(self)
@@ -225,12 +260,7 @@ class ModifyMenu(Drawable):
         screen.blit(self.info_block_image, self.info_block_rect)
         self.info_text_label.draw(screen)
         self.bee_list_view.draw(screen)
-        self.name_label.draw(screen)
-        self.level_label.draw(screen)
-        self.xp_label.draw(screen)
-        self.speed_label.draw(screen)
-        self.hp_label.draw(screen)
-        self.bonus_list_label.draw(screen)
+        self.info_group.draw(screen)
 
     def handle_event(self, event: Event) -> None:
         self.close_btn.handle_event(event)
