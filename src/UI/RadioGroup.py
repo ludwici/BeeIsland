@@ -1,6 +1,5 @@
 import pygame
 
-from src.UI.Button import ButtonState
 from src.UI.RadioButton import RadioButton
 
 
@@ -17,7 +16,7 @@ class RadioGroup:
         return self.__buttons
 
     def unselect_all(self) -> None:
-        [b.unselect() for b in self.__buttons if b.state != ButtonState.LOCKED]
+        [b.unselect() for b in self.__buttons if not b.is_locked]
         self.current_button = None
 
     def add_button(self, b: RadioButton) -> None:
