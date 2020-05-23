@@ -8,7 +8,7 @@ class Farm:
     def __init__(self) -> None:
         self.__hive_list = []
         self.__out_of_hive_bee_list = []
-        self.max_active_hive_count = 1
+        self.max_active_hive_count = 3
         self.max_hive_slots = 6
         self.max_hive_level = 5
 
@@ -22,7 +22,15 @@ class Farm:
 
     @property
     def out_of_hive_bee_list(self) -> list:
-        return copy(self.__out_of_hive_bee_list)
+        return self.__out_of_hive_bee_list
+
+    @property
+    def bees_from_all_hives(self):
+        bees = []
+        for h in self.__hive_list:
+            bees.append(h.bee_list)
+
+        return bees
 
     def remove_out_of_hive_bee(self, b: Bee) -> None:
         self.__out_of_hive_bee_list.remove(b)
