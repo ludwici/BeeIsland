@@ -3,6 +3,7 @@ from pygame.event import Event
 
 from Interfaces.Drawable import Drawable
 from Quests.Questable import Questable
+from Scenes.BeeSelectPanel import BeeSelectPanel
 from src import Constants
 from src.BeeSocket import BeeSocket
 from src.QuestSettings import QuestSettings, QuestDifficult
@@ -18,7 +19,6 @@ class QuestMenu(Drawable):
         Drawable.__init__(self, parent=parent)
         self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")
         self.close_btn.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/close_button1_hover.png")
-        self.close_btn.set_position(position=(0, 0))
         self.close_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.destroy()})
         self.quest = quest
         self._bg_image = pygame.image.load("../res/images/popup3.png").convert_alpha()
@@ -90,27 +90,22 @@ class QuestMenu(Drawable):
 
         self.bonus_rect = self.bonus_panel.get_rect()
 
+        bs_start_y = self.rewards_rect.y
         self.bee_socket_group = RadioGroup()
         for i in range(3):
             b = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket1_normal.png",
-                          group=self.bee_socket_group, position=(0, 0))
+                          group=self.bee_socket_group,
+                          position=(self.rewards_rect.x + self.rewards_rect.width + 46, bs_start_y))
             b.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
+            b.show_select_panel(self.parent, self.parent.player.farm.out_of_hive_bee_list)
+            bs_start_y += b.get_size()[1] + 8
 
         self.bee_socket_hard = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket2_normal.png",
-                                         group=self.bee_socket_group, state=ButtonState.LOCKED, position=(0, 0))
+                                         group=self.bee_socket_group, state=ButtonState.LOCKED,
+                                         position=(self.rewards_rect.x + self.rewards_rect.width + 46, bs_start_y + 15))
         self.bee_socket_hard.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
         self.bee_socket_hard.set_image_by_state(ButtonState.LOCKED, "../res/images/buttons/socket3_normal.png")
-
-        bs_start_y = self.rewards_rect.y
-        for bs in self.bee_socket_group.buttons[:-1]:
-            bs.set_position(
-                (self.rewards_rect.x + self.rewards_rect.width + 46, bs_start_y)
-            )
-            bs_start_y += bs.get_size()[1] + 8
-
-        self.bee_socket_hard.set_position(
-            (self.rewards_rect.x + self.rewards_rect.width + 46, bs_start_y + 15)
-        )
+        self.bee_socket_hard.show_select_panel(self.parent, self.parent.player.farm.out_of_hive_bee_list)
 
         start_label = TextLabel(parent=self, text=self.parent.localization.get_string("start_button"), position=(0, 0),
                                 font_name="segoeprint", font_size=24,
@@ -171,11 +166,19 @@ class QuestMenu(Drawable):
 
         self.bee_socket_hard.lock() if difficult != QuestDifficult.HARD else self.bee_socket_hard.unlock()
 
+        if difficult != QuestDifficult.HARD:
+            self.bee_socket_hard.lock()
+            self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
+        else:
+            self.bee_socket_hard.unlock()
+
         self.rewards_labels.clear()
         self.generate_reward_labels((self.rewards_rect.x + 33, self.rewards_rect.y))
 
     def destroy(self) -> None:
         self.parent.remove_drawable(self)
+        while self.parent.find_drawable_by_type(BeeSelectPanel):
+            self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
 
     def set_position(self, position: (int, int)) -> None:
         super().set_position(position)
