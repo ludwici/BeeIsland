@@ -1,3 +1,4 @@
+from BeeNest import BeeNest
 from InGameResources.ResourceBag import ResourceBag
 from src.BeeFamily.BeeWorker import BeeWorker
 from src.Farm import Farm
@@ -10,6 +11,9 @@ class Player:
         self.farm = Farm()
         for i in range(3):
             self.farm.add_out_of_hive_bee(BeeWorker(parent=self))
+
+    def already_has_hive(self, hive: BeeNest):
+        return hive in self.farm.hive_list
 
     @property
     def can_buy_new_hive(self) -> bool:
