@@ -15,6 +15,9 @@ class BeeSelectPanel(Drawable):
         Drawable.__init__(self, parent=parent, position=position)
         while self.parent.find_drawable_by_type(BeeSelectPanel):
             self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
+
+        self.__allowable_position_x = 100
+        self.__allowable_position_y = 0
         self.parent.add_drawable(self)
         self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")
         self.close_btn.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/close_button1_hover.png")
@@ -70,11 +73,21 @@ class BeeSelectPanel(Drawable):
         i.add_action({ButtonEventType.ON_HOVER_ON: lambda: self.show_info(i.data)})
         self.bee_list_view.add_item(i)
 
+    def _check_position(self, position: (int, int)) -> (int, int):
+        correct_position_x, correct_position_y = position
+        if position[0] < self.__allowable_position_x:
+            correct_position_x = self.__allowable_position_x + 10
+
+        if position[1] < self.__allowable_position_y:
+            correct_position_y = position[1] + self.get_size()[1] + 20
+
+        return correct_position_x, correct_position_y
+
     def set_position(self, position: (int, int)) -> None:
-        super().set_position(position)
+        super().set_position(self._check_position(position))
         self.close_btn.set_position(position=(self._rect.topright[0] - 62, self._rect.topright[1] - 1))
         self.bee_list_view.set_position(self.position)
-        self.info_group.set_position(position)
+        self.info_group.set_position(self.position)
 
     def handle_event(self, event) -> None:
         self.close_btn.handle_event(event)
