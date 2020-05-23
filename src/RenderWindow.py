@@ -1,4 +1,5 @@
 import os
+import traceback
 
 import pygame
 from pygame.time import Clock
@@ -64,7 +65,10 @@ class RenderWindow:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.__done = True
-            self.__current_scene.handle_events(event)
+            try:
+                self.__current_scene.handle_events(event)
+            except Exception as ex:
+                traceback.print_exc()
 
     def loop(self) -> None:
         dt = self.__clock.tick(self.__FPS)
