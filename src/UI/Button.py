@@ -32,10 +32,10 @@ class Button(Drawable):
         self._state = None
         self.state = int(state)
 
-        self.action_list = list()
-        self.action_list_rb = list()
-        self.on_hover_list = list()
-        self.on_hover_out_list = list()
+        self.__action_list = list()
+        self.__action_list_rb = list()
+        self.__on_hover_list = list()
+        self.__on_hover_out_list = list()
 
         self._can_call_out = False
 
@@ -94,13 +94,13 @@ class Button(Drawable):
     def add_action(self, item: dict, *args) -> None:
         for k, v in item.items():
             if k.name == ButtonEventType.ON_CLICK_LB.name:
-                self.action_list.append(v)
+                self.__action_list.append(v)
             elif k.name == ButtonEventType.ON_HOVER_ON.name:
-                self.on_hover_list.append(v)
+                self.__on_hover_list.append(v)
             elif k.name == ButtonEventType.ON_HOVER_OUT.name:
-                self.on_hover_out_list.append(v)
+                self.__on_hover_out_list.append(v)
             elif k.name == ButtonEventType.ON_CLICK_RB.name:
-                self.action_list_rb.append(v)
+                self.__action_list_rb.append(v)
             else:
                 raise KeyError("Invalid flag: {0}".format(k))
 
@@ -120,18 +120,18 @@ class Button(Drawable):
     def on_hover_on(self) -> None:
         self.state |= int(ButtonState.HOVERED)
         self._can_call_out = True
-        [a() for a in self.on_hover_list]
+        [a() for a in self.__on_hover_list]
 
     def on_hover_out(self) -> None:
         self.state ^= int(ButtonState.HOVERED)
-        [a() for a in self.on_hover_out_list]
+        [a() for a in self.__on_hover_out_list]
         self._can_call_out = False
 
     def on_click(self) -> None:
-        [a() for a in self.action_list]
+        [a() for a in self.__action_list]
 
     def on_click_rb(self) -> None:
-        [a() for a in self.action_list_rb]
+        [a() for a in self.__action_list_rb]
 
     def handle_event(self, event) -> None:
         if self.is_locked:
