@@ -13,13 +13,15 @@ from UI.TextLabel import TextLabel
 
 
 class BeeSelectPanel(Drawable):
-    def __init__(self, parent, bee_list: list, position: (int, int) = (0, 0)):
+    def __init__(self, parent, socket, bee_list: list, position: (int, int) = (0, 0)):
         Drawable.__init__(self, parent=parent, position=position)
         while self.parent.find_drawable_by_type(BeeSelectPanel):
             self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
 
         self.__allowable_position_x = 100
         self.__allowable_position_y = 0
+        self.__socket = socket
+        self.__socket.add_action({ButtonEventType.ON_CLICK_RB: lambda: self.remove_from_socket(self.__socket)})
         self.parent.add_drawable(self)
         self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")
         self.close_btn.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/close_button1_hover.png")
@@ -61,24 +63,40 @@ class BeeSelectPanel(Drawable):
         for b in bee_list:
             self.add_bee_to_list(b)
 
+        self.show_info(self.__socket.bee)
+
     def destroy(self):
         self.parent.remove_drawable(self)
 
-    def suka(self):
-        print("SUKA")
+    def remove_from_socket(self, socket):
+        if socket.bee:
+            copied = copy(socket.bee)
+            self.parent.player.farm.add_out_of_hive_bee(copied)
+            self.add_bee_to_list(copied)
+            del socket.bee
+
+    def add_bee_to_socket(self, item: ListItem):
+        self.remove_from_socket(self.__socket)
+
+        b = copy(item.data)
+        self.__socket.bee = b
+        self.__socket.parent.hive.add_bee(b)
+        self.parent.player.farm.remove_out_of_hive_bee(item.data)
+        self.bee_list_view.remove_item(item)
 
     def add_bee_to_list(self, b: Bee):
         i = ListItem(parent=self, data=b, normal_image_path="../res/images/holder1.png")
         i.set_image_by_state(ButtonState.LOCKED, "../res/images/holder1_lock.png")
         i.set_image_by_state(ButtonState.HOVERED, "../res/images/holder1_hover.png")
-        i.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.suka()})
+        i.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.add_bee_to_socket(i)})
         i.add_action({ButtonEventType.ON_HOVER_ON: lambda: self.show_info(i.data)})
+        i.add_action({ButtonEventType.ON_HOVER_OUT: lambda: self.show_info(self.__socket.bee)})
         self.bee_list_view.add_item(i)
 
     def _check_position(self, position: (int, int)) -> (int, int):
         correct_position_x, correct_position_y = position
         if position[0] < self.__allowable_position_x:
-            correct_position_x = self.__allowable_position_x + 10
+            correct_position_x = self.__allowable_position_x + 5
 
         if position[1] < self.__allowable_position_y:
             correct_position_y = position[1] + self.get_size()[1] + 20
@@ -102,6 +120,8 @@ class BeeSelectPanel(Drawable):
         self.info_group.draw(screen)
 
     def show_info(self, b: Bee):
+        if not b:
+            return
         self.info_group["b_name"].set_text(text="{0} {1}".format(self.parent.localization.get_string("b_name"), b.name))
 
         self.info_group["b_level"].set_text(
