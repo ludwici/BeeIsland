@@ -202,20 +202,20 @@ class ModifyMenu(Drawable):
         self.info_group["b_name"].set_position((self.info_block_rect.x + 25, self.info_block_rect.y + 40))
 
         self.info_group["b_level"].set_position((self.info_group["b_name"].position[0],
-                                                 self.info_group["b_name"].position[1] +
-                                                 self.info_group["b_name"].get_size()[1]))
+                                                 self.info_group["b_name"].position[1]
+                                                 + self.info_group["b_name"].get_size()[1]))
         self.info_group["b_exp"].set_position((self.info_group["b_level"].position[0],
-                                               self.info_group["b_level"].position[1] +
-                                               self.info_group["b_level"].get_size()[1]))
+                                               self.info_group["b_level"].position[1]
+                                               + self.info_group["b_level"].get_size()[1]))
         self.info_group["b_speed"].set_position((self.info_group["b_exp"].position[0],
-                                                 self.info_group["b_exp"].position[1] +
-                                                 self.info_group["b_exp"].get_size()[1]))
+                                                 self.info_group["b_exp"].position[1]
+                                                 + self.info_group["b_exp"].get_size()[1]))
         self.info_group["b_hp"].set_position((self.info_group["b_speed"].position[0],
-                                              self.info_group["b_speed"].position[1] +
-                                              self.info_group["b_speed"].get_size()[1]))
+                                              self.info_group["b_speed"].position[1]
+                                              + self.info_group["b_speed"].get_size()[1]))
         self.info_group["b_bonuses"].set_position((self.info_group["b_hp"].position[0],
-                                                   self.info_group["b_hp"].position[1] +
-                                                   self.info_group["b_hp"].get_size()[1]))
+                                                   self.info_group["b_hp"].position[1]
+                                                   + self.info_group["b_hp"].get_size()[1]))
         # TODO: Bonuses has bad position
 
     def reload_bee_info(self, b: Bee = None) -> None:

@@ -1,3 +1,5 @@
+from copy import copy
+
 import pygame
 
 from BeeFamily.Bee import Bee
@@ -106,32 +108,32 @@ class BeeSelectPanel(Drawable):
             text="{0} {1}".format(self.parent.localization.get_string("b_level"), b.current_level)
         )
         self.info_group["b_level"].set_position((self.info_group["b_name"].position[0],
-                                                 self.info_group["b_name"].position[1] +
-                                                 self.info_group["b_name"].get_size()[1]))
+                                                 self.info_group["b_name"].position[1]
+                                                 + self.info_group["b_name"].get_size()[1]))
 
         self.info_group["b_exp"].set_text(
             text="{0} {1}/{2}".format(self.parent.localization.get_string("b_exp"), b.current_xp, b.max_xp)
         )
         self.info_group["b_exp"].set_position((self.info_group["b_level"].position[0],
-                                               self.info_group["b_level"].position[1] +
-                                               self.info_group["b_level"].get_size()[1]))
+                                               self.info_group["b_level"].position[1]
+                                               + self.info_group["b_level"].get_size()[1]))
 
         self.info_group["b_speed"].set_text(
             text="{0} {1}".format(self.parent.localization.get_string("b_speed"), b.speed))
         self.info_group["b_speed"].set_position((self.info_group["b_exp"].position[0],
-                                                 self.info_group["b_exp"].position[1] +
-                                                 self.info_group["b_exp"].get_size()[1]))
+                                                 self.info_group["b_exp"].position[1]
+                                                 + self.info_group["b_exp"].get_size()[1]))
 
         self.info_group["b_hp"].set_text(
             text="{0} {1}/{2}".format(self.parent.localization.get_string("b_hp"), b.current_hp, b.max_hp)
         )
         self.info_group["b_hp"].set_position((self.info_group["b_speed"].position[0],
-                                              self.info_group["b_speed"].position[1] +
-                                              self.info_group["b_speed"].get_size()[1]))
+                                              self.info_group["b_speed"].position[1]
+                                              + self.info_group["b_speed"].get_size()[1]))
 
         self.info_group["b_bonuses"].set_text(
             text="{0} {1}".format(self.parent.localization.get_string("b_bonuses"), "+10% очков")
         )
         self.info_group["b_bonuses"].set_position((self.info_group["b_hp"].position[0],
-                                                   self.info_group["b_hp"].position[1] +
-                                                   self.info_group["b_hp"].get_size()[1]))
+                                                   self.info_group["b_hp"].position[1]
+                                                   + self.info_group["b_hp"].get_size()[1]))
