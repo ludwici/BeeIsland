@@ -1,5 +1,6 @@
 import pygame
 
+from UI.BeeSelectPanel import BeeSelectPanel
 from UI.RadioButton import RadioButton
 from src.BeeNest import BeeNest
 from src.BeeSocket import BeeSocket
@@ -29,10 +30,10 @@ class BeeNestButton(RadioButton):
                            normal_image_path="../res/images/buttons/socket1_normal.png",
                            position=((self.position[0] + positions[i][0]), self.position[1] + positions[i][1]))
             bs.set_image_by_state(ButtonState.LOCKED, "../res/images/buttons/socket3_normal.png")
-            # bs.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show_bee_select_panel()})
             # bs.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
             bs.show_select_panel(self.parent, self.parent.player.farm.out_of_hive_bee_list)
-            bs.unlock()
+            if i >= self.hive.max_size:
+                bs.lock()
         self.queen_socket = BeeSocket(parent=self, group=self.nest_group,
                                       normal_image_path="../res/images/buttons/socket4_normal.png",
                                       position=((self.position[0] + positions[2][0] + 18 + 48),
@@ -52,6 +53,7 @@ class BeeNestButton(RadioButton):
             self.nest_group.handle_event(event)
 
     def select(self) -> None:
+        self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
         if self.is_selected:
             return
         if not self.parent.player.already_has_hive(self.hive):
