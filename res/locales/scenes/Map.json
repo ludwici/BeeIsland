@@ -3,8 +3,8 @@
     "difficult_label": {
       "text": "Уровень сложности"
     },
-    "bonus_label": {
-      "text": "Бонусы"
+    "reward_label": {
+      "text": "Награды"
     },
     "easy": {
       "text": "Лёгкий"
@@ -45,8 +45,8 @@
     "difficult_label": {
       "text": "Level of difficulty"
     },
-    "bonus_label": {
-      "text": "Bonuses"
+    "reward_label": {
+      "text": "Rewards"
     },
     "easy": {
       "text": "Easy"
