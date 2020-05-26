@@ -13,4 +13,4 @@ select q.id,
        q.icon_y
 from quest q,
      quest_locale ql
-where q.id = ql.id;
+where q.type = ql.id;
