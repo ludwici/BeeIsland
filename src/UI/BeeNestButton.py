@@ -1,6 +1,5 @@
 import pygame
 
-from UI.BeeSelectPanel import BeeSelectPanel
 from UI.RadioButton import RadioButton
 from src.BeeNest import BeeNest
 from src.BeeSocket import BeeSocket
@@ -55,8 +54,6 @@ class BeeNestButton(RadioButton):
     def select(self) -> None:
         if self.is_selected:
             return
-
-        self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
 
         if self.parent.player.already_has_hive(self.hive):
             super().select()

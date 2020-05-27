@@ -170,19 +170,12 @@ class QuestMenu(Drawable):
 
         self.bee_socket_hard.lock() if difficult != QuestDifficult.HARD else self.bee_socket_hard.unlock()
 
-        if difficult != QuestDifficult.HARD:
-            self.bee_socket_hard.lock()
-            self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
-        else:
-            self.bee_socket_hard.unlock()
-
         self.rewards_labels.clear()
         self.generate_reward_labels()
 
     def destroy(self) -> None:
+        self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
         self.parent.remove_drawable(self)
-        while self.parent.find_drawable_by_type(BeeSelectPanel):
-            self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
 
     def set_position(self, position: (int, int)) -> None:
         super().set_position(position)

@@ -15,8 +15,6 @@ from UI.TextLabel import TextLabel
 class BeeSelectPanel(Drawable):
     def __init__(self, parent, socket, bee_list: list, destination=None, position: (int, int) = (0, 0)):
         Drawable.__init__(self, parent=parent, position=position)
-        while self.parent.find_drawable_by_type(BeeSelectPanel):
-            self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
         self.__bee_list = bee_list
         self.__allowable_position_x = 100
         self.__allowable_position_y = 0
@@ -111,8 +109,17 @@ class BeeSelectPanel(Drawable):
         self.info_group.set_position(self.position)
 
     def handle_event(self, event) -> None:
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if not self._rect.collidepoint(event.pos):
+                if event.button == 1:
+                    self.destroy()
+
         self.close_btn.handle_event(event)
         self.bee_list_view.handle_event(event)
+        # if event.type == pygame.MOUSEMOTION:
+        #     if self._rect.collidepoint(event.pos):
+        #         event.buttons = (0, 0, 0)
+                # self.parent.handle_events(event)
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self._bg_image, self._rect)
