@@ -18,6 +18,7 @@ class BeeNestButton(RadioButton):
         self.nest_group = RadioGroup()
 
     def __show_sockets(self) -> None:
+        self.nest_group.clear()
         positions = list()
         positions.append((-33, -41))
         positions.append((positions[0][0] + 36 + 48, positions[0][1]))
@@ -30,17 +31,16 @@ class BeeNestButton(RadioButton):
                            normal_image_path="../res/images/buttons/socket1_normal.png",
                            position=((self.position[0] + positions[i][0]), self.position[1] + positions[i][1]))
             bs.set_image_by_state(ButtonState.LOCKED, "../res/images/buttons/socket3_normal.png")
-            # bs.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
-            bs.show_select_panel(self.parent, self.parent.player.farm.out_of_hive_bee_list)
+            bs.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
+            bs.show_select_panel(self.parent, self.parent.player.farm.out_of_hive_bee_list, self.hive)
             if i >= self.hive.max_size:
                 bs.lock()
         self.queen_socket = BeeSocket(parent=self, group=self.nest_group,
                                       normal_image_path="../res/images/buttons/socket4_normal.png",
                                       position=((self.position[0] + positions[2][0] + 18 + 48),
                                                 self.position[1] + positions[2][1]))
-        # self.queen_socket.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show_bee_select_panel()})
-        self.queen_socket.show_select_panel(self.parent, self.parent.player.farm.out_of_hive_bee_list)
-        # self.queen_socket.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
+        self.queen_socket.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
+        self.queen_socket.show_select_panel(self.parent, self.parent.player.farm.out_of_hive_bee_list, self.hive)
 
     def draw(self, screen: pygame.Surface) -> None:
         super().draw(screen)
@@ -53,19 +53,20 @@ class BeeNestButton(RadioButton):
             self.nest_group.handle_event(event)
 
     def select(self) -> None:
-        self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
         if self.is_selected:
             return
-        if not self.parent.player.already_has_hive(self.hive):
+
+        self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
+
+        if self.parent.player.already_has_hive(self.hive):
+            super().select()
+            self.__show_sockets()
+        else:
             if self.parent.player.can_buy_new_hive:
-                super().select()
                 self.hive = BeeNest()
                 self.parent.player.farm.add_hive(self.hive)
                 self.set_image_by_state(ButtonState.NORMAL, "../res/images/bee/hive/hive1_normal.png")
                 self.set_image_by_state(ButtonState.HOVERED, "../res/images/bee/hive/hive1_normal.png")
-                self.__show_sockets()
+                self.select()
             else:
                 PopupNotify.create(scene=self.parent, text=self.parent.localization.get_string("locked_nest"))
-        else:
-            super().select()
-            self.__show_sockets()
