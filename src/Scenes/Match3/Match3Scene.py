@@ -24,6 +24,7 @@ class Match3Scene(Scene):
         print(self.scene_settings)
 
     def update(self, dt: float) -> None:
+        super().update(dt)
         self.last_click += dt
         if self.grabbed:
             current_dest = self.dest_tile
@@ -118,6 +119,7 @@ class Match3Scene(Scene):
         super().on_scene_change()
 
     def draw(self, surface: pygame.Surface) -> None:
+        super().draw(surface)
         surface.blit(self.bg_image, self.bg_image.get_rect())
         self.grid.draw(surface)
         if self.grabbed and self.grabbed.flower:

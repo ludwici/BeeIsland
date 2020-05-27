@@ -26,17 +26,15 @@ class Scene(ABC):
     def localization(self):
         return self._localization
 
-    @abstractmethod
     def update(self, dt: float) -> None:
-        pass
+        [d.update(dt) for d in self._drawable_list]
 
     @abstractmethod
     def handle_events(self, event: Event) -> None:
         pass
 
-    @abstractmethod
     def draw(self, surface: pygame.Surface) -> None:
-        pass
+        [d.draw(surface) for d in self._drawable_list]
 
     def on_scene_change(self) -> None:
         self._drawable_list.clear()

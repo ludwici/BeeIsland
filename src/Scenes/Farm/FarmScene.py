@@ -40,9 +40,6 @@ class FarmScene(Scene):
         m = ModifyMenu(parent=self)
         self.add_drawable(m)
 
-    def update(self, dt: float) -> None:
-        [d.update(dt) for d in self._drawable_list]
-
     def handle_events(self, event: Event) -> None:
         self.nest_group.handle_event(event)
         [d.handle_event(event) for d in self._drawable_list]
@@ -54,7 +51,7 @@ class FarmScene(Scene):
         surface.blit(self.bg_image, self.bg_image.get_rect())
         surface.blit(self.main_image, self.main_image_rect)
         self.nest_group.draw(surface)
-        [d.draw(surface) for d in self._drawable_list]
+        super().draw(surface)
         self.to_map_button.draw(surface)
         self.to_upgrade_button.draw(surface)
 

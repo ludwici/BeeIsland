@@ -72,8 +72,5 @@ class MapScene(Scene):
         surface.fill((38, 34, 35))
         surface.blit(self.bg_image, self.bg_image_rect)
         [z.draw(surface) for z in self.zones]
-        [d.draw(surface) for d in self._drawable_list]
+        super().draw(surface)
         self.to_farm_button.draw(surface)
-
-    def update(self, dt: float) -> None:
-        [d.update(dt) for d in self._drawable_list]
