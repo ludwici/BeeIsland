@@ -29,8 +29,8 @@ class QuestMenu(Drawable):
         self.quest_settings = QuestSettings()
         self.panel_rect = pygame.Rect((self.position[0] + 15, self.position[1] + 155, self.get_size()[0] - 15 * 2, 277))
 
-        self.quest_label = TextLabel(parent=self, text=self.quest.title, position=self.position, font_name="segoeprint",
-                                     font_size=16, bold=True, color=(159, 80, 17))
+        self.quest_label = TextLabel(parent=self, text=self.quest.title, position=self.position, font_size=16,
+                                     bold=True)
         self.quest_label.set_position(
             (self.position[0] + self._bg_image.get_rect().centerx - self.quest_label.get_size()[0] / 2,
              self.position[1] + 3)
@@ -39,18 +39,14 @@ class QuestMenu(Drawable):
             "line_length"] * 2
         self.description_label = MultilineTextLabel(parent=self, text=self.quest.description, line_length=ll,
                                                     position=(self.position[0] + 35, self.position[1] + 75),
-                                                    font_name="segoeprint", font_size=14, color=(159, 80, 17))
+                                                    font_size=14)
         self.difficult_label = TextLabel(parent=self, text=self.parent.localization.get_string("difficult_label"),
-                                         position=(position[0], self.panel_rect.y + 10), font_name="segoeprint",
-                                         font_size=14, color=(159, 80, 17))
+                                         position=(position[0], self.panel_rect.y + 10), font_size=14)
 
         self.rewards_label = TextLabel(parent=self, text=self.parent.localization.get_string("reward_label"),
-                                       position=position,
-                                       font_name="segoeprint",
-                                       font_size=14, color=(159, 80, 17))
+                                       position=position, font_size=14, )
 
-        easy_label = TextLabel(parent=self, text=self.parent.localization.get_string("easy"), position=(0, 0),
-                               font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        easy_label = TextLabel(parent=self, text=self.parent.localization.get_string("easy"), font_size=14)
         self.easy_button = TextButton(parent=self, normal_image_path="../res/images/buttons/difficult/easy_normal.png",
                                       text_label=easy_label, text_padding=(19, 0))
         self.easy_button.set_position(
@@ -58,8 +54,7 @@ class QuestMenu(Drawable):
         )
         self.easy_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/difficult/easy_hovered.png")
 
-        medium_label = TextLabel(parent=self, text=self.parent.localization.get_string("medium"), position=(0, 0),
-                                 font_name="segoeprint", font_size=14,
+        medium_label = TextLabel(parent=self, text=self.parent.localization.get_string("medium"), font_size=14,
                                  color=(138, 36, 12))
         self.medium_button = TextButton(parent=self,
                                         normal_image_path="../res/images/buttons/difficult/medium_normal.png",
@@ -70,8 +65,7 @@ class QuestMenu(Drawable):
         self.medium_button.set_image_by_state(ButtonState.HOVERED,
                                               "../res/images/buttons/difficult/medium_hovered.png")
 
-        hard_label = TextLabel(parent=self, text=self.parent.localization.get_string("hard"), position=(0, 0),
-                               font_name="segoeprint", font_size=14,
+        hard_label = TextLabel(parent=self, text=self.parent.localization.get_string("hard"), font_size=14,
                                color=(159, 17, 17))
         self.hard_button = TextButton(parent=self, normal_image_path="../res/images/buttons/difficult/hard_normal.png",
                                       text_label=hard_label, text_padding=(19, 0))
@@ -94,9 +88,8 @@ class QuestMenu(Drawable):
 
         self.bonus_list = []
         for i in range(3):
-            self.bonus_list.append(MultilineTextLabel(parent=self, text="", bold=True, line_length=130,
-                                                      position=(self.bonuses_rect.x + 5, self.bonuses_rect.y),
-                                                      font_name="segoeprint", font_size=12, color=(159, 80, 17)))
+            self.bonus_list.append(MultilineTextLabel(parent=self, bold=True, line_length=130, font_size=12,
+                                                      position=(self.bonuses_rect.x + 5, self.bonuses_rect.y)))
 
         self.rewards_rect = self.rewards_panel.get_rect()
 
@@ -120,8 +113,7 @@ class QuestMenu(Drawable):
         self.bee_socket_hard.show_select_panel(self.parent, all_bees)
 
         start_label = TextLabel(parent=self, text=self.parent.localization.get_string("start_button"), position=(0, 0),
-                                font_name="segoeprint", font_size=24,
-                                color=(159, 80, 17))
+                                font_size=24)
         self.start_button = TextButton(parent=self, text_label=start_label, text_padding=(
             self.parent.localization.get_params_by_string("start_button")["x_off"], 0),
                                        normal_image_path="../res/images/buttons/start_quest_btn_normal.png", )
@@ -160,8 +152,7 @@ class QuestMenu(Drawable):
         pos_x = self.rewards_rect.x + 20
         pos_y = self.rewards_rect.y + 10
         for r in self.quest.rewards.get_bag_copy():
-            r_l = TextLabel(parent=self, text="{0}: {1}".format(r.locale_name, int(r.value)), position=(0, 0),
-                            font_name="segoeprint", bold=True, font_size=12, color=(159, 80, 17))
+            r_l = TextLabel(parent=self, text="{0}: {1}".format(r.locale_name, int(r.value)), bold=True, font_size=12)
             r_l.set_position((pos_x, pos_y))
             pos_y += r_l.get_size()[1] - 5
             self.rewards_labels.append(r_l)

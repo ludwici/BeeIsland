@@ -31,8 +31,7 @@ class ModifyMenu(Drawable):
         self.close_btn.set_position(position=(self._rect.topright[0] - 50, self._rect.topright[1] - 10))
 
         self.title_label = TextLabel(parent=self, text=self.parent.localization.get_string("modify_title"),
-                                     position=self.position, font_name="segoeprint",
-                                     font_size=16, bold=True, color=(159, 80, 17))
+                                     position=self.position, font_size=16, bold=True)
         self.title_label.set_position(
             (self.position[0] + self._bg_image.get_rect().centerx - self.title_label.get_size()[0] / 2 + 10,
              self.position[1] + 3)
@@ -50,9 +49,7 @@ class ModifyMenu(Drawable):
                                  position=(self.dna_rect.x + self.dna_rect.width + 7, self.socket1.position[1]))
         self.socket2.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
 
-        upgrade_label = TextLabel(parent=self, text=self.parent.localization.get_string("upgrade_button"),
-                                  position=(0, 0), font_name="segoeprint", font_size=18,
-                                  color=(159, 80, 17))
+        upgrade_label = TextLabel(parent=self, text=self.parent.localization.get_string("upgrade_button"), font_size=18)
         self.upgrade_button = TextButton(parent=self,
                                          normal_image_path="../res/images/buttons/start_quest_btn_normal.png",
                                          text_label=upgrade_label, text_padding=(40, 4))
@@ -76,8 +73,7 @@ class ModifyMenu(Drawable):
         self.info_block_image = pygame.image.load("../res/images/modify_popup1_info.png")
         self.info_block_rect = self.info_block_image.get_rect()
         self.info_text_label = TextLabel(parent=self, text=self.parent.localization.get_string("upgrade_button"),
-                                         position=(0, 0), font_name="segoeprint",
-                                         font_size=14, color=(159, 80, 17))
+                                         font_size=14)
 
         self.info_block_rect.x = self.upgrade_button.position[0] + self.upgrade_button.get_size()[0] + 95
         self.info_block_rect.y = self.position[1] + 71
@@ -85,40 +81,32 @@ class ModifyMenu(Drawable):
             (self.info_block_rect.centerx - self.info_text_label.get_size()[0] / 2, self.info_block_rect.y)
         )
 
-        name_label = TextLabel(parent=self,
-                               position=(self.info_block_rect.x + 25, self.info_block_rect.y + 40),
-                               font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        name_label = TextLabel(parent=self, font_size=14,
+                               position=(self.info_block_rect.x + 25, self.info_block_rect.y + 40))
 
-        level_label = TextLabel(parent=self,
+        level_label = TextLabel(parent=self, font_size=14,
                                 position=(name_label.position[0],
-                                          name_label.position[1] + name_label.get_size()[1]),
-                                font_name="segoeprint", font_size=14, color=(159, 80, 17))
+                                          name_label.position[1] + name_label.get_size()[1]))
 
-        xp_label = TextLabel(parent=self,
+        xp_label = TextLabel(parent=self, font_size=14,
                              position=(
                                  level_label.position[0],
-                                 level_label.position[1] + level_label.get_size()[1]),
-                             font_name="segoeprint", font_size=14, color=(159, 80, 17))
+                                 level_label.position[1] + level_label.get_size()[1]))
 
-        speed_label = TextLabel(parent=self,
+        speed_label = TextLabel(parent=self,  font_size=14,
                                 position=(
                                     xp_label.position[0],
-                                    xp_label.position[1] + xp_label.get_size()[1]),
-                                font_name="segoeprint",
-                                font_size=14, color=(159, 80, 17))
+                                    xp_label.position[1] + xp_label.get_size()[1]))
 
-        hp_label = TextLabel(parent=self,
+        hp_label = TextLabel(parent=self, font_size=14,
                              position=(
                                  speed_label.position[0],
-                                 speed_label.position[1] + speed_label.get_size()[1]),
-                             font_name="segoeprint", font_size=14, color=(159, 80, 17))
+                                 speed_label.position[1] + speed_label.get_size()[1]))
 
-        bonus_list_label = MultilineTextLabel(parent=self, text="",
+        bonus_list_label = MultilineTextLabel(parent=self, font_size=14, line_length=230,
                                               position=(
                                                   hp_label.position[0],
-                                                  hp_label.position[1] + hp_label.get_size()[1]),
-                                              font_name="segoeprint",
-                                              font_size=14, color=(159, 80, 17), line_length=230)
+                                                  hp_label.position[1] + hp_label.get_size()[1]))
 
         self.info_group = DrawablesGroup(parent=self,
                                          data={"b_name": name_label, "b_level": level_label, "b_exp": xp_label,
@@ -216,7 +204,6 @@ class ModifyMenu(Drawable):
         self.info_group["b_bonuses"].set_position((self.info_group["b_hp"].position[0],
                                                    self.info_group["b_hp"].position[1]
                                                    + self.info_group["b_hp"].get_size()[1]))
-        # TODO: Bonuses has bad position
 
     def reload_bee_info(self, b: Bee = None) -> None:
         if b is None and self.socket_group.current_button:
