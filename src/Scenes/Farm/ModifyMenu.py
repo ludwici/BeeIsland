@@ -17,6 +17,11 @@ from src.UI.TextLabel import TextLabel
 
 
 class ModifyMenu(Drawable):
+    __slots__ = (
+        "close_btn", "_bg_image", "title_label", "socket_group", "socket1", "socket2", "upgrade_button",
+        "result_socket", "info_block_image", "info_block_rect", "info_text_label", "info_group", "bee_list_view",
+        "dna_image", "dna_rect")
+
     def __init__(self, parent: Scene) -> None:
         Drawable.__init__(self, parent=parent)
         self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")

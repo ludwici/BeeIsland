@@ -23,6 +23,9 @@ class ButtonState(Flags):
 
 # TODO: Mixed Strategy pattern
 class Button(Drawable):
+    __slots__ = ("_current_image", "_images", "_state", "__action_list", "__action_list_rb", "__on_hover_list",
+                 "__on_hover_out_list", "_can_call_out")
+
     def __init__(self, parent, normal_image_path: str, position: (int, int) = (0, 0),
                  state: ButtonState = ButtonState.NORMAL) -> None:
         Drawable.__init__(self, parent=parent, position=position)

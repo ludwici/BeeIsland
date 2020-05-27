@@ -4,6 +4,8 @@ from src.UI.Button import Button
 
 
 class ListItem(Button):
+    __slots__ = "data"
+
     def __init__(self, parent, data, normal_image_path: str) -> None:
         Button.__init__(self, parent=parent, normal_image_path=normal_image_path)
         self.data = data

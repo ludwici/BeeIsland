@@ -7,6 +7,8 @@ from src.UI.RadioButton import RadioButton
 
 
 class BeeSocket(RadioButton):
+    __slots__ = "_bee"
+
     def __init__(self, parent, group, normal_image_path: str, position: (int, int) = (0, 0),
                  state: ButtonState = ButtonState.NORMAL) -> None:
         RadioButton.__init__(self, parent=parent, group=group, normal_image_path=normal_image_path,

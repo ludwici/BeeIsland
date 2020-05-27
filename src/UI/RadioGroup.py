@@ -4,6 +4,8 @@ from src.UI.RadioButton import RadioButton
 
 
 class RadioGroup:
+    __slots__ = ("__buttons", "current_button")
+
     def __init__(self) -> None:
         self.__buttons = []
         self.current_button = None

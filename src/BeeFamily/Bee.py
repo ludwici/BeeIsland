@@ -7,6 +7,9 @@ from src.Interfaces.Levelable import Levelable
 
 
 class Bee(Levelable, Drawable):
+    __slots__ = ("speed", "__current_hp", "__max_hp", "need_hive_level", "name", "_image", "__current_level",
+                 "__max_level", "xp_enabled", "__current_xp", "max_xp")
+
     names = ["Джонни", "Ричард", "Пол", "Лили", "Сара", "Бонни"]
 
     def __init__(self, parent, position: (int, int) = (0, 0), level: int = 1) -> None:

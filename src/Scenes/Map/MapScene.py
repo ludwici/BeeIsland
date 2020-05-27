@@ -11,6 +11,8 @@ from src.UI.Button import Button, ButtonState, ButtonEventType
 
 
 class MapScene(Scene):
+    __slots__ = ("bg_image", "bg_image_rect", "zones", "to_farm_button")
+
     def __init__(self, main_window, name, player) -> None:
         Scene.__init__(self, main_window=main_window, player=player, name=name)
         self.bg_image = pygame.image.load("../res/images/map1.jpg").convert()

@@ -5,6 +5,8 @@ from src.UI.Button import Button
 
 
 class TextButton(Button):
+    __slots__ = ("text_label", "padding")
+
     def __init__(self, parent, normal_image_path, position: (int, int) = (0, 0),
                  text_label: TextLabel = None, text_padding: (int, int) = (0, 0)) -> None:
         Button.__init__(self, parent=parent, normal_image_path=normal_image_path, position=position)

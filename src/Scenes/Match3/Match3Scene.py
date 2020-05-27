@@ -8,6 +8,8 @@ from src.Utils import get_distance
 
 
 class Match3Scene(Scene):
+    __slots__ = ("bg_image", "grid", "grabbed", "grab_point", "dest_tile", "last_click", "click_cooldown")
+
     def __init__(self, main_window, name, player) -> None:
         Scene.__init__(self, main_window=main_window, player=player, name=name)
         self.bg_image = pygame.image.load("../res/images/quest_bg1.png").convert_alpha()

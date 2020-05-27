@@ -6,6 +6,10 @@ from src import Player
 
 
 class Questable(ABC):
+    __slots__ = (
+        "__is_allow", "time", "score_modifier_percent", "title", "_description", "zone", "condition", "rewards",
+        "difficult", "icon_btn")
+
     def __init__(self, quest_template: QuestTemplate, icon_offset: (int, int)) -> None:
         self.__is_allow = False
         self.time = 0

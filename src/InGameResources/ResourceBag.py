@@ -2,6 +2,8 @@ from InGameResources.Resource import Resource
 
 
 class ResourceBag:
+    __slots__ = "__bag"
+
     def __init__(self) -> None:
         self.__bag = []
 

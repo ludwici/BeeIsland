@@ -9,6 +9,8 @@ from src.UI.RadioGroup import RadioGroup
 
 
 class BeeNestButton(RadioButton):
+    __slots__ = ("hive", "nest_group", "queen_socket")
+
     def __init__(self, parent, group: RadioGroup, normal_image_path: str, state: ButtonState,
                  position: (int, int) = (0, 0)) -> None:
         RadioButton.__init__(self, parent=parent, group=group, normal_image_path=normal_image_path, position=position,

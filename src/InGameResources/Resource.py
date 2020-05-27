@@ -2,6 +2,8 @@ from copy import copy
 
 
 class Resource:
+    __slots__ = ("locale_name", "value", "_base_value", "max_value")
+
     def __init__(self, locale_name, amount=0, max_value=0) -> None:
         self.locale_name = locale_name
         self.value = amount

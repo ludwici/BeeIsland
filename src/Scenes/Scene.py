@@ -10,7 +10,10 @@ from src.QuestSettings import QuestSettings
 
 
 # TODO: Adapter pattern
+# TODO: Proxy pattern
 class Scene(ABC):
+    __slots__ = ("main_window", "player", "scene_settings", "_name", "_drawable_list", "_localization")
+
     def __init__(self, main_window, name: str, player: Player) -> None:
         self.main_window = main_window
         self.player = player

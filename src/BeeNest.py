@@ -5,10 +5,11 @@ from src.Interfaces.Levelable import Levelable
 
 
 class BeeNest(Levelable):
+    __slots__ = ("__current_level", "__max_level", "xp_enabled", "__current_xp", "max_xp", "__bee_list")
+
     def __init__(self, level=1) -> None:
         Levelable.__init__(self)
         self.__bee_list = []
-        self.__current_level = level
         self.__max_level = 1
         self.__max_size = 0
         self.change_level_to(level)

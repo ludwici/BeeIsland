@@ -2,6 +2,8 @@ from src.UI.Button import Button, ButtonState, ButtonEventType
 
 
 class RadioButton(Button):
+    __slots__ = ("group")
+
     def __init__(self, parent, group, normal_image_path: str, position: (int, int) = (0, 0),
                  state: ButtonState = ButtonState.NORMAL) -> None:
         Button.__init__(self, parent=parent, normal_image_path=normal_image_path, position=position, state=state)

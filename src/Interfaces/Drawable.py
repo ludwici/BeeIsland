@@ -6,6 +6,8 @@ from pygame.rect import Rect
 
 # TODO: Template pattern
 class Drawable(ABC):
+    __slots__ = ("parent", "_rect", "color")
+
     def __init__(self, parent, position: (int, int) = (0, 0)) -> None:
         self.parent = parent
         self._rect = Rect((0, 0, 0, 0))

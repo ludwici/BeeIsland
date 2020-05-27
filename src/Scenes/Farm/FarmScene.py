@@ -10,6 +10,8 @@ from src.UI.Button import Button, ButtonEventType, ButtonState
 
 
 class FarmScene(Scene):
+    __slots__ = ("main_image", "bg_image", "main_image_rect", "to_map_button", "to_upgrade_button", "nest_group")
+
     def __init__(self, main_window, name, player) -> None:
         Scene.__init__(self, main_window=main_window, player=player, name=name)
         self.main_image = pygame.image.load("../res/images/farm1.jpg").convert()

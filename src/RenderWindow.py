@@ -13,6 +13,10 @@ from src.Scenes.Match3.Match3Scene import Match3Scene
 
 
 class RenderWindow:
+    __slots__ = (
+        "__FPS", "__size", "width", "height", "__screen", "database", "main_player", "__scene_map", "__current_scene",
+        "__prev_scene", "__done", "__clock")
+
     def __init__(self, width: int, height: int) -> None:
         pygame.init()
         os.environ['SDL_VIDEO_CENTERED'] = '1'

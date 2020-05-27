@@ -8,6 +8,8 @@ from src.UI.TextLabel import TextLabel
 
 
 class MultilineTextLabel(TextLabel):
+    __slots__ = ("__rendered_text", "line_length", "line_spacing", "__line_count")
+
     def __init__(self, parent, position: (int, int), font_size: int, line_length: int, bold=False,
                  color: tuple = (159, 80, 17), font_name: str = "segoeprint", text: str = "") -> None:
         self.__rendered_text = []

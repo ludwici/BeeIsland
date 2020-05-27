@@ -11,6 +11,10 @@ from src.Utils import get_distance
 
 
 class FlowersGrid:
+    __slots__ = ("tile_size", "position", "rows_count", "cols_count", "rect", "cells", "recheck", "done", "max_bonus",
+                 "score_multiplier", "bonus", "score", "elapsed", "spin_speed", "level", "num_combos", "bonus_cooldown",
+                 "rows", "columns", "possible_matches", "animations", "spin_animations", "flower_combos", "no_moves")
+
     def __init__(self, position: (int, int), size: (int, int)) -> None:
         self.tile_size = 64, 64
         self.position = position

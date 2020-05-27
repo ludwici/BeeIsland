@@ -10,6 +10,8 @@ class QuestDifficult(Enum):
 
 
 class QuestSettings:
+    __slots__ = ("difficult", "reward_res")
+
     def __init__(self) -> None:
         self.difficult = QuestDifficult.EASY
         self.reward_res = ResourceBag()

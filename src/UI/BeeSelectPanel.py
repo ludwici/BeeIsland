@@ -13,6 +13,10 @@ from UI.TextLabel import TextLabel
 
 
 class BeeSelectPanel(Drawable):
+    __slots__ = (
+        "__bee_list", "__allowable_position_x", "__allowable_position_y", "__socket", "__destination", "close_btn",
+        "_bg_image", "bee_list_view", "info_group")
+
     def __init__(self, parent, socket, bee_list: list, destination=None, position: (int, int) = (0, 0)):
         Drawable.__init__(self, parent=parent, position=position)
         self.__bee_list = bee_list

@@ -17,6 +17,8 @@ class IBonus(ABC):
 
 
 class TimeBonus(IBonus):
+    __slots__ = "__time"
+
     def __init__(self, time_val) -> None:
         IBonus.__init__(self)
         self.__time = time_val
@@ -29,6 +31,8 @@ class TimeBonus(IBonus):
 
 
 class ScoreBonus(IBonus):
+    __slots__ = "__score"
+
     def __init__(self, score_val) -> None:
         IBonus.__init__(self)
         self.__score = score_val

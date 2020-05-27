@@ -9,6 +9,8 @@ from src.UI.MultilineTextLabel import MultilineTextLabel
 
 
 class PopupNotify(Drawable):
+    __slots__ = ("_bg_image", "_time_to_kill", "__start_time", "__text_label")
+
     def __init__(self, parent: Scene, time_to_kill: int = 3, text: str = "") -> None:
         self._rect = PopupNotify._check_position()
         Drawable.__init__(self, parent=parent, position=(self._rect.x, self._rect.y))

@@ -5,6 +5,8 @@ from src.BeeNest import BeeNest
 
 
 class Farm:
+    __slots__ = ("__hive_list", "__out_of_hive_bee_list", "max_active_hive_count", "max_hive_slots", "max_hive_level")
+
     def __init__(self) -> None:
         self.__hive_list = []
         self.__out_of_hive_bee_list = []

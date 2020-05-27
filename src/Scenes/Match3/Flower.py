@@ -1,6 +1,6 @@
-import pygame
-
 from enum import Enum
+
+import pygame
 from pygame.sprite import Sprite
 
 
@@ -13,6 +13,8 @@ class FlowersData(Enum):
 
 
 class Flower(Sprite):
+    __slots__ = ("color", "image", "rect")
+
     def __init__(self, position: (int, int), color: FlowersData) -> None:
         Sprite.__init__(self)
         self.color = color

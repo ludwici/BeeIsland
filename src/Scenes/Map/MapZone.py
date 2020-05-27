@@ -9,6 +9,10 @@ from src.UI.PopupNotify import PopupNotify
 
 
 class MapZone:
+    __slots__ = (
+        "name", "parent", "border_image", "__is_lock", "__zone_rect", "quest_label", "quest_list", "quest_icons",
+        "click_rect", "__has_fog", "show_border", "__fog_rect", "fog_image")
+
     def __init__(self, parent: MapScene, name: str, pos_x: int, pos_y: int, has_fog: bool = True) -> None:
         self.name = name
         self.parent = parent

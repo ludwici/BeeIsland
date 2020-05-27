@@ -7,6 +7,8 @@ from src.UI.ListItem import ListItem
 
 
 class ListView(Drawable):
+    __slots__ = ("_data", "_item_padding", "padding", "bg_image", "_items_pos")
+
     def __init__(self, parent, position: (int, int), size: (int, int), padding: (int, int) = (0, 0),
                  item_padding: (int, int) = (0, 0)) -> None:
         Drawable.__init__(self, parent=parent, position=position)

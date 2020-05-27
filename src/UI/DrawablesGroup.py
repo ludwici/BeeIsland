@@ -5,6 +5,8 @@ from Interfaces.Drawable import Drawable
 
 
 class DrawablesGroup(Drawable):
+    __slots__ = "group"
+
     def __init__(self, parent, data: dict, position: (int, int) = (0, 0)) -> None:
         Drawable.__init__(self, parent=parent, position=position)
         self.group = data

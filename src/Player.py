@@ -6,6 +6,8 @@ from src.Farm import Farm
 
 
 class Player:
+    __slots__ = ("name", "resources", "farm")
+
     def __init__(self) -> None:
         self.name = "Player"
         self.resources = ResourceBag()

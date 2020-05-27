@@ -15,6 +15,11 @@ from src.UI.TextLabel import TextLabel
 
 
 class QuestMenu(Drawable):
+    __slots__ = ("close_btn", "quest", "_bg_image", "quest_settings", "panel_rect", "quest_label", "description_label",
+                 "difficult_label", "rewards_label", "easy_button", "medium_button", "hard_button", "rewards_panel",
+                 "bonuses_panel", "bonuses_rect", "bonus_list", "bee_socket_group", "bee_socket_hard", "start_button",
+                 "rewards_labels", "rewards_rect")
+
     def __init__(self, parent, quest: Questable) -> None:
         Drawable.__init__(self, parent=parent)
         self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")
