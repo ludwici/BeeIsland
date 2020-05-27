@@ -1,7 +1,10 @@
 {
   "ru": {
     "difficult_label": {
-      "text": "Уровень сложности"
+      "text": "Уровень сложности и бонусы"
+    },
+    "desc_label": {
+      "line_length": 30
     },
     "reward_label": {
       "text": "Награды"
@@ -43,7 +46,10 @@
   },
   "en": {
     "difficult_label": {
-      "text": "Level of difficulty"
+      "text": "Difficult and bonuses"
+    },
+    "desc_label": {
+      "line_length": 40
     },
     "reward_label": {
       "text": "Rewards"
