@@ -88,9 +88,8 @@ class QuestMenu(Drawable):
         self.bonuses_rect.y = self.easy_button.position[1]
 
         self.difficult_label.set_position(
-            (self.easy_button.position[0] + (self.easy_button.get_size()[0] + self.bonuses_rect.width) / 2 -
-             self.difficult_label.get_size()[0] / 2,
-             self.difficult_label.position[1])
+            (self.easy_button.position[0] + (self.easy_button.get_size()[0] + self.bonuses_rect.width) / 2
+             - self.difficult_label.get_size()[0] / 2, self.difficult_label.position[1])
         )
 
         self.bonus_list = []
