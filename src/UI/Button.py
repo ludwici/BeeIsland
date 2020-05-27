@@ -144,7 +144,7 @@ class Button(Drawable):
                 if self._can_call_out:
                     self.on_hover_out()
 
-        if event.type == pygame.MOUSEBUTTONDOWN and self.state & int(ButtonState.HOVERED):
+        if event.type == pygame.MOUSEBUTTONUP and self.state & int(ButtonState.HOVERED):
             if event.button == 1:
                 self.on_click()
             elif event.button == 3:
