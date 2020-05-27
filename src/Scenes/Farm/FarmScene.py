@@ -58,5 +58,9 @@ class FarmScene(Scene):
         self.to_map_button.draw(surface)
         self.to_upgrade_button.draw(surface)
 
+    def on_scene_change(self) -> None:
+        self.nest_group.unselect_all()
+        super().on_scene_change()
+
     def on_scene_started(self) -> None:
         super().on_scene_started()
