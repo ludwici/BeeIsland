@@ -8,8 +8,8 @@ from src.UI.TextLabel import TextLabel
 
 
 class MultilineTextLabel(TextLabel):
-    def __init__(self, parent, text: str, position: (int, int), font_name: str, font_size: int,
-                 color: tuple, line_length: int, bold=False) -> None:
+    def __init__(self, parent, position: (int, int), font_name: str, font_size: int,
+                 color: tuple, line_length: int, bold=False, text: str = "") -> None:
         self.__rendered_text = []
         self.line_length = line_length
         self.line_spacing = 2
@@ -21,6 +21,10 @@ class MultilineTextLabel(TextLabel):
         msg = font.render(msg, 1, color)
         rect = msg.get_rect(topleft=msg_center)
         return msg, rect
+
+    def set_position(self, position: (int, int)) -> None:
+        super().set_position(position)
+        self.set_text(self._text)
 
     def set_text(self, text) -> None:
         if not text:
@@ -46,12 +50,9 @@ class MultilineTextLabel(TextLabel):
             else:
                 str_tmp += t + " "
         self.__line_count = i
-        r = Rect(0, 0, 0, 0)
-        r.x = self.position[0]
-        r.y = self.position[1]
-        r.width = max([r[1].width for r in self.__rendered_text])
-        r.height = self.__line_count * (self._font_size + self.line_spacing)
-        self._rect = r
+        w = max([r[1].width for r in self.__rendered_text])
+        h = self.__line_count * (self._font_size + self.line_spacing)
+        self._rect.w, self._rect.h = w, h
 
     def draw(self, screen: pygame.Surface) -> None:
         [screen.blit(*msg) for msg in self.__rendered_text]
