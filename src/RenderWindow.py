@@ -67,7 +67,7 @@ class RenderWindow:
                 self.__done = True
             try:
                 self.__current_scene.handle_events(event)
-            except Exception as ex:
+            except Exception:
                 traceback.print_exc()
 
     def loop(self) -> None:
