@@ -13,14 +13,15 @@ from UI.TextLabel import TextLabel
 
 
 class BeeSelectPanel(Drawable):
-    def __init__(self, parent, socket, bee_list: list, position: (int, int) = (0, 0)):
+    def __init__(self, parent, socket, bee_list: list, destination=None, position: (int, int) = (0, 0)):
         Drawable.__init__(self, parent=parent, position=position)
         while self.parent.find_drawable_by_type(BeeSelectPanel):
             self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
-
+        self.__bee_list = bee_list
         self.__allowable_position_x = 100
         self.__allowable_position_y = 0
         self.__socket = socket
+        self.__destination = destination
         self.__socket.add_action({ButtonEventType.ON_CLICK_RB: lambda: self.remove_from_socket(self.__socket)})
         self.parent.add_drawable(self)
         self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")
@@ -60,7 +61,7 @@ class BeeSelectPanel(Drawable):
                                          data={"b_name": name_label, "b_level": level_label, "b_exp": xp_label,
                                                "b_speed": speed_label, "b_hp": hp_label,
                                                "b_bonuses": bonus_list_label})
-        for b in bee_list:
+        for b in self.__bee_list:
             self.add_bee_to_list(b)
 
         self.show_info(self.__socket.bee)
@@ -71,17 +72,17 @@ class BeeSelectPanel(Drawable):
     def remove_from_socket(self, socket):
         if socket.bee:
             copied = copy(socket.bee)
-            self.parent.player.farm.add_out_of_hive_bee(copied)
+            self.__bee_list.append(copied)
             self.add_bee_to_list(copied)
             del socket.bee
 
     def add_bee_to_socket(self, item: ListItem):
         self.remove_from_socket(self.__socket)
-
         b = copy(item.data)
         self.__socket.bee = b
-        self.__socket.parent.hive.add_bee(b)
-        self.parent.player.farm.remove_out_of_hive_bee(item.data)
+        if self.__destination:
+            self.__destination.add_bee(b)
+        self.__bee_list.remove(item.data)
         self.bee_list_view.remove_item(item)
 
     def add_bee_to_list(self, b: Bee):
