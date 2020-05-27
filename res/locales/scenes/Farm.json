@@ -30,5 +30,37 @@
     "b_bonuses": {
       "text": "Бонусы:"
     }
+  },
+  "en": {
+    "locked_nest": {
+      "text": "You can’t buy this nest yet"
+    },
+    "upgrade_button": {
+      "text": "Modify"
+    },
+    "modify_title": {
+      "text": "Modify"
+    },
+    "info_label": {
+      "text": "Information"
+    },
+    "b_name": {
+      "text": "Name:"
+    },
+    "b_level": {
+      "text": "Level:"
+    },
+    "b_exp": {
+      "text": "Experience:"
+    },
+    "b_speed": {
+      "text": "Speed:"
+    },
+    "b_hp": {
+      "text": "Health:"
+    },
+    "b_bonuses": {
+      "text": "Bonuses:"
+    }
   }
 }
