@@ -25,10 +25,10 @@ class Farm:
         return self.__out_of_hive_bee_list
 
     @property
-    def bees_from_all_hives(self):
+    def bees_from_all_hives(self, allowable_filter=None):
         bees = []
         for h in self.__hive_list:
-            bees.append(h.bee_list)
+            bees.extend(h.bee_list)
 
         return bees
 
