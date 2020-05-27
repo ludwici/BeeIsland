@@ -21,7 +21,7 @@ class BeeNest(Levelable):
             self.__max_size = 3
             self.max_xp = 3
         elif level == 2:
-            self.__max_size += 2
+            self.__max_size += 1
             self.max_xp = 5
         elif level == 3:
             self.__max_size += 1
