@@ -93,7 +93,7 @@ class ModifyMenu(Drawable):
                                  level_label.position[0],
                                  level_label.position[1] + level_label.get_size()[1]))
 
-        speed_label = TextLabel(parent=self,  font_size=14,
+        speed_label = TextLabel(parent=self, font_size=14,
                                 position=(
                                     xp_label.position[0],
                                     xp_label.position[1] + xp_label.get_size()[1]))
