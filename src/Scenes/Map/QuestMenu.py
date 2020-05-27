@@ -27,7 +27,7 @@ class QuestMenu(Drawable):
         position = (Constants.WINDOW_W / 2 - self._bg_image.get_rect().width / 2, 70)
         self.set_position(position)
         self.quest_settings = QuestSettings()
-        self.panel_rect = pygame.Rect((self.position[0] + 15, self.position[1], self.get_size()[0] - 15 * 2, 277))
+        self.panel_rect = pygame.Rect((self.position[0] + 15, self.position[1] + 155, self.get_size()[0] - 15 * 2, 277))
 
         self.quest_label = TextLabel(parent=self, text=self.quest.title, position=self.position, font_name="segoeprint",
                                      font_size=16, bold=True, color=(159, 80, 17))
@@ -35,17 +35,15 @@ class QuestMenu(Drawable):
             (self.position[0] + self._bg_image.get_rect().centerx - self.quest_label.get_size()[0] / 2,
              self.position[1] + 3)
         )
-        self.description_label = MultilineTextLabel(parent=self, text=self.quest.description,
-                                                    position=(self.position[0] + 35, self.position[1] + 65),
-                                                    font_name="segoeprint", font_size=14, color=(159, 80, 17),
-                                                    line_length=self._bg_image.get_rect().width - 35 * 2)
-        self.panel_rect.y = self.description_label.position[1] + self.description_label.get_size()[1] + 65
+        ll = self._bg_image.get_rect().width - self.parent.localization.get_params_by_string("desc_label")[
+            "line_length"] * 2
+        self.description_label = MultilineTextLabel(parent=self, text=self.quest.description, line_length=ll,
+                                                    position=(self.position[0] + 35, self.position[1] + 75),
+                                                    font_name="segoeprint", font_size=14, color=(159, 80, 17))
         self.difficult_label = TextLabel(parent=self, text=self.parent.localization.get_string("difficult_label"),
-                                         position=position, font_name="segoeprint", font_size=14, color=(159, 80, 17))
-        self.difficult_label.set_position(
-            (self.position[0] + self._bg_image.get_rect().centerx - self.difficult_label.get_size()[0] / 2,
-             self.panel_rect.y + 8)
-        )
+                                         position=(position[0], self.panel_rect.y + 10), font_name="segoeprint",
+                                         font_size=14, color=(159, 80, 17))
+
         self.rewards_label = TextLabel(parent=self, text=self.parent.localization.get_string("reward_label"),
                                        position=position,
                                        font_name="segoeprint",
@@ -89,21 +87,29 @@ class QuestMenu(Drawable):
         self.bonuses_rect.x = self.easy_button.position[0] + self.easy_button.get_size()[0]
         self.bonuses_rect.y = self.easy_button.position[1]
 
-        self.rewards_label.set_position(
-            (self.position[0] + self._bg_image.get_rect().centerx - self.rewards_label.get_size()[0] / 2,
-             self.bonuses_rect.y + self.bonuses_rect.height + 8)
+        self.difficult_label.set_position(
+            (self.easy_button.position[0] + (self.easy_button.get_size()[0] + self.bonuses_rect.width) / 2 -
+             self.difficult_label.get_size()[0] / 2,
+             self.difficult_label.position[1])
         )
+
+        self.bonus_list = []
+        for i in range(3):
+            self.bonus_list.append(MultilineTextLabel(parent=self, text="", bold=True, line_length=130,
+                                                      position=(self.bonuses_rect.x + 5, self.bonuses_rect.y),
+                                                      font_name="segoeprint", font_size=12, color=(159, 80, 17)))
 
         self.rewards_rect = self.rewards_panel.get_rect()
 
         bs_start_y = self.bonuses_rect.y
         self.bee_socket_group = RadioGroup()
+        all_bees = self.parent.player.farm.bees_from_all_hives
         for i in range(3):
             b = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket1_normal.png",
                           group=self.bee_socket_group,
                           position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y))
             b.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
-            b.show_select_panel(self.parent, self.parent.player.farm.out_of_hive_bee_list)
+            b.show_select_panel(self.parent, all_bees)
             bs_start_y += b.get_size()[1] + 8
 
         self.bee_socket_hard = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket2_normal.png",
@@ -111,7 +117,8 @@ class QuestMenu(Drawable):
                                          position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y + 15))
         self.bee_socket_hard.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
         self.bee_socket_hard.set_image_by_state(ButtonState.LOCKED, "../res/images/buttons/socket3_normal.png")
-        self.bee_socket_hard.show_select_panel(self.parent, self.parent.player.farm.out_of_hive_bee_list)
+
+        self.bee_socket_hard.show_select_panel(self.parent, all_bees)
 
         start_label = TextLabel(parent=self, text=self.parent.localization.get_string("start_button"), position=(0, 0),
                                 font_name="segoeprint", font_size=24,
@@ -121,14 +128,19 @@ class QuestMenu(Drawable):
                                        normal_image_path="../res/images/buttons/start_quest_btn_normal.png", )
         self.start_button.set_position(
             (self.position[0] + self._bg_image.get_rect().centerx - self.start_button.get_size()[0] / 2,
-             self.panel_rect.y + self.panel_rect.height + 40)
+             self.panel_rect.y + self.panel_rect.height + 33)
         )
         self.start_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/start_quest_btn_hover.png")
 
         self.rewards_labels = []
 
         self.rewards_rect.x = self.position[0] + 35
-        self.rewards_rect.y = self.rewards_label.position[1] + self.rewards_label.get_size()[1] + 9
+        self.rewards_rect.y = self.bonuses_rect.y + self.bonuses_rect.height + 41
+
+        self.rewards_label.set_position(
+            (self.rewards_rect.centerx - self.rewards_label.get_size()[0] / 2,
+             self.bonuses_rect.y + self.bonuses_rect.height + 8)
+        )
 
         self.easy_button.add_action(
             {ButtonEventType.ON_CLICK_LB: lambda d=QuestDifficult.EASY: self.change_difficult(d)}
@@ -201,7 +213,16 @@ class QuestMenu(Drawable):
         [r_l.draw(screen) for r_l in self.rewards_labels]
         self.rewards_label.draw(screen)
         screen.blit(self.bonuses_panel, self.bonuses_rect)
+        [b_l.draw(screen) for b_l in self.bonus_list]
         self.bee_socket_group.draw(screen)
+
+    def update(self, dt: float) -> None:
+        start_pos_y = self.bonuses_rect.y
+        for i in range(len(self.bee_socket_group.unlocked_buttons)):
+            if self.bee_socket_group.unlocked_buttons[i].bee:
+                self.bonus_list[i].set_position((self.bonus_list[i].position[0], start_pos_y))
+                self.bonus_list[i].set_text(self.bee_socket_group.unlocked_buttons[i].bee.bonus)
+                start_pos_y += self.bonus_list[i].get_size()[1]
 
     def handle_event(self, event: Event) -> None:
         self.close_btn.handle_event(event)
