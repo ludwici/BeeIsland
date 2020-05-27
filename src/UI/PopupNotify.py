@@ -16,8 +16,7 @@ class PopupNotify(Drawable):
         self.set_background("../res/images/popup1.png")
         self._time_to_kill = time_to_kill
         self.__start_time = pygame.time.get_ticks()
-        self.__text_label = MultilineTextLabel(parent=self, text=text, position=(20, 20), font_name="segoeprint",
-                                               font_size=12, color=(159, 80, 17),
+        self.__text_label = MultilineTextLabel(parent=self, text=text, position=(20, 20), font_size=12,
                                                line_length=self.bg_rect.width - 15 * 2)
         self.set_text(text=text)
 

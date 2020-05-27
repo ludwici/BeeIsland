@@ -31,30 +31,23 @@ class BeeSelectPanel(Drawable):
         self.bee_list_view = ListView(parent=self, position=(0, 0), padding=(33, 36), item_padding=(15, 10),
                                       size=(308, 170))
 
-        name_label = TextLabel(parent=self, position=(self.position[0] + 323, self.position[1] + 25),
-                               font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        name_label = TextLabel(parent=self, position=(self.position[0] + 323, self.position[1] + 25), font_size=14)
 
-        level_label = TextLabel(parent=self,
-                                position=(name_label.position[0], name_label.position[1] + name_label.get_size()[1]),
-                                font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        level_label = TextLabel(parent=self, font_size=14,
+                                position=(name_label.position[0], name_label.position[1] + name_label.get_size()[1]))
 
-        xp_label = TextLabel(parent=self,
-                             position=(level_label.position[0], level_label.position[1] + level_label.get_size()[1]),
-                             font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        xp_label = TextLabel(parent=self, font_size=14,
+                             position=(level_label.position[0], level_label.position[1] + level_label.get_size()[1]))
 
-        speed_label = TextLabel(parent=self,
-                                position=(xp_label.position[0], xp_label.position[1] + xp_label.get_size()[1]),
-                                font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        speed_label = TextLabel(parent=self, font_size=14,
+                                position=(xp_label.position[0], xp_label.position[1] + xp_label.get_size()[1]))
 
-        hp_label = TextLabel(parent=self,
-                             position=(speed_label.position[0], speed_label.position[1] + speed_label.get_size()[1]),
-                             font_name="segoeprint", font_size=14, color=(159, 80, 17))
+        hp_label = TextLabel(parent=self, font_size=14,
+                             position=(speed_label.position[0], speed_label.position[1] + speed_label.get_size()[1]))
 
-        bonus_list_label = MultilineTextLabel(parent=self, text="",
+        bonus_list_label = MultilineTextLabel(parent=self, font_size=14, line_length=230,
                                               position=(hp_label.position[0],
-                                                        hp_label.position[1] + hp_label.get_size()[1]),
-                                              font_name="segoeprint", font_size=14,
-                                              color=(159, 80, 17), line_length=230)
+                                                        hp_label.position[1] + hp_label.get_size()[1]))
         self.info_group = DrawablesGroup(parent=self,
                                          data={"b_name": name_label, "b_level": level_label, "b_exp": xp_label,
                                                "b_speed": speed_label, "b_hp": hp_label,
