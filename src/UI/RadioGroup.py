@@ -11,9 +11,25 @@ class RadioGroup:
     def __getitem__(self, index):
         return self.__buttons[index]
 
+    def clear(self):
+        self.__buttons.clear()
+
     @property
     def buttons(self) -> list:
         return self.__buttons
+
+    @property
+    def unlocked_buttons(self) -> list:
+        lb = []
+        for b in self.__buttons:
+            if not b.is_locked:
+                lb.append(b)
+
+        return lb
+
+    @property
+    def size(self) -> int:
+        return len(self.__buttons)
 
     def unselect_all(self) -> None:
         [b.unselect() for b in self.__buttons if not b.is_locked]
