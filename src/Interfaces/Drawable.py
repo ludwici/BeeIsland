@@ -4,6 +4,7 @@ import pygame
 from pygame.rect import Rect
 
 
+# TODO: Template pattern
 class Drawable(ABC):
     def __init__(self, parent, position: (int, int) = (0, 0)) -> None:
         self.parent = parent
@@ -16,6 +17,7 @@ class Drawable(ABC):
     def position(self) -> (int, int):
         return self._rect.x, self._rect.y
 
+    # TODO: replace this method to property
     def get_size(self) -> (int, int):
         return self._rect.width, self._rect.height
 

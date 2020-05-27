@@ -9,6 +9,7 @@ from src.Player import Player
 from src.QuestSettings import QuestSettings
 
 
+# TODO: Adapter pattern
 class Scene(ABC):
     def __init__(self, main_window, name: str, player: Player) -> None:
         self.main_window = main_window

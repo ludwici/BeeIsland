@@ -1,6 +1,7 @@
 from abc import ABC
 
 
+# TODO: Template pattern
 class Levelable(ABC):
     def __init__(self) -> None:
         self.__current_level = 0
