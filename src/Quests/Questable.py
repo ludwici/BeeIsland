@@ -8,6 +8,8 @@ from src import Player
 class Questable(ABC):
     def __init__(self, quest_template: QuestTemplate, icon_offset: (int, int)) -> None:
         self.__is_allow = False
+        self.time = 0
+        self.score_modifier_percent = 0
         self.title = quest_template.title
         self._description = quest_template.desc
         self.zone = None
