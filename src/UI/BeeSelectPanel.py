@@ -112,7 +112,7 @@ class BeeSelectPanel(Drawable):
         # if event.type == pygame.MOUSEMOTION:
         #     if self._rect.collidepoint(event.pos):
         #         event.buttons = (0, 0, 0)
-                # self.parent.handle_events(event)
+        # self.parent.handle_events(event)
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self._bg_image, self._rect)
