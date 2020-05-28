@@ -1,5 +1,8 @@
 import sys
 import unittest
+
+from src.BeeFamily.Bonuses.IBonus import TimeBonus
+
 sys.path.append('../')
 from src.BeeNest import BeeNest
 from src.BeeFamily.Bee import Bee
@@ -7,7 +10,7 @@ from src.BeeFamily.Bee import Bee
 
 class TestEntities(unittest.TestCase):
     def setUp(self) -> None:
-        self.bee = Bee(parent=None)
+        self.bee = Bee(parent=None, bonus=TimeBonus(time_val=10))
         self.nest = BeeNest()
 
     def test_bee_xp_1(self):
@@ -31,7 +34,7 @@ class TestEntities(unittest.TestCase):
         self.check_bee_min_max()
 
     def test_add_bee_to_nest(self):
-        b = Bee(1)
+        b = Bee(1, bonus=TimeBonus(time_val=10))
 
         for i in range(self.nest.max_size):
             if not self.nest.add_bee(b):
