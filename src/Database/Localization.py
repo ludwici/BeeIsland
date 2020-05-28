@@ -11,12 +11,12 @@ class LocalList(Enum):
 class Localization:
     __current_locale = LocalList.RU
 
-    def __init__(self, scene_name: str) -> None:
-        self.__scene_name = scene_name
+    def __init__(self, path: str) -> None:
+        self.__path = path
         self.__data = self.__read_locale()
 
     def __read_locale(self):
-        locale_path = "../res/locales/scenes/{0}.json".format(self.__scene_name)
+        locale_path = "../res/locales/{0}.json".format(self.__path)
         with open(locale_path, encoding="utf-8") as json_file:
             data = json.load(json_file)
         return data
