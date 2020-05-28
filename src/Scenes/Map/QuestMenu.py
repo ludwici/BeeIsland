@@ -1,5 +1,3 @@
-import itertools
-
 import pygame
 from pygame.event import Event
 
@@ -7,8 +5,8 @@ from BeeFamily.Bee import Bee
 from Interfaces.Drawable import Drawable
 from Quests.Questable import Questable
 from UI.BeeSelectPanel import BeeSelectPanel
-from src import Constants
 from UI.BeeSocket import BeeSocket
+from src import Constants
 from src.QuestSettings import QuestSettings, QuestDifficult
 from src.UI.Button import Button, ButtonState, ButtonEventType
 from src.UI.MultilineTextLabel import MultilineTextLabel

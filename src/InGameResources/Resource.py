@@ -1,6 +1,3 @@
-from copy import copy
-
-
 class Resource:
     __slots__ = ("locale_name", "__value", "__base_value", "max_value")
 
