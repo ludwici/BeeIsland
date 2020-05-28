@@ -14,8 +14,8 @@ from UI.TextLabel import TextLabel
 
 class BeeSelectPanel(Drawable):
     __slots__ = (
-        "__bee_list", "__allowable_position_x", "__allowable_position_y", "__socket", "__destination", "close_btn",
-        "_bg_image", "bee_list_view", "info_group")
+        "__bee_list", "__allowable_position_x", "__allowable_position_y", "__socket", "close_btn",
+        "_bg_image", "bee_list_view", "info_group", "__scene")
 
     def __init__(self, parent, socket, bee_list: list, destination=None, position: (int, int) = (0, 0)):
         Drawable.__init__(self, parent=parent, position=position)
@@ -23,9 +23,9 @@ class BeeSelectPanel(Drawable):
         self.__allowable_position_x = 100
         self.__allowable_position_y = 0
         self.__socket = socket
-        self.__destination = destination
         self.__socket.add_action({ButtonEventType.ON_CLICK_RB: lambda: self.remove_from_socket(self.__socket)})
-        self.parent.add_drawable(self)
+        self.__scene = parent.parent
+        self.__scene.add_drawable(self)
         self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")
         self.close_btn.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/close_button1_hover.png")
         self.close_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.destroy()})
@@ -62,7 +62,7 @@ class BeeSelectPanel(Drawable):
         self.show_info(self.__socket.bee)
 
     def destroy(self):
-        self.parent.remove_drawable(self)
+        self.__scene.remove_drawable(self)
 
     def remove_from_socket(self, socket):
         if socket.bee:
@@ -75,8 +75,9 @@ class BeeSelectPanel(Drawable):
         self.remove_from_socket(self.__socket)
         b = copy(item.data)
         self.__socket.bee = b
-        if self.__destination:
-            self.__destination.add_bee(b)
+
+        self.parent.add_bee_to_socket(b)
+
         self.__bee_list.remove(item.data)
         self.bee_list_view.remove_item(item)
 
@@ -127,37 +128,37 @@ class BeeSelectPanel(Drawable):
     def show_info(self, b: Bee):
         if not b:
             return
-        self.info_group["b_name"].set_text(text="{0} {1}".format(self.parent.localization.get_string("b_name"), b.name))
+        self.info_group["b_name"].set_text(text="{0} {1}".format(self.__scene.localization.get_string("b_name"), b.name))
 
         self.info_group["b_level"].set_text(
-            text="{0} {1}".format(self.parent.localization.get_string("b_level"), b.current_level)
+            text="{0} {1}".format(self.__scene.localization.get_string("b_level"), b.current_level)
         )
         self.info_group["b_level"].set_position((self.info_group["b_name"].position[0],
                                                  self.info_group["b_name"].position[1]
                                                  + self.info_group["b_name"].get_size()[1]))
 
         self.info_group["b_exp"].set_text(
-            text="{0} {1}/{2}".format(self.parent.localization.get_string("b_exp"), b.current_xp, b.max_xp)
+            text="{0} {1}/{2}".format(self.__scene.localization.get_string("b_exp"), b.current_xp, b.max_xp)
         )
         self.info_group["b_exp"].set_position((self.info_group["b_level"].position[0],
                                                self.info_group["b_level"].position[1]
                                                + self.info_group["b_level"].get_size()[1]))
 
         self.info_group["b_speed"].set_text(
-            text="{0} {1}".format(self.parent.localization.get_string("b_speed"), b.speed))
+            text="{0} {1}".format(self.__scene.localization.get_string("b_speed"), b.speed))
         self.info_group["b_speed"].set_position((self.info_group["b_exp"].position[0],
                                                  self.info_group["b_exp"].position[1]
                                                  + self.info_group["b_exp"].get_size()[1]))
 
         self.info_group["b_hp"].set_text(
-            text="{0} {1}/{2}".format(self.parent.localization.get_string("b_hp"), b.current_hp, b.max_hp)
+            text="{0} {1}/{2}".format(self.__scene.localization.get_string("b_hp"), b.current_hp, b.max_hp)
         )
         self.info_group["b_hp"].set_position((self.info_group["b_speed"].position[0],
                                               self.info_group["b_speed"].position[1]
                                               + self.info_group["b_speed"].get_size()[1]))
 
         self.info_group["b_bonuses"].set_text(
-            text="{0} {1}".format(self.parent.localization.get_string("b_bonuses"), "+10% очков")
+            text="{0} {1}".format(self.__scene.localization.get_string("b_bonuses"), b.bonus)
         )
         self.info_group["b_bonuses"].set_position((self.info_group["b_hp"].position[0],
                                                    self.info_group["b_hp"].position[1]

@@ -28,9 +28,14 @@ class BeeSocket(RadioButton):
     def bee(self):
         self._bee = None
 
+    @Button.register_event(ButtonEventType.ON_CLICK_RB)
+    def remove(self, menu):
+        if self._bee:
+            self._bee.remove_bonus(menu.quest)
+
     @Button.register_event(ButtonEventType.ON_CLICK_LB)
-    def show_select_panel(self, parent, bee_list, destination=None) -> None:
-        bsp = BeeSelectPanel(parent=parent, socket=self, bee_list=bee_list, destination=destination)
+    def show_select_panel(self, parent, bee_list) -> None:
+        bsp = BeeSelectPanel(parent=parent, socket=self, bee_list=bee_list)
         bsp.set_position((self.position[0] - bsp.get_size()[0] / 2, self.position[1] - bsp.get_size()[1]))
 
     def draw(self, screen: pygame.Surface) -> None:
