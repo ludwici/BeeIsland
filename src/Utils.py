@@ -1,4 +1,5 @@
 import os
+import platform
 import sys
 from math import hypot
 
@@ -10,4 +11,8 @@ def get_distance(source, dest) -> float:
 def resource_path(relative_path):
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.join(os.path.abspath(".."), relative_path).replace("\\", '/')
+    cur_dir = "."
+    if platform.system() == "Windows":
+        cur_dir = ".."
+
+    return os.path.join(os.path.abspath(cur_dir), relative_path).replace("\\", '/')
