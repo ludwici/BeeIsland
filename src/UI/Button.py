@@ -4,8 +4,8 @@ from enum import Enum
 import pygame
 from flags import Flags
 
-from Utils import resource_path
 from src.Interfaces.Drawable import Drawable
+from src.Utils import resource_path
 
 
 class ButtonEventType(Enum):

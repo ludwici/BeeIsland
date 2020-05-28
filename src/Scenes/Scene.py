@@ -3,11 +3,11 @@ from abc import ABC, abstractmethod
 import pygame
 from pygame.event import Event
 
-from Utils import resource_path
 from src.Database.Localization import Localization
 from src.Interfaces import Drawable
 from src.Player import Player
 from src.QuestSettings import QuestSettings
+from src.Utils import resource_path
 
 
 # TODO: Adapter pattern

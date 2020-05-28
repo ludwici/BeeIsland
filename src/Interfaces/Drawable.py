@@ -4,7 +4,7 @@ import pygame
 from pygame.rect import Rect
 
 # TODO: Template pattern
-from Utils import resource_path
+from src.Utils import resource_path
 
 
 class Drawable(ABC):

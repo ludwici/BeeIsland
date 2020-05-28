@@ -1,10 +1,10 @@
 import sqlite3
 
-from Utils import resource_path
 from src.Database.Localization import Localization
 from src.InGameResources.Resource import Resource
 from src.InGameResources.ResourceBag import ResourceBag
 from src.Quests.QuestTemplate import QuestTemplate
+from src.Utils import resource_path
 
 
 class Database:

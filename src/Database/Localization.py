@@ -1,7 +1,7 @@
 import json
 from enum import Enum
 
-from Utils import resource_path
+from src.Utils import resource_path
 
 
 class LocalList(Enum):

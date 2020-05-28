@@ -2,11 +2,11 @@ import copy
 
 import pygame
 
-from Utils import resource_path
 from src.Quests import Questable
 from src.Scenes.Map import MapScene
 from src.UI.Button import ButtonEventType
 from src.UI.PopupNotify import PopupNotify
+from src.Utils import resource_path
 
 
 class MapZone:

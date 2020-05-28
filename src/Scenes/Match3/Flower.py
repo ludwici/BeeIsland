@@ -3,7 +3,7 @@ from enum import Enum
 import pygame
 from pygame.sprite import Sprite
 
-from Utils import resource_path
+from src.Utils import resource_path
 
 
 class FlowersData(Enum):
