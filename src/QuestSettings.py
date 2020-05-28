@@ -1,6 +1,6 @@
 from enum import Enum
 
-from InGameResources.ResourceBag import ResourceBag
+from src.InGameResources.ResourceBag import ResourceBag
 
 
 class QuestDifficult(Enum):

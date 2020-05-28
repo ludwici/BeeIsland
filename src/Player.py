@@ -1,8 +1,8 @@
-from BeeFamily.Bonuses.IBonus import TimeBonus, ScoreBonus, RandomResourceBonus
-from BeeNest import BeeNest
-from InGameResources.ResourceBag import ResourceBag
 from src.BeeFamily.BeeWorker import BeeWorker
+from src.BeeFamily.Bonuses.IBonus import TimeBonus, ScoreBonus, RandomResourceBonus
+from src.BeeNest import BeeNest
 from src.Farm import Farm
+from src.InGameResources.ResourceBag import ResourceBag
 
 
 class Player:

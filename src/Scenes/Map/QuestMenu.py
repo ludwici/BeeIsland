@@ -1,13 +1,13 @@
 import pygame
 from pygame.event import Event
 
-from BeeFamily.Bee import Bee
-from Interfaces.Drawable import Drawable
-from Quests.Questable import Questable
-from UI.BeeSelectPanel import BeeSelectPanel
-from UI.BeeSocket import BeeSocket
 from src import Constants
+from src.BeeFamily.Bee import Bee
+from src.Interfaces.Drawable import Drawable
 from src.QuestSettings import QuestSettings, QuestDifficult
+from src.Quests.Questable import Questable
+from src.UI.BeeSelectPanel import BeeSelectPanel
+from src.UI.BeeSocket import BeeSocket
 from src.UI.Button import Button, ButtonState, ButtonEventType
 from src.UI.MultilineTextLabel import MultilineTextLabel
 from src.UI.RadioGroup import RadioGroup

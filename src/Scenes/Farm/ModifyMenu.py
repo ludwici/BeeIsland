@@ -1,13 +1,13 @@
 import pygame
 from pygame.event import Event
 
-from Interfaces.Drawable import Drawable
-from UI.DrawablesGroup import DrawablesGroup
 from src import Constants
 from src.BeeFamily.Bee import Bee
-from UI.BeeSocket import BeeSocket
+from src.Interfaces.Drawable import Drawable
 from src.Scenes.Scene import Scene
+from src.UI.BeeSocket import BeeSocket
 from src.UI.Button import Button, ButtonEventType, ButtonState
+from src.UI.DrawablesGroup import DrawablesGroup
 from src.UI.ListItem import ListItem
 from src.UI.ListView import ListView
 from src.UI.MultilineTextLabel import MultilineTextLabel

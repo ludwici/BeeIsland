@@ -1,8 +1,8 @@
 from abc import ABC
 
-from InGameResources.ResourceBag import ResourceBag
-from Quests.QuestTemplate import QuestTemplate
-from UI.Button import Button
+from src.InGameResources.ResourceBag import ResourceBag
+from src.Quests.QuestTemplate import QuestTemplate
+from src.UI.Button import Button
 
 
 class Questable(ABC):

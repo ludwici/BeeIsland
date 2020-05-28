@@ -2,14 +2,14 @@ from copy import copy
 
 import pygame
 
-from BeeFamily.Bee import Bee
-from Interfaces.Drawable import Drawable
-from UI.Button import Button, ButtonState, ButtonEventType
-from UI.DrawablesGroup import DrawablesGroup
-from UI.ListItem import ListItem
-from UI.ListView import ListView
-from UI.MultilineTextLabel import MultilineTextLabel
-from UI.TextLabel import TextLabel
+from src.BeeFamily.Bee import Bee
+from src.Interfaces.Drawable import Drawable
+from src.UI.Button import Button, ButtonState, ButtonEventType
+from src.UI.DrawablesGroup import DrawablesGroup
+from src.UI.ListItem import ListItem
+from src.UI.ListView import ListView
+from src.UI.MultilineTextLabel import MultilineTextLabel
+from src.UI.TextLabel import TextLabel
 
 
 class BeeSelectPanel(Drawable):

@@ -1,11 +1,11 @@
 import pygame
 from pygame.event import Event
 
-from Database.Database import Database
-from Scenes.Map.MapZone import MapZone
-from Scenes.Map.QuestMenu import QuestMenu
 from src import Constants
+from src.Database.Database import Database
 from src.Quests.Match3 import Match3
+from src.Scenes.Map.MapZone import MapZone
+from src.Scenes.Map.QuestMenu import QuestMenu
 from src.Scenes.Scene import Scene
 from src.UI.Button import Button, ButtonState, ButtonEventType
 

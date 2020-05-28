@@ -1,4 +1,4 @@
-from InGameResources.Resource import Resource
+from src.InGameResources.Resource import Resource
 
 
 class ResourceBag:

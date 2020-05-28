@@ -3,10 +3,10 @@ from enum import Enum
 
 import pygame
 
-from Database.Localization import Localization
-from Quests.Questable import Questable
+from src.Database.Localization import Localization
 from src.Interfaces.Drawable import Drawable
 from src.Interfaces.Levelable import Levelable
+from src.Quests.Questable import Questable
 
 
 class Bee(Levelable, Drawable):

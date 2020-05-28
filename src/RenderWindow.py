@@ -4,11 +4,11 @@ import traceback
 import pygame
 from pygame.time import Clock
 
-from Database.Database import Database
-from Database.Localization import Localization, LocalList
-from Scenes.Farm.FarmScene import FarmScene
-from Scenes.Map.MapScene import MapScene
+from src.Database.Database import Database
+from src.Database.Localization import Localization, LocalList
 from src.Player import Player
+from src.Scenes.Farm.FarmScene import FarmScene
+from src.Scenes.Map.MapScene import MapScene
 from src.Scenes.Match3.Match3Scene import Match3Scene
 
 

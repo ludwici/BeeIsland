@@ -2,9 +2,9 @@ import copy
 
 import pygame
 
-from Quests import Questable
-from Scenes.Map import MapScene
-from UI.Button import ButtonEventType
+from src.Quests import Questable
+from src.Scenes.Map import MapScene
+from src.UI.Button import ButtonEventType
 from src.UI.PopupNotify import PopupNotify
 
 

@@ -1,5 +1,5 @@
-from Quests.QuestTemplate import QuestTemplate
-from Quests.Questable import Questable
+from src.Quests.QuestTemplate import QuestTemplate
+from src.Quests.Questable import Questable
 
 
 class Match3(Questable):

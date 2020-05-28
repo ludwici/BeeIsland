@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import pygame
 from pygame.event import Event
 
-from Database.Localization import Localization
+from src.Database.Localization import Localization
 from src.Interfaces import Drawable
 from src.Player import Player
 from src.QuestSettings import QuestSettings

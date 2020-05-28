@@ -1,9 +1,9 @@
 import sqlite3
 
-from Database.Localization import Localization
-from InGameResources.Resource import Resource
-from InGameResources.ResourceBag import ResourceBag
-from Quests.QuestTemplate import QuestTemplate
+from src.Database.Localization import Localization
+from src.InGameResources.Resource import Resource
+from src.InGameResources.ResourceBag import ResourceBag
+from src.Quests.QuestTemplate import QuestTemplate
 
 
 class Database:

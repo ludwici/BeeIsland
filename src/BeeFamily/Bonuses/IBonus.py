@@ -1,8 +1,8 @@
-from abc import ABC, abstractmethod
 import random
+from abc import ABC, abstractmethod
 
-from Database.Database import Database
-from Quests.Questable import Questable
+from src.Database.Database import Database
+from src.Quests.Questable import Questable
 
 
 class IBonus(ABC):

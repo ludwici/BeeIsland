@@ -1,7 +1,7 @@
 import pygame
 from pygame.event import Event
 
-from Interfaces.Drawable import Drawable
+from src.Interfaces.Drawable import Drawable
 
 
 class DrawablesGroup(Drawable):

@@ -1,7 +1,7 @@
 import pygame
 
-from UI.BeeSelectPanel import BeeSelectPanel
 from src.BeeFamily.Bee import Bee
+from src.UI.BeeSelectPanel import BeeSelectPanel
 from src.UI.Button import ButtonState, Button, ButtonEventType
 from src.UI.RadioButton import RadioButton
 

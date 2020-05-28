@@ -1,11 +1,11 @@
 import pygame
 
-from BeeFamily.Bee import Bee
-from UI.RadioButton import RadioButton
+from src.BeeFamily.Bee import Bee
 from src.BeeNest import BeeNest
-from UI.BeeSocket import BeeSocket
+from src.UI.BeeSocket import BeeSocket
 from src.UI.Button import ButtonState
 from src.UI.PopupNotify import PopupNotify
+from src.UI.RadioButton import RadioButton
 from src.UI.RadioGroup import RadioGroup
 
 
