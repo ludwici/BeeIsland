@@ -3,3 +3,5 @@
 /src/*_rc.py
 /coverage_results
 __pycache__
+build
+dist
