@@ -1,6 +1,7 @@
 import pygame
 
 from src.Interfaces.Drawable import Drawable
+from src.Utils import resource_path
 
 
 class TextLabel(Drawable):
@@ -13,7 +14,8 @@ class TextLabel(Drawable):
         self._font_name = font_name
         self._font_size = font_size
         self._bold = bold
-        self._font = pygame.font.SysFont(self._font_name, self._font_size, self._bold)
+        self._font = pygame.font.Font(resource_path("res/fonts/{0}.ttf".format(self._font_name)), self._font_size)
+        self._font.set_bold(self._bold)
         self._text = text
         self._color = color
         self._image = None
