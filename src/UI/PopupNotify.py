@@ -15,7 +15,7 @@ class PopupNotify(Drawable):
         self._rect = PopupNotify._check_position()
         Drawable.__init__(self, parent=parent, position=(self._rect.x, self._rect.y))
         self._bg_image = None
-        self.set_background("{0}/popup1.png".format(self._rect))
+        self.set_background("{0}/popup1.png".format(self._res_dir))
         self._time_to_kill = time_to_kill
         self.__start_time = pygame.time.get_ticks()
         self.__text_label = MultilineTextLabel(parent=self, text=text, position=(20, 20), font_size=12,
