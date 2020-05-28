@@ -1,4 +1,4 @@
-from BeeFamily.Bonuses.IBonus import TimeBonus, ScoreBonus
+from BeeFamily.Bonuses.IBonus import TimeBonus, ScoreBonus, RandomResourceBonus
 from BeeNest import BeeNest
 from InGameResources.ResourceBag import ResourceBag
 from src.BeeFamily.BeeWorker import BeeWorker
@@ -14,7 +14,7 @@ class Player:
         self.farm = Farm()
         self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=TimeBonus(time_val=10)))
         self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=ScoreBonus(score_val=10)))
-        self.farm.add_out_of_hive_bee(BeeWorker(parent=self))
+        self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=RandomResourceBonus(items_ids=[1, 2, 3, 4, 5])))
 
     def already_has_hive(self, hive: BeeNest):
         return hive in self.farm.hive_list
