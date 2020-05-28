@@ -4,6 +4,7 @@ from enum import Enum
 import pygame
 from flags import Flags
 
+from Utils import resource_path
 from src.Interfaces.Drawable import Drawable
 
 
@@ -29,6 +30,7 @@ class Button(Drawable):
     def __init__(self, parent, normal_image_path: str, position: (int, int) = (0, 0),
                  state: ButtonState = ButtonState.NORMAL) -> None:
         Drawable.__init__(self, parent=parent, position=position)
+        self._res_dir += "/buttons"
         self._current_image = None
         self._images = dict()
         self.set_image_by_state(ButtonState.NORMAL, normal_image_path)
@@ -44,6 +46,7 @@ class Button(Drawable):
 
     def set_image_by_state(self, state: ButtonState, path: str) -> None:
         state = int(state)
+        path = resource_path("{0}/{1}".format(self._res_dir, path))
         try:
             ext = os.path.splitext(path)[1]
             if ext == ".png":

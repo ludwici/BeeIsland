@@ -23,11 +23,11 @@ class QuestMenu(Drawable):
 
     def __init__(self, parent, quest: Questable) -> None:
         Drawable.__init__(self, parent=parent)
-        self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")
-        self.close_btn.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/close_button1_hover.png")
+        self.close_btn = Button(parent=self, normal_image_path="close_button1.png")
+        self.close_btn.set_image_by_state(ButtonState.HOVERED, "close_button1_hover.png")
         self.close_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.destroy()})
         self.quest = quest
-        self._bg_image = pygame.image.load("../res/images/popup3.png").convert_alpha()
+        self._bg_image = pygame.image.load("{0}/popup3.png".format(self._res_dir)).convert_alpha()
         self._rect.width = self._bg_image.get_rect().width
         self._rect.height = self._bg_image.get_rect().height
         position = (Constants.WINDOW_W / 2 - self._bg_image.get_rect().width / 2, 70)
@@ -53,36 +53,37 @@ class QuestMenu(Drawable):
                                        position=position, font_size=14, )
 
         easy_label = TextLabel(parent=self, text=self.parent.localization.get_string("easy"), font_size=14)
-        self.easy_button = TextButton(parent=self, normal_image_path="../res/images/buttons/difficult/easy_normal.png",
+        self.easy_button = TextButton(parent=self, normal_image_path="difficult/easy_normal.png",
                                       text_label=easy_label, text_padding=(19, 0))
         self.easy_button.set_position(
             (self.position[0] + 35, self.difficult_label.position[1] + self.difficult_label.get_size()[1] + 9)
         )
-        self.easy_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/difficult/easy_hovered.png")
+        self.easy_button.set_image_by_state(ButtonState.HOVERED, "difficult/easy_hovered.png")
 
         medium_label = TextLabel(parent=self, text=self.parent.localization.get_string("medium"), font_size=14,
                                  color=(138, 36, 12))
         self.medium_button = TextButton(parent=self,
-                                        normal_image_path="../res/images/buttons/difficult/medium_normal.png",
+                                        normal_image_path="difficult/medium_normal.png",
                                         text_label=medium_label, text_padding=(19, 0))
         self.medium_button.set_position(
             (self.easy_button.position[0], self.easy_button.position[1] + self.easy_button.get_size()[1])
         )
         self.medium_button.set_image_by_state(ButtonState.HOVERED,
-                                              "../res/images/buttons/difficult/medium_hovered.png")
+                                              "difficult/medium_hovered.png")
 
         hard_label = TextLabel(parent=self, text=self.parent.localization.get_string("hard"), font_size=14,
                                color=(159, 17, 17))
-        self.hard_button = TextButton(parent=self, normal_image_path="../res/images/buttons/difficult/hard_normal.png",
+        self.hard_button = TextButton(parent=self, normal_image_path="difficult/hard_normal.png",
                                       text_label=hard_label, text_padding=(19, 0))
         self.hard_button.set_position(
             (self.medium_button.position[0], self.medium_button.position[1] + self.medium_button.get_size()[1])
         )
-        self.hard_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/difficult/hard_hovered.png")
+        self.hard_button.set_image_by_state(ButtonState.HOVERED, "difficult/hard_hovered.png")
 
-        self.rewards_panel = pygame.image.load("../res/images/rewards_list_bg.png")
+        self.rewards_panel = pygame.image.load("{0}/rewards_list_bg.png".format(self._res_dir))
 
-        self.bonuses_panel = pygame.image.load("../res/images/buttons/difficult/bonuses.png").convert_alpha()
+        self.bonuses_panel = pygame.image.load(
+            "{0}/buttons/difficult/bonuses.png".format(self._res_dir)).convert_alpha()
         self.bonuses_rect = self.bonuses_panel.get_rect()
         self.bonuses_rect.x = self.easy_button.position[0] + self.easy_button.get_size()[0]
         self.bonuses_rect.y = self.easy_button.position[1]
@@ -100,19 +101,19 @@ class QuestMenu(Drawable):
         self.bee_socket_group = RadioGroup()
         all_bees = self.parent.player.farm.bees_from_all_hives
         for i in range(3):
-            b = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket1_normal.png",
+            b = BeeSocket(parent=self, normal_image_path="socket1_normal.png",
                           group=self.bee_socket_group,
                           position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y))
-            b.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
+            b.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
             b.show_select_panel(self, all_bees)
             b.remove(self)
             bs_start_y += b.get_size()[1] + 8
 
-        self.bee_socket_hard = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket2_normal.png",
+        self.bee_socket_hard = BeeSocket(parent=self, normal_image_path="socket2_normal.png",
                                          group=self.bee_socket_group, state=ButtonState.LOCKED,
                                          position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y + 15))
-        self.bee_socket_hard.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
-        self.bee_socket_hard.set_image_by_state(ButtonState.LOCKED, "../res/images/buttons/socket3_normal.png")
+        self.bee_socket_hard.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
+        self.bee_socket_hard.set_image_by_state(ButtonState.LOCKED, "socket3_normal.png")
 
         self.bee_socket_hard.show_select_panel(self, all_bees)
         self.bee_socket_hard.remove(self)
@@ -121,12 +122,12 @@ class QuestMenu(Drawable):
                                 font_size=24)
         self.start_button = TextButton(parent=self, text_label=start_label, text_padding=(
             self.parent.localization.get_params_by_string("start_button")["x_off"], 0),
-                                       normal_image_path="../res/images/buttons/start_quest_btn_normal.png", )
+                                       normal_image_path="start_quest_btn_normal.png", )
         self.start_button.set_position(
             (self.position[0] + self._bg_image.get_rect().centerx - self.start_button.get_size()[0] / 2,
              self.panel_rect.y + self.panel_rect.height + 33)
         )
-        self.start_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/start_quest_btn_hover.png")
+        self.start_button.set_image_by_state(ButtonState.HOVERED, "start_quest_btn_hover.png")
 
         self.rewards_labels = []
 

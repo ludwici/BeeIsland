@@ -1,5 +1,6 @@
 import sqlite3
 
+from Utils import resource_path
 from src.Database.Localization import Localization
 from src.InGameResources.Resource import Resource
 from src.InGameResources.ResourceBag import ResourceBag
@@ -20,9 +21,10 @@ class Database:
             raise Exception("This class is singleton")
         else:
             Database.__instance = self
-        self._db_location_dir = "../res/db"
+        self._db_location_dir = resource_path("res/db")
         self.__localization = Localization.get_current_locale()
-        self.conn = sqlite3.connect("{0}/main.db".format(self._db_location_dir))
+        p = "{0}/main.db".format(self._db_location_dir)
+        self.conn = sqlite3.connect(p)
 
     def __del__(self):
         self.conn.close()

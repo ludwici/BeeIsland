@@ -22,7 +22,7 @@ class Questable(ABC):
         self.additional_rewards = ResourceBag()
         self.difficult = None
         icon_pos = quest_template.icon_pos[0] + icon_offset[0], quest_template.icon_pos[1] + icon_offset[1]
-        self.icon_btn = Button(parent=self.zone, normal_image_path="../res/images/quest_icon1.png", position=icon_pos)
+        self.icon_btn = Button(parent=self.zone, normal_image_path="quest_icon1.png", position=icon_pos)
 
     @property
     def is_allow(self) -> bool:

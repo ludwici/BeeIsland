@@ -47,7 +47,7 @@ class Bee(Levelable, Drawable):
         self._bonus.set_description(d)
 
     def set_image(self, path: str) -> None:
-        self._image = pygame.image.load(path)
+        self._image = pygame.image.load("{0}{1}".format(self._res_dir, path))
         self._rect.width = self._image.get_rect().width
         self._rect.height = self._image.get_rect().height
 

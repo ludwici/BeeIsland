@@ -2,6 +2,7 @@ import copy
 
 import pygame
 
+from Utils import resource_path
 from src.Quests import Questable
 from src.Scenes.Map import MapScene
 from src.UI.Button import ButtonEventType
@@ -11,12 +12,13 @@ from src.UI.PopupNotify import PopupNotify
 class MapZone:
     __slots__ = (
         "name", "parent", "border_image", "__is_lock", "__zone_rect", "quest_label", "quest_list", "quest_icons",
-        "click_rect", "__has_fog", "show_border", "__fog_rect", "fog_image")
+        "click_rect", "__has_fog", "show_border", "__fog_rect", "fog_image", "__res_dir")
 
     def __init__(self, parent: MapScene, name: str, pos_x: int, pos_y: int, has_fog: bool = True) -> None:
+        self.__res_dir = resource_path("res/images/zones")
         self.name = name
         self.parent = parent
-        self.border_image = pygame.image.load("../res/images/zones/border_{0}.png".format(self.name)).convert_alpha()
+        self.border_image = pygame.image.load("{0}/border_{1}.png".format(self.__res_dir, self.name)).convert_alpha()
         self.__is_lock = True
         self.__zone_rect = self.border_image.get_rect()
         self.__zone_rect.x = pos_x
@@ -33,7 +35,7 @@ class MapZone:
         self.show_border = False
         self.__fog_rect = None
         try:
-            self.fog_image = pygame.image.load("../res/images/zones/fog_{0}.png".format(self.name)).convert_alpha()
+            self.fog_image = pygame.image.load("{0}/fog_{1}.png".format(self.__res_dir, self.name)).convert_alpha()
             self.__fog_rect = self.fog_image.get_rect()
             self.__fog_rect.center = self.__zone_rect.center
         except pygame.error:

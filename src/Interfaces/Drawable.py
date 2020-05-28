@@ -3,12 +3,15 @@ from abc import ABC, abstractmethod
 import pygame
 from pygame.rect import Rect
 
-
 # TODO: Template pattern
+from Utils import resource_path
+
+
 class Drawable(ABC):
-    __slots__ = ("parent", "_rect", "color")
+    __slots__ = ("parent", "_rect", "color", "_res_dir")
 
     def __init__(self, parent, position: (int, int) = (0, 0)) -> None:
+        self._res_dir = resource_path("res/images")
         self.parent = parent
         self._rect = Rect((0, 0, 0, 0))
         self._rect.x = position[0]

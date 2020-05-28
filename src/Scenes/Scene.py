@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 import pygame
 from pygame.event import Event
 
+from Utils import resource_path
 from src.Database.Localization import Localization
 from src.Interfaces import Drawable
 from src.Player import Player
@@ -12,9 +13,10 @@ from src.QuestSettings import QuestSettings
 # TODO: Adapter pattern
 # TODO: Proxy pattern
 class Scene(ABC):
-    __slots__ = ("main_window", "player", "scene_settings", "_name", "_drawable_list", "_localization")
+    __slots__ = ("main_window", "player", "scene_settings", "_name", "_drawable_list", "_localization", "_res_dir")
 
     def __init__(self, main_window, name: str, player: Player) -> None:
+        self._res_dir = resource_path("res")
         self.main_window = main_window
         self.player = player
         self.scene_settings = QuestSettings()

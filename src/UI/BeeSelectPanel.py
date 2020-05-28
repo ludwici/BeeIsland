@@ -26,10 +26,10 @@ class BeeSelectPanel(Drawable):
         self.__socket.add_action({ButtonEventType.ON_CLICK_RB: lambda: self.remove_from_socket(self.__socket)})
         self.__scene = parent.parent
         self.__scene.add_drawable(self)
-        self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")
-        self.close_btn.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/close_button1_hover.png")
+        self.close_btn = Button(parent=self, normal_image_path="close_button1.png")
+        self.close_btn.set_image_by_state(ButtonState.HOVERED, "close_button1_hover.png")
         self.close_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.destroy()})
-        self._bg_image = pygame.image.load("../res/images/select_bee_panel.png").convert_alpha()
+        self._bg_image = pygame.image.load("{0}/select_bee_panel.png".format(self._res_dir)).convert_alpha()
         self._rect.width = self._bg_image.get_rect().width
         self._rect.height = self._bg_image.get_rect().height
         self.bee_list_view = ListView(parent=self, position=(0, 0), padding=(33, 36), item_padding=(15, 10),
@@ -82,9 +82,9 @@ class BeeSelectPanel(Drawable):
         self.bee_list_view.remove_item(item)
 
     def add_bee_to_list(self, b: Bee):
-        i = ListItem(parent=self, data=b, normal_image_path="../res/images/holder1.png")
-        i.set_image_by_state(ButtonState.LOCKED, "../res/images/holder1_lock.png")
-        i.set_image_by_state(ButtonState.HOVERED, "../res/images/holder1_hover.png")
+        i = ListItem(parent=self, data=b, normal_image_path="holder1.png")
+        i.set_image_by_state(ButtonState.LOCKED, "holder1_lock.png")
+        i.set_image_by_state(ButtonState.HOVERED, "holder1_hover.png")
         i.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.add_bee_to_socket(i)})
         i.add_action({ButtonEventType.ON_HOVER_ON: lambda: self.show_info(i.data)})
         i.add_action({ButtonEventType.ON_HOVER_OUT: lambda: self.show_info(self.__socket.bee)})

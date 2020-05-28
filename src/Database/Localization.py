@@ -1,6 +1,8 @@
 import json
 from enum import Enum
 
+from Utils import resource_path
+
 
 class LocalList(Enum):
     RU = "ru",
@@ -16,7 +18,7 @@ class Localization:
         self.__data = self.__read_locale()
 
     def __read_locale(self):
-        locale_path = "../res/locales/{0}.json".format(self.__path)
+        locale_path = resource_path("res/locales/{0}.json".format(self.__path))
         with open(locale_path, encoding="utf-8") as json_file:
             data = json.load(json_file)
         return data

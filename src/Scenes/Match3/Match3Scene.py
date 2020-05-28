@@ -12,7 +12,7 @@ class Match3Scene(Scene):
 
     def __init__(self, main_window, name, player) -> None:
         Scene.__init__(self, main_window=main_window, player=player, name=name)
-        self.bg_image = pygame.image.load("../res/images/quest_bg1.png").convert_alpha()
+        self.bg_image = pygame.image.load("{0}/images/quest_bg1.png".format(self._res_dir)).convert_alpha()
         self.grid = FlowersGrid(position=(124, 124), size=(8, 8))
         self.grabbed = None
         self.grab_point = 0, 0

@@ -24,11 +24,11 @@ class ModifyMenu(Drawable):
 
     def __init__(self, parent: Scene) -> None:
         Drawable.__init__(self, parent=parent)
-        self.close_btn = Button(parent=self, normal_image_path="../res/images/buttons/close_button1.png")
-        self.close_btn.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/close_button1_hover.png")
+        self.close_btn = Button(parent=self, normal_image_path="close_button1.png")
+        self.close_btn.set_image_by_state(ButtonState.HOVERED, "close_button1_hover.png")
         self.close_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.destroy()})
 
-        self._bg_image = pygame.image.load("../res/images/modify_popup1.png").convert_alpha()
+        self._bg_image = pygame.image.load("{0}/modify_popup1.png".format(self._res_dir)).convert_alpha()
         self._rect.width = self._bg_image.get_rect().width
         self._rect.height = self._bg_image.get_rect().height
         position = (Constants.WINDOW_W / 2 - self._bg_image.get_rect().width / 2, 70)
@@ -42,40 +42,40 @@ class ModifyMenu(Drawable):
              self.position[1] + 3)
         )
         self.socket_group = RadioGroup()
-        self.socket1 = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket1_normal.png",
+        self.socket1 = BeeSocket(parent=self, normal_image_path="socket1_normal.png",
                                  group=self.socket_group, position=(self.position[0] + 102, self.position[1] + 135))
-        self.socket1.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
-        self.dna_image = pygame.image.load("../res/images/dna1.png").convert_alpha()
+        self.socket1.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
+        self.dna_image = pygame.image.load("{0}/dna1.png".format(self._res_dir)).convert_alpha()
         self.dna_rect = self.dna_image.get_rect()
         self.dna_rect.x = self.socket1.position[0] + self.socket1.get_size()[1] + 12
         self.dna_rect.y = self.socket1.get_rect().centery - self.dna_rect.height / 2
-        self.socket2 = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket1_normal.png",
+        self.socket2 = BeeSocket(parent=self, normal_image_path="socket1_normal.png",
                                  group=self.socket_group,
                                  position=(self.dna_rect.x + self.dna_rect.width + 7, self.socket1.position[1]))
-        self.socket2.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
+        self.socket2.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
 
         upgrade_label = TextLabel(parent=self, text=self.parent.localization.get_string("upgrade_button"), font_size=18)
         self.upgrade_button = TextButton(parent=self,
-                                         normal_image_path="../res/images/buttons/start_quest_btn_normal.png",
+                                         normal_image_path="start_quest_btn_normal.png",
                                          text_label=upgrade_label, text_padding=(40, 4))
-        self.upgrade_button.set_image_by_state(ButtonState.HOVERED, "../res/images/buttons/start_quest_btn_hover.png")
-        self.upgrade_button.set_image_by_state(ButtonState.LOCKED, "../res/images/buttons/start_quest_btn_locked.png")
+        self.upgrade_button.set_image_by_state(ButtonState.HOVERED, "start_quest_btn_hover.png")
+        self.upgrade_button.set_image_by_state(ButtonState.LOCKED, "start_quest_btn_locked.png")
         self.upgrade_button.lock()
         self.upgrade_button.set_position((self.socket1.position[0],
                                           self.socket2.position[1] + self.socket2.get_size()[1] + 15))
         self.upgrade_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.upgrade()})
 
-        self.result_socket = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket1_normal.png",
+        self.result_socket = BeeSocket(parent=self, normal_image_path="socket1_normal.png",
                                        group=self.socket_group, position=(0, 0))
-        self.result_socket.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
-        self.result_socket.set_image_by_state(ButtonState.LOCKED, "../res/images/buttons/socket3_normal.png")
+        self.result_socket.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
+        self.result_socket.set_image_by_state(ButtonState.LOCKED, "socket3_normal.png")
         self.result_socket.lock()
         self.result_socket.set_position(
             (self.upgrade_button.get_rect().centerx - self.result_socket.get_size()[1] / 2,
              self.upgrade_button.position[1] + self.upgrade_button.get_size()[1] + 15)
         )
 
-        self.info_block_image = pygame.image.load("../res/images/modify_popup1_info.png")
+        self.info_block_image = pygame.image.load("{0}/modify_popup1_info.png".format(self._res_dir))
         self.info_block_rect = self.info_block_image.get_rect()
         self.info_text_label = TextLabel(parent=self, text=self.parent.localization.get_string("upgrade_button"),
                                          font_size=14)
@@ -123,7 +123,7 @@ class ModifyMenu(Drawable):
                                           self.position[0] + 9,
                                           self.info_block_rect.y + self.info_block_rect.height - 6),
                                       )
-        self.bee_list_view.set_image("../res/images/modify_popup1_bee_list.png")
+        self.bee_list_view.set_image("{0}/modify_popup1_bee_list.png".format(self._res_dir))
 
         for b in self.parent.player.farm.out_of_hive_bee_list:
             self.add_bee_to_list(b)
@@ -148,9 +148,9 @@ class ModifyMenu(Drawable):
         self.result_socket.select()
 
     def add_bee_to_list(self, b: Bee) -> None:
-        i = ListItem(parent=self, data=b, normal_image_path="../res/images/holder1.png")
-        i.set_image_by_state(ButtonState.LOCKED, "../res/images/holder1_lock.png")
-        i.set_image_by_state(ButtonState.HOVERED, "../res/images/holder1_hover.png")
+        i = ListItem(parent=self, data=b, normal_image_path="holder1.png")
+        i.set_image_by_state(ButtonState.LOCKED, "holder1_lock.png")
+        i.set_image_by_state(ButtonState.HOVERED, "holder1_hover.png")
         i.add_action({ButtonEventType.ON_CLICK_LB: lambda e=i: self.select_bee(e)})
         i.add_action({ButtonEventType.ON_HOVER_ON: lambda e=i.data: self.reload_bee_info(e)})
         i.add_action({ButtonEventType.ON_HOVER_OUT: lambda: self.reload_bee_info()})
