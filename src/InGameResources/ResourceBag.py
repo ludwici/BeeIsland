@@ -18,7 +18,24 @@ class ResourceBag:
 
         self.__bag.append(new_res)
 
+    def remove(self, old_res: Resource) -> None:
+        for r in self.__bag:
+            if old_res.locale_name == r.locale_name:
+                r.base_value -= old_res.base_value
+                if r.base_value == 0:
+                    self.__bag.remove(r)
+
+    def __repr__(self) -> str:
+        r = ""
+        for i in self.__bag:
+            r += repr(i) + " | "
+        return r
+
     def __add__(self, other: "ResourceBag") -> "ResourceBag":
         for o in other.get_bag_copy():
             self.append(o)
         return self
+
+    def __sub__(self, other: "ResourceBag") -> "ResourceBag":
+        for o in other.get_bag_copy():
+            self.remove(o)
