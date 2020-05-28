@@ -5,7 +5,7 @@ from Interfaces.Drawable import Drawable
 from UI.DrawablesGroup import DrawablesGroup
 from src import Constants
 from src.BeeFamily.Bee import Bee
-from src.BeeSocket import BeeSocket
+from UI.BeeSocket import BeeSocket
 from src.Scenes.Scene import Scene
 from src.UI.Button import Button, ButtonEventType, ButtonState
 from src.UI.ListItem import ListItem
