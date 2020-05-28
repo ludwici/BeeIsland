@@ -44,7 +44,7 @@ class Scene(ABC):
         self._drawable_list.clear()
 
     def on_scene_started(self) -> None:
-        self._localization = Localization(scene_name=self.name)
+        self._localization = Localization(path="scenes/{0}".format(self.name))
 
     def find_drawable_by_type(self, t) -> Drawable:
         for d in self._drawable_list:
