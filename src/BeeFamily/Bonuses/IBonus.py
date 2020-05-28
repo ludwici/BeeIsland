@@ -90,4 +90,4 @@ class RandomResourceBonus(IBonus):
         q.additional_rewards.remove(self.resource)
 
     def set_description(self, description: str) -> None:
-        self._description = "{0}: {1}".format(description, self.resource.value)
+        self._description = description
