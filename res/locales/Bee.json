@@ -13,7 +13,7 @@
     "bonuses": {
       "time": "+{0} к времени",
       "score": "+{0}% к общему счёту",
-      "resource": "Даёт дополнительную награду"
+      "resource": "Дополнительная награда"
     }
   },
   "en": {
@@ -30,7 +30,7 @@
     "bonuses": {
       "time": "+{0} to total time",
       "score": "+{0}% to total score",
-      "resource": "Gives an extra reward"
+      "resource": "Additional reward"
     }
   }
 
