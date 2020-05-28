@@ -1,11 +1,14 @@
+import itertools
+
 import pygame
 from pygame.event import Event
 
+from BeeFamily.Bee import Bee
 from Interfaces.Drawable import Drawable
 from Quests.Questable import Questable
 from UI.BeeSelectPanel import BeeSelectPanel
 from src import Constants
-from src.BeeSocket import BeeSocket
+from UI.BeeSocket import BeeSocket
 from src.QuestSettings import QuestSettings, QuestDifficult
 from src.UI.Button import Button, ButtonState, ButtonEventType
 from src.UI.MultilineTextLabel import MultilineTextLabel
@@ -92,9 +95,6 @@ class QuestMenu(Drawable):
         )
 
         self.bonus_list = []
-        for i in range(3):
-            self.bonus_list.append(MultilineTextLabel(parent=self, bold=True, line_length=130, font_size=12,
-                                                      position=(self.bonuses_rect.x + 5, self.bonuses_rect.y)))
 
         self.rewards_rect = self.rewards_panel.get_rect()
 
@@ -106,7 +106,8 @@ class QuestMenu(Drawable):
                           group=self.bee_socket_group,
                           position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y))
             b.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
-            b.show_select_panel(self.parent, all_bees)
+            b.show_select_panel(self, all_bees)
+            b.remove(self)
             bs_start_y += b.get_size()[1] + 8
 
         self.bee_socket_hard = BeeSocket(parent=self, normal_image_path="../res/images/buttons/socket2_normal.png",
@@ -115,7 +116,8 @@ class QuestMenu(Drawable):
         self.bee_socket_hard.set_image_by_state(ButtonState.SELECTED, "../res/images/buttons/socket5_normal.png")
         self.bee_socket_hard.set_image_by_state(ButtonState.LOCKED, "../res/images/buttons/socket3_normal.png")
 
-        self.bee_socket_hard.show_select_panel(self.parent, all_bees)
+        self.bee_socket_hard.show_select_panel(self, all_bees)
+        self.bee_socket_hard.remove(self)
 
         start_label = TextLabel(parent=self, text=self.parent.localization.get_string("start_button"), position=(0, 0),
                                 font_size=24)
@@ -153,7 +155,22 @@ class QuestMenu(Drawable):
 
         self.change_difficult(QuestDifficult.EASY)
 
-    def generate_reward_labels(self) -> None:
+    def add_bee_to_socket(self, b: Bee):
+        b.setup_bonus(self.quest)
+
+    def generate_bonuses_labels(self) -> None:
+        start_pos_y = self.bonuses_rect.y
+        self.bonus_list.clear()
+        for bs in self.bee_socket_group.buttons:
+            if bs.bee:
+                b_l = MultilineTextLabel(parent=self, text=bs.bee.bonus, bold=True, line_length=130, font_size=12,
+                                         position=(self.bonuses_rect.x + 5, start_pos_y))
+                self.bonus_list.append(b_l)
+                start_pos_y += b_l.get_size()[1]
+        self.generate_rewards_labels()
+
+    def generate_rewards_labels(self) -> None:
+        self.rewards_labels.clear()
         pos_x = self.rewards_rect.x + 20
         pos_y = self.rewards_rect.y + 10
         for r in self.quest.rewards.get_bag_copy():
@@ -176,7 +193,7 @@ class QuestMenu(Drawable):
         self.bee_socket_hard.lock() if difficult != QuestDifficult.HARD else self.bee_socket_hard.unlock()
 
         self.rewards_labels.clear()
-        self.generate_reward_labels()
+        self.generate_rewards_labels()
 
     def destroy(self) -> None:
         self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
@@ -205,12 +222,7 @@ class QuestMenu(Drawable):
         self.bee_socket_group.draw(screen)
 
     def update(self, dt: float) -> None:
-        start_pos_y = self.bonuses_rect.y
-        for i in range(len(self.bee_socket_group.unlocked_buttons)):
-            if self.bee_socket_group.unlocked_buttons[i].bee:
-                self.bonus_list[i].set_position((self.bonus_list[i].position[0], start_pos_y))
-                self.bonus_list[i].set_text(self.bee_socket_group.unlocked_buttons[i].bee.bonus)
-                start_pos_y += self.bonus_list[i].get_size()[1]
+        self.generate_bonuses_labels()
 
     def handle_event(self, event: Event) -> None:
         self.close_btn.handle_event(event)
