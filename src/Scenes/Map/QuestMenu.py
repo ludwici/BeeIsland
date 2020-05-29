@@ -42,7 +42,7 @@ class QuestMenu(Drawable):
              self.position[1] + 3)
         )
         ll = self._bg_image.get_rect().width - self.parent.localization.get_params_by_string("desc_label")[
-            "line_length"] * 2
+            "line_length"] * 2 - 35
         self.description_label = MultilineTextLabel(parent=self, text=self.quest.description, line_length=ll,
                                                     position=(self.position[0] + 35, self.position[1] + 75),
                                                     font_size=14)
