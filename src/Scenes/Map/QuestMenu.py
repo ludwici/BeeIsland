@@ -7,7 +7,7 @@ from src.Interfaces.Drawable import Drawable
 from src.QuestSettings import QuestSettings, QuestDifficult
 from src.Quests.Questable import Questable
 from src.UI.BeeSelectPanel import BeeSelectPanel
-from src.UI.BeeSocket import BeeSocket
+from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import Button, ButtonState, ButtonEventType
 from src.UI.MultilineTextLabel import MultilineTextLabel
 from src.UI.RadioGroup import RadioGroup
@@ -102,7 +102,7 @@ class QuestMenu(Drawable):
         all_bees = self.parent.player.farm.bees_from_all_hives
         for i in range(3):
             b = BeeSocket(parent=self, normal_image_path="socket1_normal.png",
-                          group=self.bee_socket_group,
+                          group=self.bee_socket_group, socket_type=BeeSocketType.WORKER,
                           position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y))
             b.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
             b.show_select_panel(self, all_bees)
@@ -110,7 +110,8 @@ class QuestMenu(Drawable):
             bs_start_y += b.get_size()[1] + 8
 
         self.bee_socket_hard = BeeSocket(parent=self, normal_image_path="socket2_normal.png",
-                                         group=self.bee_socket_group, state=ButtonState.LOCKED,
+                                         socket_type=BeeSocketType.WARRIOR, group=self.bee_socket_group,
+                                         state=ButtonState.LOCKED,
                                          position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y + 15))
         self.bee_socket_hard.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
         self.bee_socket_hard.set_image_by_state(ButtonState.LOCKED, "socket3_normal.png")
