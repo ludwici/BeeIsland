@@ -17,7 +17,7 @@ class BeeSelectPanel(Drawable):
         "__bee_list", "__allowable_position_x", "__allowable_position_y", "__socket", "close_btn",
         "_bg_image", "bee_list_view", "info_group", "__scene")
 
-    def __init__(self, parent, socket, bee_list: list, destination=None, position: (int, int) = (0, 0)):
+    def __init__(self, parent, socket, bee_list: list, position: (int, int) = (0, 0)):
         Drawable.__init__(self, parent=parent, position=position)
         self.__bee_list = bee_list
         self.__allowable_position_x = 100
@@ -82,6 +82,9 @@ class BeeSelectPanel(Drawable):
         self.bee_list_view.remove_item(item)
 
     def add_bee_to_list(self, b: Bee):
+        if type(b) != self.__socket.socket_type:
+            return
+
         i = ListItem(parent=self, data=b, normal_image_path="holder1.png")
         i.set_image_by_state(ButtonState.LOCKED, "holder1_lock.png")
         i.set_image_by_state(ButtonState.HOVERED, "holder1_hover.png")
