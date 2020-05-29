@@ -35,7 +35,7 @@ class RenderWindow:
             "Farm": FarmScene(self, name="Farm", player=self.main_player)
         }
         self.__current_scene = self.__scene_map["Map"]
-        self.change_scene("Farm")
+        self.change_scene("Map")
         self.__prev_scene = None
         self.__done = False
         self.__clock = Clock()
