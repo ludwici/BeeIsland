@@ -40,7 +40,7 @@ class BeeNest(Levelable):
 
     @property
     def bee_list(self) -> list:
-        return copy(self.__bee_list)
+        return self.__bee_list
 
     def add_bee(self, bee: Bee) -> bool:
         if self.size > self.__max_size:
