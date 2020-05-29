@@ -2,7 +2,7 @@ import pygame
 
 from src.BeeFamily.Bee import Bee
 from src.BeeNest import BeeNest
-from src.UI.BeeSocket import BeeSocket
+from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import ButtonState
 from src.UI.PopupNotify import PopupNotify
 from src.UI.RadioButton import RadioButton
@@ -29,7 +29,7 @@ class BeeNestButton(RadioButton):
         positions.append((-31, 40 + 42))
         positions.append((positions[0][0] + 36 + 48, 40 + 42))
         for i in range(6):
-            bs = BeeSocket(parent=self, group=self.nest_group,
+            bs = BeeSocket(parent=self, group=self.nest_group, local_id=i, socket_type=BeeSocketType.WORKER,
                            normal_image_path="socket1_normal.png",
                            position=((self.position[0] + positions[i][0]), self.position[1] + positions[i][1]))
             bs.set_image_by_state(ButtonState.LOCKED, "socket3_normal.png")
@@ -37,14 +37,15 @@ class BeeNestButton(RadioButton):
             bs.show_select_panel(self, self.parent.player.farm.out_of_hive_bee_list)
             if i >= self.hive.max_size:
                 bs.lock()
-        self.queen_socket = BeeSocket(parent=self, group=self.nest_group,
-                                      normal_image_path="socket4_normal.png",
+
+        self.queen_socket = BeeSocket(parent=self, group=self.nest_group, socket_type=BeeSocketType.QUEEN,
+                                      normal_image_path="socket4_normal.png", local_id=6,
                                       position=((self.position[0] + positions[2][0] + 18 + 48),
                                                 self.position[1] + positions[2][1]))
         self.queen_socket.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
         self.queen_socket.show_select_panel(self, self.parent.player.farm.out_of_hive_bee_list)
 
-    def add_bee_to_socket(self, b: Bee):
+    def add_bee_to_socket(self, b: Bee) -> None:
         self.hive.add_bee(b)
 
     def draw(self, screen: pygame.Surface) -> None:

@@ -19,11 +19,12 @@ class FarmScene(Scene):
         self.main_image_rect = self.main_image.get_rect()
         self.main_image_rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
         self.to_map_button = Button(parent=self, normal_image_path="to_map_normal.png",
-                                    position=(0, 0))
+                                    position=(10, 10))
         self.to_map_button.set_image_by_state(ButtonState.HOVERED, "to_map_hover.png")
 
         self.to_upgrade_button = Button(parent=self, normal_image_path="to_upgrade_normal.png",
-                                        position=(0, 100))
+                                        position=(
+                                        10, self.to_map_button.position[1] + self.to_map_button.get_size()[1] + 10))
         self.to_upgrade_button.set_image_by_state(ButtonState.HOVERED, "to_upgrade_hover.png")
 
         self.to_map_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.main_window.change_scene("Map")})
@@ -39,6 +40,7 @@ class FarmScene(Scene):
             bee_nest.set_image_by_state(ButtonState.HOVERED, "hive/hive1_empty_hover.png")
 
     def show_modify(self):
+        self.nest_group.unselect_all()
         m = ModifyMenu(parent=self)
         self.add_drawable(m)
 

@@ -1,19 +1,46 @@
+from copy import copy
+from enum import Enum
+
 import pygame
 
 from src.BeeFamily.Bee import Bee
+from src.BeeFamily.BeeQueen import BeeQueen
+from src.BeeFamily.BeeWarrior import BeeWarrior
+from src.BeeFamily.BeeWorker import BeeWorker
 from src.UI.BeeSelectPanel import BeeSelectPanel
 from src.UI.Button import ButtonState, Button, ButtonEventType
 from src.UI.RadioButton import RadioButton
 
 
-class BeeSocket(RadioButton):
-    __slots__ = "_bee"
+class BeeSocketType(Enum):
+    ALL = 0,
+    WORKER = BeeWorker,
+    WARRIOR = BeeWarrior,
+    QUEEN = BeeQueen
 
-    def __init__(self, parent, group, normal_image_path: str, position: (int, int) = (0, 0),
-                 state: ButtonState = ButtonState.NORMAL) -> None:
+
+class BeeSocket(RadioButton):
+    __slots__ = ("_bee", "__local_id", "__socket_type")
+
+    def __init__(self, parent, group, socket_type: BeeSocketType, normal_image_path: str, position: (int, int) = (0, 0),
+                 state: ButtonState = ButtonState.NORMAL, local_id: int = -1) -> None:
         RadioButton.__init__(self, parent=parent, group=group, normal_image_path=normal_image_path,
                              position=position, state=state)
+        self.__local_id = local_id
         self._bee = None
+        self.__socket_type = socket_type
+        if self.__local_id != -1:
+            for b in self.parent.hive.bee_list:
+                if b.socket_id == self.__local_id:
+                    self.bee = b
+                    break
+
+    @property
+    def socket_type(self):
+        try:
+            return copy(self.__socket_type.value[0])
+        except TypeError:
+            return self.__socket_type.value
 
     @property
     def bee(self):
@@ -23,6 +50,7 @@ class BeeSocket(RadioButton):
     def bee(self, b: Bee):
         self._bee = b
         self._bee.get_rect().center = self._rect.center
+        self._bee.socket_id = self.__local_id
 
     @bee.deleter
     def bee(self):

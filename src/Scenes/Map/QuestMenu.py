@@ -7,7 +7,7 @@ from src.Interfaces.Drawable import Drawable
 from src.QuestSettings import QuestSettings, QuestDifficult
 from src.Quests.Questable import Questable
 from src.UI.BeeSelectPanel import BeeSelectPanel
-from src.UI.BeeSocket import BeeSocket
+from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import Button, ButtonState, ButtonEventType
 from src.UI.MultilineTextLabel import MultilineTextLabel
 from src.UI.RadioGroup import RadioGroup
@@ -42,7 +42,7 @@ class QuestMenu(Drawable):
              self.position[1] + 3)
         )
         ll = self._bg_image.get_rect().width - self.parent.localization.get_params_by_string("desc_label")[
-            "line_length"] * 2
+            "line_length"] * 2 - 35
         self.description_label = MultilineTextLabel(parent=self, text=self.quest.description, line_length=ll,
                                                     position=(self.position[0] + 35, self.position[1] + 75),
                                                     font_size=14)
@@ -102,17 +102,18 @@ class QuestMenu(Drawable):
         all_bees = self.parent.player.farm.bees_from_all_hives
         for i in range(3):
             b = BeeSocket(parent=self, normal_image_path="socket1_normal.png",
-                          group=self.bee_socket_group,
+                          group=self.bee_socket_group, socket_type=BeeSocketType.WORKER,
                           position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y))
-            b.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
+            # b.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
             b.show_select_panel(self, all_bees)
             b.remove(self)
             bs_start_y += b.get_size()[1] + 8
 
         self.bee_socket_hard = BeeSocket(parent=self, normal_image_path="socket2_normal.png",
-                                         group=self.bee_socket_group, state=ButtonState.LOCKED,
+                                         socket_type=BeeSocketType.WARRIOR, group=self.bee_socket_group,
+                                         state=ButtonState.LOCKED,
                                          position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y + 15))
-        self.bee_socket_hard.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
+        # self.bee_socket_hard.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
         self.bee_socket_hard.set_image_by_state(ButtonState.LOCKED, "socket3_normal.png")
 
         self.bee_socket_hard.show_select_panel(self, all_bees)
@@ -153,6 +154,9 @@ class QuestMenu(Drawable):
         )
 
         self.change_difficult(QuestDifficult.EASY)
+
+        for z in self.parent.zones:
+            z.stop_handle()
 
     def add_bee_to_socket(self, b: Bee):
         b.setup_bonus(self.quest)
@@ -195,6 +199,8 @@ class QuestMenu(Drawable):
         self.generate_rewards_labels()
 
     def destroy(self) -> None:
+        for z in self.parent.zones:
+            z.start_handle()
         self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
         self.parent.remove_drawable(self)
 
@@ -230,6 +236,3 @@ class QuestMenu(Drawable):
         self.hard_button.handle_event(event)
         self.start_button.handle_event(event)
         self.bee_socket_group.handle_event(event)
-        if self._rect.collidepoint(pygame.mouse.get_pos()):
-            for z in self.parent.zones:
-                z.on_mouse_out()

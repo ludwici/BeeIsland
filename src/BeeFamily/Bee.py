@@ -11,27 +11,29 @@ from src.Quests.Questable import Questable
 
 class Bee(Levelable, Drawable):
     __slots__ = ("speed", "__current_hp", "__max_hp", "need_hive_level", "name", "_image", "__current_level",
-                 "__max_level", "xp_enabled", "__current_xp", "max_xp", "_bonus", "_localization", "__sex")
+                 "__max_level", "xp_enabled", "__current_xp", "max_xp", "_bonus", "_localization", "__sex", "socket_id")
 
     class BeeSex(Enum):
         MALE = 1,
         FEMALE = 2
 
-    def __init__(self, parent, bonus, position: (int, int) = (0, 0), level: int = 1) -> None:
+    def __init__(self, parent, bonus, position: (int, int) = (0, 0), level: int = 1, sex: BeeSex = None) -> None:
         Levelable.__init__(self)
         Drawable.__init__(self, parent=parent, position=position)
         self._localization = Localization("Bee")
         self.max_xp = 100
         self.speed = 0
-        self.__sex = random.choice([Bee.BeeSex.MALE, Bee.BeeSex.FEMALE])
+        self.__sex = sex if sex else random.choice([Bee.BeeSex.MALE, Bee.BeeSex.FEMALE])
         self.__current_hp = 0
         self.__max_hp = 0
         self.min_hp = 0
         self.need_hive_level = 0
-        self.name = self.get_random_name()
+        prefix = "m" if self.__sex is Bee.BeeSex.MALE else "f"
+        self.name = self.get_random_name(prefix)
         self.change_level_to(level)
         self._image = None
         self._bonus = bonus
+        self.socket_id = -1
         self.set_locale_to_bonus()
 
     def draw(self, screen: pygame.Surface) -> None:
@@ -39,6 +41,8 @@ class Bee(Levelable, Drawable):
             screen.blit(self._image, self._rect)
 
     def set_locale_to_bonus(self):
+        if not self._bonus:
+            return
         if isinstance(self._bonus.__slots__, tuple):
             name = self._bonus.__slots__[0]
         else:
@@ -57,8 +61,7 @@ class Bee(Levelable, Drawable):
     def remove_bonus(self, q: Questable):
         self._bonus.remove_bonus(q)
 
-    def get_random_name(self) -> str:
-        prefix = "m" if self.__sex is Bee.BeeSex.MALE else "f"
+    def get_random_name(self, prefix) -> str:
         names = self._localization.get_params_by_string("{0}_names".format(prefix))
         result = random.choice(names)
         return result

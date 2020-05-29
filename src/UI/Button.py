@@ -1,4 +1,5 @@
 import os
+from copy import copy
 from enum import Enum
 
 import pygame
@@ -25,7 +26,7 @@ class ButtonState(Flags):
 # TODO: Mixed Strategy pattern
 class Button(Drawable):
     __slots__ = ("_current_image", "_images", "_state", "__action_list", "__action_list_rb", "__on_hover_list",
-                 "__on_hover_out_list", "_can_call_out")
+                 "__on_hover_out_list", "_can_call_out", "_can_handle_events", "_click_rect")
 
     def __init__(self, parent, normal_image_path: str, position: (int, int) = (0, 0),
                  state: ButtonState = ButtonState.NORMAL) -> None:
@@ -43,6 +44,8 @@ class Button(Drawable):
         self.__on_hover_out_list = list()
 
         self._can_call_out = False
+        self._can_handle_events = True
+        self._click_rect = self._rect
 
     def set_image_by_state(self, state: ButtonState, path: str) -> None:
         state = int(state)
@@ -59,6 +62,12 @@ class Button(Drawable):
     @property
     def state(self) -> ButtonState:
         return self._state
+
+    def stop_handle(self):
+        self._can_handle_events = False
+
+    def start_handle(self):
+        self._can_handle_events = True
 
     @state.setter
     def state(self, value: ButtonState) -> None:
@@ -140,11 +149,11 @@ class Button(Drawable):
         [a() for a in self.__action_list_rb]
 
     def handle_event(self, event) -> None:
-        if self.is_locked:
+        if self.is_locked or not self._can_handle_events:
             return
 
         if event.type == pygame.MOUSEMOTION:
-            if self._rect.collidepoint(event.pos):
+            if self._click_rect.collidepoint(event.pos):
                 self.on_hover_on()
             else:
                 if self._can_call_out:
