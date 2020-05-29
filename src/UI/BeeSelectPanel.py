@@ -49,7 +49,7 @@ class BeeSelectPanel(Drawable):
         hp_label = TextLabel(parent=self, font_size=14,
                              position=(speed_label.position[0], speed_label.position[1] + speed_label.get_size()[1]))
 
-        bonus_list_label = MultilineTextLabel(parent=self, font_size=14, line_length=215,
+        bonus_list_label = MultilineTextLabel(parent=self, font_size=14, line_length=190,
                                               position=(hp_label.position[0],
                                                         hp_label.position[1] + hp_label.get_size()[1]))
         self.info_group = DrawablesGroup(parent=self,
