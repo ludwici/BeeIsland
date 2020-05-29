@@ -44,7 +44,6 @@ class MultilineTextLabel(TextLabel):
         tmp = deque(self._text.split())
         str_tmp = ""
         size = 0
-        i = 0
         while tmp:
             t = tmp.popleft()
             size += self._font.size(t)[0]
