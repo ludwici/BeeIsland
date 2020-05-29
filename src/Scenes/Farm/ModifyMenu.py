@@ -1,3 +1,5 @@
+import itertools
+
 import pygame
 from pygame.event import Event
 
@@ -5,7 +7,7 @@ from src import Constants
 from src.BeeFamily.Bee import Bee
 from src.Interfaces.Drawable import Drawable
 from src.Scenes.Scene import Scene
-from src.UI.BeeSocket import BeeSocket
+from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import Button, ButtonEventType, ButtonState
 from src.UI.DrawablesGroup import DrawablesGroup
 from src.UI.ListItem import ListItem
@@ -42,14 +44,14 @@ class ModifyMenu(Drawable):
              self.position[1] + 3)
         )
         self.socket_group = RadioGroup()
-        self.socket1 = BeeSocket(parent=self, normal_image_path="socket1_normal.png",
+        self.socket1 = BeeSocket(parent=self, normal_image_path="socket1_normal.png", socket_type=BeeSocketType.ALL,
                                  group=self.socket_group, position=(self.position[0] + 102, self.position[1] + 135))
         self.socket1.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
         self.dna_image = pygame.image.load("{0}/dna1.png".format(self._res_dir)).convert_alpha()
         self.dna_rect = self.dna_image.get_rect()
         self.dna_rect.x = self.socket1.position[0] + self.socket1.get_size()[1] + 12
         self.dna_rect.y = self.socket1.get_rect().centery - self.dna_rect.height / 2
-        self.socket2 = BeeSocket(parent=self, normal_image_path="socket1_normal.png",
+        self.socket2 = BeeSocket(parent=self, normal_image_path="socket1_normal.png", socket_type=BeeSocketType.ALL,
                                  group=self.socket_group,
                                  position=(self.dna_rect.x + self.dna_rect.width + 7, self.socket1.position[1]))
         self.socket2.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
@@ -66,7 +68,7 @@ class ModifyMenu(Drawable):
         self.upgrade_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.upgrade()})
 
         self.result_socket = BeeSocket(parent=self, normal_image_path="socket1_normal.png",
-                                       group=self.socket_group, position=(0, 0))
+                                       group=self.socket_group, position=(0, 0), socket_type=BeeSocketType.ALL)
         self.result_socket.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
         self.result_socket.set_image_by_state(ButtonState.LOCKED, "socket3_normal.png")
         self.result_socket.lock()
@@ -125,7 +127,8 @@ class ModifyMenu(Drawable):
                                       )
         self.bee_list_view.set_image("{0}/modify_popup1_bee_list.png".format(self._res_dir))
 
-        for b in self.parent.player.farm.out_of_hive_bee_list:
+        for b in itertools.chain(self.parent.player.farm.out_of_hive_bee_list,
+                                 self.parent.player.farm.bees_from_all_hives):
             self.add_bee_to_list(b)
 
         self.socket1.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.add_bee_to_socket()})
