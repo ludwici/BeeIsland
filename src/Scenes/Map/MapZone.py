@@ -1,49 +1,31 @@
-import copy
+from copy import copy
 
 import pygame
 
 from src.Quests import Questable
 from src.Scenes.Map import MapScene
-from src.UI.Button import ButtonEventType
-from src.UI.PopupNotify import PopupNotify
-from src.Utils import resource_path
+from src.UI.Button import ButtonEventType, Button, ButtonState
 
 
-class MapZone:
+class MapZone(Button):
     __slots__ = (
-        "name", "parent", "border_image", "__is_lock", "__zone_rect", "quest_label", "quest_list", "quest_icons",
-        "click_rect", "__has_fog", "show_border", "__fog_rect", "fog_image", "__res_dir")
+        "name", "parent", "__is_lock", "quest_label", "quest_list", "quest_icons")
 
-    def __init__(self, parent: MapScene, name: str, pos_x: int, pos_y: int, has_fog: bool = True) -> None:
-        self.__res_dir = resource_path("res/images/zones")
+    def __init__(self, parent: MapScene, name: str, position: (int, int) = (0, 0),
+                 state: ButtonState = ButtonState.NORMAL) -> None:
+        normal_image_path = "zones/normal_{0}.png".format(name)
+        Button.__init__(self, parent=parent, normal_image_path=normal_image_path, position=position, state=state)
         self.name = name
         self.parent = parent
-        self.border_image = pygame.image.load("{0}/border_{1}.png".format(self.__res_dir, self.name)).convert_alpha()
-        self.__is_lock = True
-        self.__zone_rect = self.border_image.get_rect()
-        self.__zone_rect.x = pos_x
-        self.__zone_rect.y = pos_y
+        self.set_image_by_state(ButtonState.LOCKED, "zones/border_{0}.png".format(name))
+        self.lock()
         self.quest_list = []
         self.quest_icons = []
 
-        self.click_rect = copy.copy(self.__zone_rect)
-        self.click_rect.height -= 30
-        self.click_rect.width -= 50
-        self.click_rect.x += 35
-
-        self.__has_fog = has_fog
-        self.show_border = False
-        self.__fog_rect = None
-        try:
-            self.fog_image = pygame.image.load("{0}/fog_{1}.png".format(self.__res_dir, self.name)).convert_alpha()
-            self.__fog_rect = self.fog_image.get_rect()
-            self.__fog_rect.center = self.__zone_rect.center
-        except pygame.error:
-            self.__has_fog = False
-
-    @property
-    def is_lock(self) -> bool:
-        return self.__is_lock
+        self._click_rect = copy(self._rect)
+        self._click_rect.height -= 30
+        self._click_rect.width -= 50
+        self._click_rect.x += 35
 
     def add_quest(self, quest: Questable) -> None:
         quest.icon_btn.parent = quest
@@ -55,31 +37,12 @@ class MapZone:
     def add_quests(self, quest_list: list) -> None:
         self.quest_list.extend(quest_list)
 
-    def unlock(self) -> None:
-        self.__is_lock = False
-        self.__has_fog = False
-
-    def on_mouse_over(self) -> None:
-        self.show_border = True
-
-    def on_mouse_out(self) -> None:
-        self.show_border = False
-
-    def on_click(self) -> None:
-        if self.is_lock:
-            PopupNotify.create(scene=self.parent, text=self.parent.localization.get_string("locked_zone"))
-
     def handle_event(self, event) -> None:
-        if self.click_rect.collidepoint(pygame.mouse.get_pos()):
-            self.on_mouse_over()
-        else:
-            self.on_mouse_out()
-
-        [qi.handle_event(event) for qi in self.quest_icons]
+        super().handle_event(event)
+        if not self.is_locked:
+            [qi.handle_event(event) for qi in self.quest_icons]
 
     def draw(self, screen: pygame.Surface) -> None:
-        if self.show_border:
-            screen.blit(self.border_image, self.__zone_rect)
-        [qi.draw(screen) for qi in self.quest_icons]
-        if self.__has_fog:
-            screen.blit(self.fog_image, self.__fog_rect)
+        super().draw(screen)
+        if not self.is_locked:
+            [qi.draw(screen) for qi in self.quest_icons]
