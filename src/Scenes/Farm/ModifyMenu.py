@@ -235,9 +235,8 @@ class ModifyMenu(Drawable):
         )
 
         self.info_group["b_bonuses"].set_text(
-            text="{0} {1}".format(self.parent.localization.get_string("b_bonuses"), "+10% очков")
+            text="{0} {1}".format(self.parent.localization.get_string("b_bonuses"), b.bonus)
         )
-        # self.set_info_position()
 
     def destroy(self) -> None:
         self.parent.remove_drawable(self)
