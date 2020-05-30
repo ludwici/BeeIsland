@@ -9,7 +9,7 @@ from src.Database.Localization import Localization, LocalList
 from src.Player import Player
 from src.Scenes.Farm.FarmScene import FarmScene
 from src.Scenes.Map.MapScene import MapScene
-from src.Scenes.Match3.Match3Scene import Match3Scene
+from src.Scenes.Scene import Scene
 
 
 class RenderWindow:
@@ -31,11 +31,10 @@ class RenderWindow:
         self.main_player = Player()
         self.__scene_map = {
             "Map": MapScene(self, name="Map", player=self.main_player),
-            "Match3": Match3Scene(self, name="Match3", player=self.main_player),
             "Farm": FarmScene(self, name="Farm", player=self.main_player)
         }
         self.__current_scene = self.__scene_map["Map"]
-        self.change_scene("Map")
+        self.change_scene("Farm")
         self.__prev_scene = None
         self.__done = False
         self.__clock = Clock()
@@ -49,14 +48,23 @@ class RenderWindow:
         return self.__screen
 
     @property
+    def prev_scene(self) -> Scene:
+        return self.__prev_scene
+
+    @property
     def done(self) -> bool:
         return self.__done
 
-    def change_scene(self, scene_name: str, settings=None) -> None:
+    def remove_scene(self, scene_name: str) -> None:
+        del self.__scene_map[scene_name]
+
+    def add_scene(self, scene_name: str, scene) -> None:
+        self.__scene_map[scene_name] = scene
+
+    def change_scene(self, scene_name: str) -> None:
         self.__prev_scene = self.__current_scene
         self.__current_scene.on_scene_change()
         self.__current_scene = self.__scene_map[scene_name]
-        self.__current_scene.scene_settings = settings
         self.__current_scene.on_scene_started()
 
     def start(self) -> None:
