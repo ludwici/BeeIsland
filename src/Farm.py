@@ -1,5 +1,3 @@
-from copy import copy
-
 from src.BeeFamily.Bee import Bee
 from src.BeeNest import BeeNest
 
@@ -20,14 +18,14 @@ class Farm:
 
     @property
     def hive_list(self) -> list:
-        return copy(self.__hive_list)
+        return self.__hive_list
 
     @property
     def out_of_hive_bee_list(self) -> list:
         return self.__out_of_hive_bee_list
 
     @property
-    def bees_from_all_hives(self, allowable_filter=None):
+    def bees_from_all_hives(self) -> list:
         bees = []
         for h in self.__hive_list:
             bees.extend(h.bee_list)
