@@ -5,23 +5,24 @@ from typing import List, Tuple, Union, Generator, Any
 import pygame
 from pygame.rect import Rect
 
+import Constants
 from src.Animation import Animation
 from src.Scenes.Match3.Flower import FlowersData, Flower
 from src.Utils import get_distance
 
 
 class FlowersGrid:
-    __slots__ = ("tile_size", "position", "rows_count", "cols_count", "rect", "cells", "recheck", "done", "max_bonus",
+    __slots__ = ("tile_size", "rows_count", "cols_count", "rect", "cells", "recheck", "done", "max_bonus",
                  "score_multiplier", "bonus", "score", "elapsed", "spin_speed", "level", "num_combos", "bonus_cooldown",
                  "rows", "columns", "possible_matches", "animations", "spin_animations", "flower_combos", "no_moves")
 
     def __init__(self, position: (int, int), size: (int, int)) -> None:
         self.tile_size = 64, 64
-        self.position = position
         self.rows_count = size[0]
         self.cols_count = size[1]
         self.rect = Rect(position[0], position[1], self.cols_count * self.tile_size[0],
                          self.rows_count * self.tile_size[1])
+        self.rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
         self.cells = None
         self.recheck = False
         self.done = False
@@ -42,6 +43,10 @@ class FlowersGrid:
         self.flower_combos = self.make_combos()
         self.make_cells()
         self.fill()
+
+    @property
+    def position(self) -> (int, int):
+        return self.rect.x, self.rect.y
 
     def draw(self, surface: pygame.Surface) -> None:
         for cell in self.cells.values():
@@ -183,13 +188,13 @@ class FlowersGrid:
         delay = 0
         for m in sorted(matches, key=len):
             length = len(m)
-            points_per = 10 * (length - 2)
-            score = length * points_per * self.score_multiplier * self.level
+            points_per = 1 * (length - 2)
+            score = length * points_per * self.score_multiplier
             self.score += score
             self.bonus += length + points_per
             self.score_multiplier += 1
             delay += 250
-            print("Score: {}".format(self.score))
+            # print("Score: {}".format(self.score))
             # centers = [self.cells[i].rect.center for i in m]
             # cx = sum((c[0] for c in centers)) / len(centers)
             # cy = sum((c[1] for c in centers)) / len(centers)
