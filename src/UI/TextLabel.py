@@ -20,8 +20,6 @@ class TextLabel(Drawable):
         self.set_text(text)
 
     def set_text(self, text: str) -> None:
-        if not text:
-            return
         self._text = text
         self._image = self._font.render(self._text, True, self._color)
         self._rect.w, self._rect.h = self._image.get_rect().w, self._image.get_rect().h
