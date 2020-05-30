@@ -6,30 +6,29 @@ from pygame.event import Event
 from src.Database.Localization import Localization
 from src.Interfaces import Drawable
 from src.Player import Player
-from src.QuestSettings import QuestSettings
 from src.Utils import resource_path
 
 
 # TODO: Adapter pattern
 # TODO: Proxy pattern
 class Scene(ABC):
-    __slots__ = ("main_window", "player", "scene_settings", "_name", "_drawable_list", "_localization", "_res_dir")
+    __slots__ = ("main_window", "player", "scene_settings", "_name", "_drawable_list", "_localization", "_res_dir",
+                 "_next_scenes", "prev_scene")
 
     def __init__(self, main_window, name: str, player: Player) -> None:
         self._res_dir = resource_path("res")
         self.main_window = main_window
         self.player = player
-        self.scene_settings = QuestSettings()
         self._name = name
         self._drawable_list = []
         self._localization = None
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     @property
-    def localization(self):
+    def localization(self) -> Localization:
         return self._localization
 
     def update(self, dt: float) -> None:
@@ -41,6 +40,12 @@ class Scene(ABC):
 
     def draw(self, surface: pygame.Surface) -> None:
         [d.draw(surface) for d in self._drawable_list]
+
+    def add_scene(self, scene_name: str, scene) -> None:
+        self.main_window.add_scene(scene_name=scene_name, scene=scene)
+
+    def change_scene(self, scene_name: str) -> None:
+        self.main_window.change_scene(scene_name)
 
     def on_scene_change(self) -> None:
         self._drawable_list.clear()
