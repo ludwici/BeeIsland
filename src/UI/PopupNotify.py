@@ -18,9 +18,10 @@ class PopupNotify(Drawable):
         self.set_background("{0}/popup1.png".format(self._res_dir))
         self._time_to_kill = time_to_kill
         self.__start_time = pygame.time.get_ticks()
-        self.__text_label = MultilineTextLabel(parent=self, text=text, position=(20, 20), font_size=12,
-                                               line_length=self.bg_rect.width - 15 * 2)
+        self.__text_label = MultilineTextLabel(parent=self, text=text, position=(20, 20), font_size=14, bold=True,
+                                               line_length=self.bg_rect.width - 20 * 2)
         self.set_text(text=text)
+        self.show()
 
     @staticmethod
     def _check_position() -> Rect:
@@ -48,12 +49,6 @@ class PopupNotify(Drawable):
         self._bg_image = pygame.image.load(path_to_image).convert_alpha()
         self._rect.width = self._bg_image.get_rect().width
         self._rect.height = self._bg_image.get_rect().height
-
-    @classmethod
-    def create(cls, scene: Scene, *args, **kwargs) -> "PopupNotify":
-        p = cls(parent=scene, text=kwargs["text"])
-        p.show()
-        return p
 
     def set_text(self, text: str) -> None:
         self.__text_label.set_position((self.position[0] + 15, self.position[1] + 10))
