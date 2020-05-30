@@ -4,8 +4,8 @@ from pygame.event import Event
 from src import Constants
 from src.BeeFamily.Bee import Bee
 from src.Interfaces.Drawable import Drawable
-from src.QuestSettings import QuestSettings, QuestDifficult
-from src.Quests.Questable import Questable
+from src.Quests.Questable import Questable, QuestDifficult
+from src.Scenes.Match3.Match3Scene import Match3Scene
 from src.UI.BeeSelectPanel import BeeSelectPanel
 from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import Button, ButtonState, ButtonEventType
@@ -32,7 +32,6 @@ class QuestMenu(Drawable):
         self._rect.height = self._bg_image.get_rect().height
         position = (Constants.WINDOW_W / 2 - self._bg_image.get_rect().width / 2, 70)
         self.set_position(position)
-        self.quest_settings = QuestSettings()
         self.panel_rect = pygame.Rect((self.position[0] + 15, self.position[1] + 155, self.get_size()[0] - 15 * 2, 277))
 
         self.quest_label = TextLabel(parent=self, text=self.quest.title, position=self.position, font_size=16,
@@ -104,7 +103,6 @@ class QuestMenu(Drawable):
             b = BeeSocket(parent=self, normal_image_path="socket1_normal.png",
                           group=self.bee_socket_group, socket_type=BeeSocketType.WORKER,
                           position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y))
-            # b.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
             b.show_select_panel(self, all_bees)
             b.remove(self)
             bs_start_y += b.get_size()[1] + 8
@@ -113,17 +111,17 @@ class QuestMenu(Drawable):
                                          socket_type=BeeSocketType.WARRIOR, group=self.bee_socket_group,
                                          state=ButtonState.LOCKED,
                                          position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y + 15))
-        # self.bee_socket_hard.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
         self.bee_socket_hard.set_image_by_state(ButtonState.LOCKED, "socket3_normal.png")
 
         self.bee_socket_hard.show_select_panel(self, all_bees)
-        self.bee_socket_hard.remove(self)
+        # TODO: Update it!
+        # self.bee_socket_hard.remove(self)
 
         start_label = TextLabel(parent=self, text=self.parent.localization.get_string("start_button"), position=(0, 0),
                                 font_size=24)
         self.start_button = TextButton(parent=self, text_label=start_label, text_padding=(
             self.parent.localization.get_params_by_string("start_button")["x_off"], 0),
-                                       normal_image_path="start_quest_btn_normal.png", )
+                                       normal_image_path="start_quest_btn_normal.png")
         self.start_button.set_position(
             (self.position[0] + self._bg_image.get_rect().centerx - self.start_button.get_size()[0] / 2,
              self.panel_rect.y + self.panel_rect.height + 33)
@@ -150,7 +148,7 @@ class QuestMenu(Drawable):
             {ButtonEventType.ON_CLICK_LB: lambda d=QuestDifficult.HARD: self.change_difficult(d)}
         )
         self.start_button.add_action(
-            {ButtonEventType.ON_CLICK_LB: lambda: self.parent.main_window.change_scene("Match3", self.quest_settings)}
+            {ButtonEventType.ON_CLICK_LB: lambda: self.start_quest()}
         )
 
         self.change_difficult(QuestDifficult.EASY)
@@ -158,7 +156,24 @@ class QuestMenu(Drawable):
         for z in self.parent.zones:
             z.stop_handle()
 
-    def add_bee_to_socket(self, b: Bee):
+    def start_quest(self) -> None:
+        bee_list = []
+        for b in self.bee_socket_group.buttons:
+            if b.bee:
+                bee_list.append(b.bee)
+                print("Q" + repr(b.bee))
+
+        self.quest.bee_list = bee_list
+        q = Match3Scene(main_window=self.parent.main_window, name="Match3", player=self.parent.player, quest=self.quest)
+
+        self.parent.add_scene(scene_name="Match3", scene=q)
+        self.parent.change_scene("Match3")
+
+    def remove_bee_from_socket(self, socket) -> None:
+        print(socket.bee.name)
+        socket.bee.remove_bonus(self.quest)
+
+    def add_bee_to_socket(self, b: Bee) -> None:
         b.setup_bonus(self.quest)
 
     def generate_bonuses_labels(self) -> None:
@@ -183,7 +198,7 @@ class QuestMenu(Drawable):
             self.rewards_labels.append(r_l)
 
     def change_difficult(self, difficult: QuestDifficult) -> None:
-        self.quest_settings.set_difficult(difficult)
+        self.quest.difficult = difficult
         bag = self.quest.rewards.get_bag_copy()
         for r in bag:
             if difficult == QuestDifficult.EASY:
