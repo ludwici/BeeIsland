@@ -1,7 +1,6 @@
 import pygame
 from pygame.event import Event
 
-from src.UI.PopupNotify import PopupNotify
 from src import Constants
 from src.Database.Database import Database
 from src.Quests.Match3 import Match3
@@ -9,6 +8,7 @@ from src.Scenes.Map.MapZone import MapZone
 from src.Scenes.Map.QuestMenu import QuestMenu
 from src.Scenes.Scene import Scene
 from src.UI.Button import Button, ButtonState, ButtonEventType
+from src.UI.PopupNotify import PopupNotify
 
 
 class MapScene(Scene):
@@ -25,13 +25,13 @@ class MapScene(Scene):
         self.zones = []
         self.to_farm_button = Button(parent=self, position=(10, 10), normal_image_path="to_farm_normal.png")
         self.to_farm_button.set_image_by_state(ButtonState.HOVERED, "to_farm_hover.png")
-        self.to_farm_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.main_window.change_scene("Farm")})
+        self.to_farm_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.change_scene("Farm")})
 
     def on_scene_started(self) -> None:
         super().on_scene_started()
         self.init_zones()
 
-    def show_quest_menu(self, quest):
+    def show_quest_menu(self, quest) -> None:
         q = QuestMenu(parent=self, quest=quest)
         self.add_drawable(q)
 
@@ -67,8 +67,8 @@ class MapScene(Scene):
             if event.button == 1:
                 for z in self.zones:
                     if z.get_rect().collidepoint(event.pos):
-                        if z.is_locked:
-                            PopupNotify.create(scene=self, text=self.localization.get_string("locked_zone"))
+                        if z.is_locked and z.can_handle_events:
+                            PopupNotify(parent=self, text=self.localization.get_string("locked_zone"))
 
         [z.handle_event(event) for z in self.zones]
         [d.handle_event(event) for d in self._drawable_list]
