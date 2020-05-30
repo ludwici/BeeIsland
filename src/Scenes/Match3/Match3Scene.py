@@ -1,33 +1,82 @@
 import pygame
 from pygame.event import Event
 
+import Constants
 from src.Animation import Animation
+from src.Quests.Questable import Questable
 from src.Scenes.Match3.FlowersGrid import FlowersGrid
 from src.Scenes.Scene import Scene
+from src.UI.Button import ButtonState, ButtonEventType
+from src.UI.TextButton import TextButton
+from src.UI.TextLabel import TextLabel
 from src.Utils import get_distance
 
 
 class Match3Scene(Scene):
-    __slots__ = ("bg_image", "grid", "grabbed", "grab_point", "dest_tile", "last_click", "click_cooldown")
+    __slots__ = ("bg_image", "grid", "grabbed", "grab_point", "dest_tile", "last_click", "click_cooldown",
+                 "__timer_label", "__sec_to_finish", "__start_time", "__timer_val_label", "quest", "__time_over",
+                 "__score_label", "__score_val_label", "__finish_button")
 
-    def __init__(self, main_window, name, player) -> None:
+    def __init__(self, main_window, name, player, quest: Questable) -> None:
         Scene.__init__(self, main_window=main_window, player=player, name=name)
         self.bg_image = pygame.image.load("{0}/images/quest_bg1.png".format(self._res_dir)).convert_alpha()
-        self.grid = FlowersGrid(position=(124, 124), size=(8, 8))
+        self.grid = FlowersGrid(position=(Constants.WINDOW_W / 2, Constants.WINDOW_H / 2), size=(8, 8))
+        self.quest = quest
         self.grabbed = None
         self.grab_point = 0, 0
         self.dest_tile = None
         self.last_click = 0
         self.click_cooldown = 250
+        self.__sec_to_finish = 60 + self.quest.time
+        self.__start_time = 0
+        self.__timer_label = TextLabel(parent=self, font_size=32, color=(255, 255, 255))
+        self.__timer_val_label = TextLabel(parent=self, font_size=32, color=(255, 255, 255))
+        self.__time_over = False
+        self.__score_label = TextLabel(parent=self, font_size=32, color=(255, 255, 255))
+        self.__score_val_label = TextLabel(parent=self, font_size=32, color=(255, 255, 255))
+
+        finish_label = TextLabel(parent=self, font_size=24)
+        self.__finish_button = TextButton(parent=self, text_label=finish_label,
+                                          normal_image_path="start_quest_btn_normal.png")
+        self.__finish_button.set_image_by_state(ButtonState.HOVERED, "start_quest_btn_hover.png")
+        self.__finish_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.__finish_quest()})
+
+    def __finish_quest(self) -> None:
+        for b in self.quest.bee_list:
+            print("M" + repr(b))
+            b.give_xp(20)
+        self.player.resources += self.quest.rewards
+        self.player.resources += self.quest.additional_rewards
+        self.main_window.change_scene(self.main_window.prev_scene.name)
+        self.main_window.remove_scene(self.name)
 
     def on_scene_started(self) -> None:
         super().on_scene_started()
-        # TODO: Start timer and other mechanics
-        print(self.scene_settings)
+        self.__timer_label.set_text(text=self._localization.get_string("time"))
+        self.__score_label.set_text(text=self._localization.get_string("score"))
+        self.__score_val_label.set_text(text="0")
+        self.__timer_label.set_position((self.grid.rect.x, 10))
+        self.__timer_val_label.set_position(
+            (self.__timer_label.position[0] + self.__timer_label.get_size()[0] + 10, self.__timer_label.position[1]))
+
+        self.__score_label.set_position(
+            (self.grid.rect.x, self.__timer_label.get_size()[1] + self.__timer_label.position[1] - 10))
+        self.__score_val_label.set_position(
+            (self.__score_label.position[0] + self.__score_label.get_size()[0] + 10, self.__score_label.position[1]))
+
+        self.__finish_button.set_text(text=self._localization.get_string("finish_label"))
+        self.__finish_button.set_padding(padding=(self._localization.get_params_by_string("finish_label")["x_off"], 0))
+        self.__finish_button.set_position((self.grid.rect.centerx - self.__finish_button.get_size()[0] / 2,
+                                           self.grid.rect.bottomleft[1] + (
+                                                   Constants.WINDOW_H - self.grid.rect.bottomleft[1]) / 2
+                                           - self.__finish_button.get_size()[1] / 2))
+
+        self.__start_time = pygame.time.get_ticks()
 
     def update(self, dt: float) -> None:
         super().update(dt)
         self.last_click += dt
+        self.update_time_label(dt)
         if self.grabbed:
             current_dest = self.dest_tile
             flower = self.grabbed.flower
@@ -88,7 +137,22 @@ class Match3Scene(Scene):
             self.grid.done = True
 
         self.grid.update(dt)
+        self.__score_val_label.set_text(text=str(self.grid.score))
         # if self.grid.bonus >= self.grid.max_bonus:
+
+    def __time_over_handle(self) -> None:
+        self.__timer_val_label.set_text("")
+        self.__timer_label.set_text(text=self._localization.get_string("time_over"))
+
+    def update_time_label(self, dt) -> None:
+        if self.__time_over:
+            return
+        self.__sec_to_finish -= (1 * dt) / 1000
+        if self.__sec_to_finish > 0:
+            self.__timer_val_label.set_text(str(int(self.__sec_to_finish)))
+        else:
+            self.__time_over = True
+            self.__time_over_handle()
 
     def handle_events(self, event: Event) -> None:
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -117,6 +181,8 @@ class Match3Scene(Scene):
                     self.grid.reseat_flower(self.dest_tile)
                 self.grabbed = None
 
+        self.__finish_button.handle_event(event)
+
     def on_scene_change(self) -> None:
         super().on_scene_change()
 
@@ -126,6 +192,11 @@ class Match3Scene(Scene):
         self.grid.draw(surface)
         if self.grabbed and self.grabbed.flower:
             self.grabbed.flower.draw(surface)
+        self.__timer_label.draw(surface)
+        self.__timer_val_label.draw(surface)
+        self.__score_label.draw(surface)
+        self.__score_val_label.draw(surface)
+        self.__finish_button.draw(surface)
 
     def swap_tiles(self, grabbed_tile, dest_tile) -> None:
         gf = grabbed_tile.flower
