@@ -26,7 +26,7 @@ class Database:
         p = "{0}/main.db".format(self._db_location_dir)
         self.conn = sqlite3.connect(p)
 
-    def __del__(self):
+    def __del__(self) -> None:
         self.conn.close()
 
     def get_all_quests(self) -> list:
@@ -35,7 +35,7 @@ class Database:
         all_quests = cursor.fetchall()
         template_list = []
         for i in all_quests:
-            q = QuestTemplate(title=i[1], desc=i[2], icon_pos=(i[3], i[4]))
+            q = QuestTemplate(title=i[1], desc=i[2], icon_pos=(i[3], i[4]), q_type=i[5])
             rb = ResourceBag()
             for j in self.get_rewards_by_quest_id(i[0]):
                 r = self.get_resource_by_id(j[0])
@@ -45,7 +45,7 @@ class Database:
             template_list.append(q)
         return template_list
 
-    def get_rewards_by_quest_id(self, quest_id: int):
+    def get_rewards_by_quest_id(self, quest_id: int) -> list:
         query = open("{0}/scripts/get_rewards_by_quest_id.sql".format(self._db_location_dir), 'r').read()
         cursor = self.conn.execute(query, (self.__localization, quest_id))
         rewards = cursor.fetchall()
@@ -53,7 +53,7 @@ class Database:
 
     def get_resource_by_id(self, res_id: int) -> Resource:
         query = open("{0}/scripts/get_resource_by_id.sql".format(self._db_location_dir), 'r').read()
-        cursor = self.conn.execute(query, (self.__localization, res_id))
+        cursor = self.conn.execute(query, (self.__localization, self.__localization, res_id))
         template = cursor.fetchone()
-        r = Resource(locale_name=template[1], max_value=template[2])
+        r = Resource(locale_name=template[1], locale_desc=template[2], max_value=template[3])
         return r
