@@ -17,6 +17,13 @@ class TextButton(Button):
         super().set_position(position)
         self.text_label.set_position((self.position[0] + self.padding[0], self.position[1] + self.padding[1]))
 
+    def set_padding(self, padding: (int, int)) -> None:
+        self.padding = padding
+        self.set_position(self.position)
+
     def draw(self, screen: pygame.Surface) -> None:
         super().draw(screen)
         self.text_label.draw(screen)
+
+    def set_text(self, text: str) -> None:
+        self.text_label.set_text(text)
