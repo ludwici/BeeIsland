@@ -50,11 +50,15 @@ class FarmScene(Scene):
             bee_nest.set_image_by_state(ButtonState.HOVERED, "hive/hive1_empty_hover.png")
 
     def show_modify(self) -> None:
+        self.remove_drawable(self.find_drawable_by_type(BagMenu))
+        self.remove_drawable(self.find_drawable_by_type(ModifyMenu))
         self.nest_group.unselect_all()
         m = ModifyMenu(parent=self)
         self.add_drawable(m)
 
     def show_bag(self) -> None:
+        self.remove_drawable(self.find_drawable_by_type(BagMenu))
+        self.remove_drawable(self.find_drawable_by_type(ModifyMenu))
         self.nest_group.unselect_all()
         b = BagMenu(parent=self)
         self.add_drawable(b)
