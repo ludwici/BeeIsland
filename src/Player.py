@@ -1,7 +1,7 @@
 from src.BeeFamily.BeeQueen import BeeQueen
 from src.BeeFamily.BeeWarrior import BeeWarrior
 from src.BeeFamily.BeeWorker import BeeWorker
-from src.BeeFamily.Bonuses.IBonus import TimeBonus, ScoreBonus, RandomResourceBonus
+from src.BeeFamily.Bonuses.IBonus import TimeBonus, ScoreBonus, RandomResourceBonus, IncreaseResourcesBonus
 from src.BeeNest import BeeNest
 from src.Farm import Farm
 from src.InGameResources.ResourceBag import ResourceBag
@@ -16,6 +16,7 @@ class Player:
         self.farm = Farm()
         self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=TimeBonus(time_val=10)))
         self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=ScoreBonus(score_val=10)))
+        self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=IncreaseResourcesBonus(percent=10)))
         self.farm.add_out_of_hive_bee(BeeWarrior(parent=self, bonus=RandomResourceBonus(items_ids=[1, 2, 3, 4, 5])))
         self.farm.add_out_of_hive_bee(BeeQueen(parent=self))
 
