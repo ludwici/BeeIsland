@@ -74,7 +74,6 @@ class BeeSelectPanel(Drawable):
         self.__socket.bee = b
 
         self.parent.add_bee_to_socket(b)
-        print("B" + repr(b))
 
         self.__bee_list.remove(item.data)
         self.bee_list_view.remove_item(item)
