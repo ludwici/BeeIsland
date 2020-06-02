@@ -1,0 +1,36 @@
+{
+  "ru": {
+    "f_names": [
+      "Лили",
+      "Сара",
+      "Бонни"
+    ],
+    "m_names": [
+      "Джонни",
+      "Ричард",
+      "Пол"
+    ],
+    "bonuses": {
+      "time": "+{0} к времени",
+      "score": "+{0}% к общему счёту",
+      "resource": "Дополнительная награда"
+    }
+  },
+  "en": {
+    "f_names": [
+      "Lily",
+      "Sarah",
+      "Bonnie"
+    ],
+    "m_names": [
+      "John",
+      "Richard",
+      "Paul"
+    ],
+    "bonuses": {
+      "time": "+{0} to total time",
+      "score": "+{0}% to total score",
+      "resource": "Additional reward"
+    }
+  }
+}
