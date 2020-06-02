@@ -1,5 +1,5 @@
 [flake8]
-exclude = .git, __pycache__
+exclude = .git, __pycache__, res, tests
 ignore =
     # E501: line too long (greater than 79)
     E501,
