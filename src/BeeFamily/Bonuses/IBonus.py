@@ -2,7 +2,7 @@ import random
 from abc import ABC, abstractmethod
 
 from src.Database.Database import Database
-from src.Quests.Questable import Questable
+from src.Quests.Quest import Quest
 
 
 class IBonus(ABC):
@@ -12,14 +12,13 @@ class IBonus(ABC):
         pass
 
     @abstractmethod
-    def setup_bonus(self, q: Questable) -> None:
+    def setup_bonus(self, q: Quest) -> None:
         pass
 
     @abstractmethod
-    def remove_bonus(self, q: Questable) -> None:
+    def remove_bonus(self, q: Quest) -> None:
         pass
 
-    @abstractmethod
     def set_description(self, description: str) -> None:
         pass
 
@@ -34,10 +33,10 @@ class TimeBonus(IBonus):
         IBonus.__init__(self)
         self.__time = time_val
 
-    def setup_bonus(self, q: Questable) -> None:
+    def setup_bonus(self, q: Quest) -> None:
         q.time += self.__time
 
-    def remove_bonus(self, q: Questable) -> None:
+    def remove_bonus(self, q: Quest) -> None:
         q.time -= self.__time
 
     def set_description(self, description: str) -> None:
@@ -51,10 +50,10 @@ class ScoreBonus(IBonus):
         IBonus.__init__(self)
         self.__score = score_val
 
-    def setup_bonus(self, q: Questable) -> None:
+    def setup_bonus(self, q: Quest) -> None:
         q.score_modifier_percent += self.__score
 
-    def remove_bonus(self, q: Questable) -> None:
+    def remove_bonus(self, q: Quest) -> None:
         q.score_modifier_percent -= self.__score
 
     def set_description(self, description: str) -> None:
@@ -83,11 +82,28 @@ class RandomResourceBonus(IBonus):
             value = random.randint(1, 3)
         self.resource.value = value
 
-    def setup_bonus(self, q: Questable) -> None:
+    def setup_bonus(self, q: Quest) -> None:
         q.additional_rewards.append(self.resource)
 
-    def remove_bonus(self, q: Questable) -> None:
+    def remove_bonus(self, q: Quest) -> None:
         q.additional_rewards.remove(self.resource)
+
+    def set_description(self, description: str) -> None:
+        self._description = description
+
+
+class IncreaseResourcesBonus(IBonus):
+    __slots__ = "__percent"
+
+    def __init__(self, percent) -> None:
+        IBonus.__init__(self)
+        self.__percent = percent
+
+    def setup_bonus(self, q: Quest) -> None:
+        q.resources_modifier += self.__percent
+
+    def remove_bonus(self, q: Quest) -> None:
+        q.resources_modifier -= self.__percent
 
     def set_description(self, description: str) -> None:
         self._description = description
