@@ -64,13 +64,12 @@ class ListView(Drawable):
             if value > self.get_size()[0]:
                 self._items_pos = self.position[0] + self.padding[0] + self._item_distance[0], \
                                   self._items_pos[1] + item.get_size()[1] + self._item_distance[1]
-        item.set_position(self._items_pos, self._item_padding)
+        item.set_position(position=self._items_pos, padding=self.item_padding)
 
     def add_item(self, item: ListItem) -> None:
         if len(self._data) > 0:
             last = self._data[-1]
-            self._items_pos = last.position[0] + last.get_size()[0] + self._item_distance[0] + self.item_padding[0], \
-                              self._items_pos[1]
+            self._items_pos = (last.position[0] + last.get_size()[0] + self._item_distance[0], self._items_pos[1])
         self._data.append(item)
         self._set_item_position(item)
 
