@@ -20,12 +20,13 @@ class BeeSocketType(Enum):
 
 
 class BeeSocket(RadioButton):
-    __slots__ = ("_bee", "__local_id", "__socket_type")
+    __slots__ = ("_bee", "__local_id", "__socket_type", "__can_change_id")
 
     def __init__(self, parent, group, socket_type: BeeSocketType, normal_image_path: str, position: (int, int) = (0, 0),
-                 state: ButtonState = ButtonState.NORMAL, local_id: int = -1) -> None:
+                 state: ButtonState = ButtonState.NORMAL, local_id: int = -1, can_change_id: bool = True) -> None:
         RadioButton.__init__(self, parent=parent, group=group, normal_image_path=normal_image_path,
                              position=position, state=state)
+        self.__can_change_id = can_change_id
         self.__local_id = local_id
         self._bee = None
         self.__socket_type = socket_type
@@ -50,7 +51,8 @@ class BeeSocket(RadioButton):
     def bee(self, b: Bee):
         self._bee = b
         self._bee.get_rect().center = self._rect.center
-        self._bee.socket_id = self.__local_id
+        if self.__can_change_id:
+            self._bee.socket_id = self.__local_id
 
     @bee.deleter
     def bee(self):
