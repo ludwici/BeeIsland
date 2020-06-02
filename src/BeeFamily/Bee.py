@@ -1,3 +1,4 @@
+import math
 import random
 from enum import Enum
 
@@ -6,7 +7,7 @@ import pygame
 from src.Database.Localization import Localization
 from src.Interfaces.Drawable import Drawable
 from src.Interfaces.Levelable import Levelable
-from src.Quests.Questable import Questable
+from src.Quests.Quest import Quest
 
 
 class Bee(Levelable, Drawable):
@@ -55,10 +56,10 @@ class Bee(Levelable, Drawable):
         self._rect.width = self._image.get_rect().width
         self._rect.height = self._image.get_rect().height
 
-    def setup_bonus(self, q: Questable):
+    def setup_bonus(self, q: Quest):
         self._bonus.setup_bonus(q)
 
-    def remove_bonus(self, q: Questable):
+    def remove_bonus(self, q: Quest):
         self._bonus.remove_bonus(q)
 
     def get_random_name(self, prefix) -> str:
@@ -94,17 +95,16 @@ class Bee(Levelable, Drawable):
         if level == 1:
             self.speed = 5
             self.__max_hp = 70
-            self.max_xp = 100
             self.need_hive_level = 1
         elif level == 2:
             self.speed = 10
             self.__max_hp = 100
-            self.max_xp = 150
         elif level == 3:
             self.speed += 2
             self.__max_hp = 120
-            self.max_xp = 200
             self.need_hive_level = 2
+
+        self.max_xp = math.ceil(math.exp(level) * 100)
 
         self.current_hp = self.max_hp
         return True
