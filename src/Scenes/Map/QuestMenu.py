@@ -168,7 +168,7 @@ class QuestMenu(Drawable):
         if self.quest.q_type == 1:
             q = Match3Scene(main_window=self.parent.main_window, name="Match3", player=self.parent.player,
                             quest=self.quest)
-        elif self.quest.q_type == 2:
+        elif self.quest.q_type == 4:
             q = BeenixScene(main_window=self.parent.main_window, name="Beenix", player=self.parent.player,
                             quest=self.quest)
         else:
@@ -179,11 +179,12 @@ class QuestMenu(Drawable):
         self.parent.change_scene(q.name)
 
     def remove_bee_from_socket(self, socket) -> None:
-        print(socket.bee.name)
         socket.bee.remove_bonus(self.quest)
+        self.change_difficult(self.quest.difficult)
 
     def add_bee_to_socket(self, b: Bee) -> None:
         b.setup_bonus(self.quest)
+        self.change_difficult(self.quest.difficult)
 
     def generate_bonuses_labels(self) -> None:
         start_pos_y = self.bonuses_rect.y
@@ -209,13 +210,15 @@ class QuestMenu(Drawable):
     def change_difficult(self, difficult: QuestDifficult) -> None:
         self.quest.difficult = difficult
         bag = self.quest.rewards.get_bag_copy()
+        if difficult == QuestDifficult.EASY:
+            percent = self.quest.resources_modifier * 0
+        elif difficult == QuestDifficult.MEDIUM:
+            percent = self.quest.resources_modifier + 15
+        else:
+            percent = self.quest.resources_modifier + 35
+
         for r in bag:
-            if difficult == QuestDifficult.EASY:
-                r.increaseByPercent(0)
-            elif difficult == QuestDifficult.MEDIUM:
-                r.increaseByPercent(15)
-            elif difficult == QuestDifficult.HARD:
-                r.increaseByPercent(35)
+            r.increase_by_percent(percent)
 
         self.bee_socket_hard.lock() if difficult != QuestDifficult.HARD else self.bee_socket_hard.unlock()
 
