@@ -12,11 +12,12 @@ from src.Utils import get_distance
 
 
 class FlowersGrid:
-    __slots__ = ("tile_size", "rows_count", "cols_count", "rect", "cells", "recheck", "done", "max_bonus",
-                 "score_multiplier", "bonus", "score", "elapsed", "spin_speed", "level", "num_combos", "bonus_cooldown",
+    __slots__ = ("tile_size", "rows_count", "cols_count", "rect", "cells", "recheck", "done", "max_bonus", "parent",
+                 "score_multiplier", "bonus", "elapsed", "spin_speed", "level", "num_combos", "bonus_cooldown",
                  "rows", "columns", "possible_matches", "animations", "spin_animations", "flower_combos", "no_moves")
 
-    def __init__(self, position: (int, int), size: (int, int)) -> None:
+    def __init__(self, parent, position: (int, int), size: (int, int)) -> None:
+        self.parent = parent
         self.tile_size = 64, 64
         self.rows_count = size[0]
         self.cols_count = size[1]
@@ -29,7 +30,6 @@ class FlowersGrid:
         self.max_bonus = 1000
         self.bonus = int(self.max_bonus * .5)
         self.score_multiplier = 1
-        self.score = 0
         self.elapsed = 0
         self.spin_speed = 100
         self.level = 1
@@ -190,15 +190,10 @@ class FlowersGrid:
             length = len(m)
             points_per = 1 * (length - 2)
             score = length * points_per * self.score_multiplier
-            self.score += score
+            self.parent.score += score
             self.bonus += length + points_per
             self.score_multiplier += 1
             delay += 250
-            # print("Score: {}".format(self.score))
-            # centers = [self.cells[i].rect.center for i in m]
-            # cx = sum((c[0] for c in centers)) / len(centers)
-            # cy = sum((c[1] for c in centers)) / len(centers)
-            # self.add_points_label((cx, cy), score)
             for i in m:
                 self.cells[i].flower = None
         if matches:
@@ -271,11 +266,6 @@ class FlowersGrid:
                          round_values=True)
         spin.start(self)
         self.spin_animations.add(spin)
-
-    # def add_points_label(self, center_point, score):
-    #     cx, cy = center_point
-    #     label =
-
 
 class GridCell:
     def __init__(self, position: (int, int), index: (int, int), size: (int, int)) -> None:
