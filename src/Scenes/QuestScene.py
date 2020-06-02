@@ -78,7 +78,12 @@ class QuestScene(Scene):
     def _finish_quest(self) -> None:
         self.player.resources += self._quest.rewards
         self.player.resources += self._quest.additional_rewards
-        # TODO: give XP to bees
+        for b in self._quest.bee_list:
+            b.give_xp(self._calculate_xp(b.current_level))
+        self.score += self.score * self._quest.score_modifier_percent / 100
+
+        self.main_window.change_scene(self.main_window.prev_scene.name)
+        self.main_window.remove_scene(self.name)
 
     def update(self, dt: float) -> None:
         super().update(dt)

@@ -21,14 +21,6 @@ class Match3Scene(QuestScene):
         self.last_click = 0
         self.click_cooldown = 250
 
-    def _finish_quest(self) -> None:
-        # for b in self.quest.bee_list:
-        #     print("M" + repr(b))
-        #     b.give_xp(20)
-        super()._finish_quest()
-        self.main_window.change_scene(self.main_window.prev_scene.name)
-        self.main_window.remove_scene(self.name)
-
     def on_scene_started(self) -> None:
         super().on_scene_started()
         self._timer_label.set_text(text=self._localization.get_string("time"))
