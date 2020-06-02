@@ -1,12 +1,12 @@
 import pygame
 from pygame.event import Event
 
-import Constants
-from Quests.Questable import Questable
-from Scenes.Beenix.Area import Area
-from Scenes.Beenix.Beenix import Beenix, Direction
-from Scenes.Beenix.Spider import Spider
-from Scenes.QuestScene import QuestScene
+from src import Constants
+from src.Quests.Questable import Questable
+from src.Scenes.Beenix.Area import Area
+from src.Scenes.Beenix.Beenix import Beenix, Direction
+from src.Scenes.Beenix.Spider import Spider
+from src.Scenes.QuestScene import QuestScene
 
 
 class BeenixScene(QuestScene):

@@ -1,13 +1,14 @@
+from abc import abstractmethod
+
 import pygame
 from pygame.event import Event
 
-from Database.Localization import Localization
-from Quests.Questable import Questable
-from Scenes.Scene import Scene
-from UI.Button import ButtonState, ButtonEventType
-from UI.TextButton import TextButton
-from UI.TextLabel import TextLabel
-from abc import abstractmethod
+from src.Database.Localization import Localization
+from src.Quests.Questable import Questable
+from src.Scenes.Scene import Scene
+from src.UI.Button import ButtonState, ButtonEventType
+from src.UI.TextButton import TextButton
+from src.UI.TextLabel import TextLabel
 
 
 class QuestScene(Scene):

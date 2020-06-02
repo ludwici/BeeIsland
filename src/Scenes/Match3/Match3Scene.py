@@ -1,11 +1,11 @@
 import pygame
 from pygame.event import Event
 
-import Constants
-from Scenes.QuestScene import QuestScene
+from src import Constants
 from src.Animation import Animation
 from src.Quests.Questable import Questable
 from src.Scenes.Match3.FlowersGrid import FlowersGrid
+from src.Scenes.QuestScene import QuestScene
 from src.Utils import get_distance
 
 

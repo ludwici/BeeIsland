@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from Utils import resource_path
+from src.Utils import resource_path
 
 
 class Spider(pygame.sprite.Sprite):

@@ -2,7 +2,7 @@ from copy import copy
 
 import pygame
 
-import Constants
+from src import Constants
 from src.InGameResources.Resource import Resource
 from src.Interfaces.Drawable import Drawable
 from src.Scenes.Scene import Scene

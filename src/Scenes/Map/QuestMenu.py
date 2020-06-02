@@ -1,11 +1,11 @@
 import pygame
 from pygame.event import Event
 
-from Scenes.Beenix.BeenixScene import BeenixScene
 from src import Constants
 from src.BeeFamily.Bee import Bee
 from src.Interfaces.Drawable import Drawable
 from src.Quests.Questable import Questable, QuestDifficult
+from src.Scenes.Beenix.BeenixScene import BeenixScene
 from src.Scenes.Match3.Match3Scene import Match3Scene
 from src.UI.BeeSelectPanel import BeeSelectPanel
 from src.UI.BeeSocket import BeeSocket, BeeSocketType

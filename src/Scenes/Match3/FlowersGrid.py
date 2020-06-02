@@ -5,7 +5,7 @@ from typing import List, Tuple, Union, Generator, Any
 import pygame
 from pygame.rect import Rect
 
-import Constants
+from src import Constants
 from src.Animation import Animation
 from src.Scenes.Match3.Flower import FlowersData, Flower
 from src.Utils import get_distance
