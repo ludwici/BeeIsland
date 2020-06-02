@@ -1,4 +1,3 @@
-from abc import ABC
 from enum import Enum
 
 from src.InGameResources.ResourceBag import ResourceBag
@@ -12,10 +11,9 @@ class QuestDifficult(Enum):
     HARD = 3
 
 
-class Questable(ABC):
-    __slots__ = (
-        "__is_allow", "time", "score_modifier_percent", "title", "_description", "zone", "condition", "rewards",
-        "difficult", "icon_btn")
+class Quest:
+    __slots__ = ("__is_allow", "time", "score_modifier_percent", "title", "_description", "zone", "condition",
+                 "rewards", "difficult", "icon_btn", "bee_list", "additional_rewards", "q_type", "resources_modifier")
 
     def __init__(self, quest_template: QuestTemplate, icon_offset: (int, int)) -> None:
         self.__is_allow = False
@@ -23,6 +21,7 @@ class Questable(ABC):
         self.score_modifier_percent = 0
         self.title = quest_template.title
         self._description = quest_template.desc
+        self.resources_modifier = 1
         self.zone = None
         self.bee_list = []
         self.condition = None
@@ -31,7 +30,13 @@ class Questable(ABC):
         self.difficult = None
         self.q_type = quest_template.q_type
         icon_pos = quest_template.icon_pos[0] + icon_offset[0], quest_template.icon_pos[1] + icon_offset[1]
-        self.icon_btn = Button(parent=self.zone, normal_image_path="quest_icon1.png", position=icon_pos)
+        if self.q_type == 1:
+            icon_name = "quest_icon1.png"
+        elif self.q_type == 4:
+            icon_name = "quest_icon4.png"
+        else:
+            icon_name = "quest_icon1.png"
+        self.icon_btn = Button(parent=self.zone, normal_image_path=icon_name, position=icon_pos)
 
     @property
     def is_allow(self) -> bool:
