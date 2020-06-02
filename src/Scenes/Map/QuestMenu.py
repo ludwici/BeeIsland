@@ -1,6 +1,7 @@
 import pygame
 from pygame.event import Event
 
+from Scenes.Beenix.BeenixScene import BeenixScene
 from src import Constants
 from src.BeeFamily.Bee import Bee
 from src.Interfaces.Drawable import Drawable
@@ -164,10 +165,18 @@ class QuestMenu(Drawable):
                 print("Q" + repr(b.bee))
 
         self.quest.bee_list = bee_list
-        q = Match3Scene(main_window=self.parent.main_window, name="Match3", player=self.parent.player, quest=self.quest)
+        if self.quest.q_type == 1:
+            q = Match3Scene(main_window=self.parent.main_window, name="Match3", player=self.parent.player,
+                            quest=self.quest)
+        elif self.quest.q_type == 2:
+            q = BeenixScene(main_window=self.parent.main_window, name="Beenix", player=self.parent.player,
+                            quest=self.quest)
+        else:
+            q = Match3Scene(main_window=self.parent.main_window, name="Match3", player=self.parent.player,
+                            quest=self.quest)
 
-        self.parent.add_scene(scene_name="Match3", scene=q)
-        self.parent.change_scene("Match3")
+        self.parent.add_scene(scene_name=q.name, scene=q)
+        self.parent.change_scene(q.name)
 
     def remove_bee_from_socket(self, socket) -> None:
         print(socket.bee.name)
