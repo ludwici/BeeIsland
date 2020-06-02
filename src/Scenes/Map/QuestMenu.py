@@ -4,7 +4,7 @@ from pygame.event import Event
 from src import Constants
 from src.BeeFamily.Bee import Bee
 from src.Interfaces.Drawable import Drawable
-from src.Quests.Questable import Questable, QuestDifficult
+from src.Quests.Quest import Quest, QuestDifficult
 from src.Scenes.Beenix.BeenixScene import BeenixScene
 from src.Scenes.Match3.Match3Scene import Match3Scene
 from src.UI.BeeSelectPanel import BeeSelectPanel
@@ -22,7 +22,7 @@ class QuestMenu(Drawable):
                  "bonuses_panel", "bonuses_rect", "bonus_list", "bee_socket_group", "bee_socket_hard", "start_button",
                  "rewards_labels", "rewards_rect")
 
-    def __init__(self, parent, quest: Questable) -> None:
+    def __init__(self, parent, quest: Quest) -> None:
         Drawable.__init__(self, parent=parent)
         self.close_btn = Button(parent=self, normal_image_path="close_button1.png")
         self.close_btn.set_image_by_state(ButtonState.HOVERED, "close_button1_hover.png")

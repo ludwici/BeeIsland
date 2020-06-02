@@ -2,7 +2,7 @@ import pygame
 from pygame.event import Event
 
 from src import Constants
-from src.Quests.Questable import Questable
+from src.Quests.Quest import Quest
 from src.Scenes.Beenix.Area import Area
 from src.Scenes.Beenix.Beenix import Beenix, Direction
 from src.Scenes.Beenix.Spider import Spider
@@ -11,7 +11,7 @@ from src.Scenes.QuestScene import QuestScene
 
 class BeenixScene(QuestScene):
 
-    def __init__(self, main_window, name, player, quest: Questable) -> None:
+    def __init__(self, main_window, name, player, quest: Quest) -> None:
         QuestScene.__init__(self, main_window=main_window, player=player, name=name, quest=quest)
         self._percent_zone = 60
         self._spider_count = 2
@@ -50,11 +50,6 @@ class BeenixScene(QuestScene):
         self._finish_button.set_text(text=self._localization.get_string("finish_label"))
         self._finish_button.set_padding(padding=(self._localization.get_params_by_string("finish_label")["x_off"], 0))
         self._finish_button.set_position((Constants.WINDOW_W - self._finish_button.get_size()[0] - 10, 10))
-
-    def _finish_quest(self) -> None:
-        super()._finish_quest()
-        self.main_window.change_scene(self.main_window.prev_scene.name)
-        self.main_window.remove_scene(self.name)
 
     def handle_events(self, event: Event) -> None:
         super().handle_events(event)

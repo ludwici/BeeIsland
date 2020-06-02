@@ -2,7 +2,7 @@ from copy import copy
 
 import pygame
 
-from src.Quests import Questable
+from src.Quests import Quest
 from src.Scenes.Map import MapScene
 from src.UI.Button import ButtonEventType, Button, ButtonState
 
@@ -27,7 +27,7 @@ class MapZone(Button):
         self._click_rect.width -= 50
         self._click_rect.x += 35
 
-    def add_quest(self, quest: Questable) -> None:
+    def add_quest(self, quest: Quest) -> None:
         quest.icon_btn.parent = quest
         quest.zone = self
         quest.icon_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.parent.show_quest_menu(quest)})

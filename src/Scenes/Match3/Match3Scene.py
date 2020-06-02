@@ -3,7 +3,7 @@ from pygame.event import Event
 
 from src import Constants
 from src.Animation import Animation
-from src.Quests.Questable import Questable
+from src.Quests.Quest import Quest
 from src.Scenes.Match3.FlowersGrid import FlowersGrid
 from src.Scenes.QuestScene import QuestScene
 from src.Utils import get_distance
@@ -12,7 +12,7 @@ from src.Utils import get_distance
 class Match3Scene(QuestScene):
     __slots__ = ("grid", "grabbed", "grab_point", "dest_tile", "last_click", "click_cooldown")
 
-    def __init__(self, main_window, name, player, quest: Questable) -> None:
+    def __init__(self, main_window, name, player, quest: Quest) -> None:
         QuestScene.__init__(self, main_window=main_window, player=player, name=name, quest=quest)
         self.grid = FlowersGrid(position=(Constants.WINDOW_W / 2, Constants.WINDOW_H / 2), size=(8, 8))
         self.grabbed = None

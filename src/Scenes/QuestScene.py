@@ -1,10 +1,11 @@
+import math
 from abc import abstractmethod
 
 import pygame
 from pygame.event import Event
 
 from src.Database.Localization import Localization
-from src.Quests.Questable import Questable
+from src.Quests.Quest import Quest
 from src.Scenes.Scene import Scene
 from src.UI.Button import ButtonState, ButtonEventType
 from src.UI.TextButton import TextButton
@@ -15,7 +16,7 @@ class QuestScene(Scene):
     __slots__ = ("_bg_image", "_quest", "_sec_to_finish", "_start_time", "_timer_label", "_timer_val_label",
                  "_time_over", "_score_label", "_score_val_label", "_finish_button")
 
-    def __init__(self, main_window, name, player, quest: Questable) -> None:
+    def __init__(self, main_window, name, player, quest: Quest) -> None:
         Scene.__init__(self, main_window=main_window, name=name, player=player)
         self._bg_image = pygame.image.load("{0}/images/{1}_bg.png".format(self._res_dir, name)).convert_alpha()
         self._quest = quest

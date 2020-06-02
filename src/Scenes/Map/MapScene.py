@@ -3,7 +3,7 @@ from pygame.event import Event
 
 from src import Constants
 from src.Database.Database import Database
-from src.Quests.Match3 import Match3
+from src.Quests.Quest import Quest
 from src.Scenes.Map.MapZone import MapZone
 from src.Scenes.Map.QuestMenu import QuestMenu
 from src.Scenes.Scene import Scene
@@ -50,7 +50,7 @@ class MapScene(Scene):
         db = Database.get_instance()
         quest_data = db.get_all_quests()
         for qd in quest_data:
-            quest = Match3(quest_template=qd, icon_offset=(bg_x, bg_y))
+            quest = Quest(quest_template=qd, icon_offset=(bg_x, bg_y))
             zone1.add_quest(quest)
 
         self.zones.extend([zone1, zone2, zone3, zone4, zone5, zone6, zone7])
