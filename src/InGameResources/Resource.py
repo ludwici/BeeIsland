@@ -8,7 +8,7 @@ class Resource:
         self.__base_value = amount
         self.max_value = max_value
 
-    def increaseByPercent(self, percent) -> None:
+    def increase_by_percent(self, percent) -> None:
         self.__value = self.base_value
         self.__value += self.base_value * percent / 100
 
