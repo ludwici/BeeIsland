@@ -14,14 +14,15 @@ from src.UI.TextLabel import TextLabel
 
 class QuestScene(Scene):
     __slots__ = ("_bg_image", "_quest", "_sec_to_finish", "_start_time", "_timer_label", "_timer_val_label",
-                 "_time_over", "_score_label", "_score_val_label", "_finish_button")
+                 "_time_over", "_score_label", "_score_val_label", "_finish_button", "score")
 
     def __init__(self, main_window, name, player, quest: Quest) -> None:
         Scene.__init__(self, main_window=main_window, name=name, player=player)
         self._bg_image = pygame.image.load("{0}/images/{1}_bg.png".format(self._res_dir, name)).convert_alpha()
         self._quest = quest
-        self._sec_to_finish = 60 + self._quest.time
+        self._sec_to_finish = 60 + self._quest.time - len(self._quest.bee_list) * 5
         self._start_time = 0
+        self.score = 0
         self._timer_label = TextLabel(parent=self, font_size=32, color=(255, 255, 255))
         self._timer_val_label = TextLabel(parent=self, font_size=32, color=(255, 255, 255))
         self._time_over = False
@@ -36,6 +37,43 @@ class QuestScene(Scene):
     @abstractmethod
     def _time_over_handle(self) -> None:
         pass
+
+    @staticmethod
+    def __diff(bee_lvl: int):
+        if bee_lvl <= 1:
+            return 0
+        elif bee_lvl == 2:
+            return 1
+        elif bee_lvl == 3:
+            return 3
+        else:
+            return 6
+
+    def __mxp(self, bee_lvl: int):
+        if self._quest.zone.name == "zone1":
+            mod = 5
+        elif self._quest.zone.name == "zone2":
+            mod = 25
+        elif self._quest.zone.name == "zone3":
+            mod = 65
+        else:
+            mod = 205
+        return mod + (2 * bee_lvl)
+
+    @staticmethod
+    def rf(bee_lvl):
+        if bee_lvl == 1:
+            return 1
+        elif bee_lvl <= 2 or bee_lvl <= 4:
+            return 1 - (bee_lvl - 10) / 100
+        elif bee_lvl == 5:
+            return 0.82
+        else:
+            return 1
+
+    def _calculate_xp(self, bee_lvl: int):
+        xp = math.ceil(((8 * bee_lvl) + QuestScene.__diff(bee_lvl)) * self.__mxp(bee_lvl) * QuestScene.rf(bee_lvl))
+        return xp
 
     def _finish_quest(self) -> None:
         self.player.resources += self._quest.rewards
