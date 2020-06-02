@@ -73,4 +73,4 @@ class BeeNestButton(RadioButton):
                 self.set_image_by_state(ButtonState.HOVERED, "hive/hive1_normal.png")
                 self.select()
             else:
-                PopupNotify.create(scene=self.parent, text=self.parent.localization.get_string("locked_nest"))
+                PopupNotify(parent=self.parent, text=self.parent.localization.get_string("locked_nest"))

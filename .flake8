@@ -7,5 +7,7 @@ ignore =
     E126,
     # W503: line break before binary operator
     # this error are deprecated, see: https://www.python.org/dev/peps/pep-0008/#should-a-line-break-before-or-after-a-binary-operator
-    W503
+    W503,
+    # C901: function is too complex
+    C901
 max-complexity = 10

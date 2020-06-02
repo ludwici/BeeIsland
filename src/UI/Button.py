@@ -4,6 +4,7 @@ from enum import Enum
 
 import pygame
 from flags import Flags
+from pygame.rect import Rect
 
 from src.Interfaces.Drawable import Drawable
 from src.Utils import resource_path
@@ -25,8 +26,8 @@ class ButtonState(Flags):
 
 # TODO: Mixed Strategy pattern
 class Button(Drawable):
-    __slots__ = ("_current_image", "_images", "_state", "__action_list", "__action_list_rb", "__on_hover_list",
-                 "__on_hover_out_list", "_can_call_out", "_can_handle_events", "_click_rect")
+    __slots__ = ("_current_image", "_images", "_state", "_action_list", "_action_list_rb", "_on_hover_list",
+                 "_on_hover_out_list", "_can_call_out", "_can_handle_events", "_click_rect")
 
     def __init__(self, parent, normal_image_path: str, position: (int, int) = (0, 0),
                  state: ButtonState = ButtonState.NORMAL) -> None:
@@ -38,14 +39,23 @@ class Button(Drawable):
         self._state = None
         self.state = int(state)
 
-        self.__action_list = list()
-        self.__action_list_rb = list()
-        self.__on_hover_list = list()
-        self.__on_hover_out_list = list()
+        self._action_list = list()
+        self._action_list_rb = list()
+        self._on_hover_list = list()
+        self._on_hover_out_list = list()
 
         self._can_call_out = False
         self._can_handle_events = True
         self._click_rect = self._rect
+
+    def set_click_rect(self, rect: Rect) -> None:
+        self._click_rect = rect
+
+    def set_position(self, position: (int, int)) -> None:
+        last_rect = copy(self._rect)
+        super().set_position(position)
+        if self._click_rect == last_rect:
+            self._click_rect = self._rect
 
     def set_image_by_state(self, state: ButtonState, path: str) -> None:
         state = int(state)
@@ -63,10 +73,10 @@ class Button(Drawable):
     def state(self) -> ButtonState:
         return self._state
 
-    def stop_handle(self):
+    def stop_handle(self) -> None:
         self._can_handle_events = False
 
-    def start_handle(self):
+    def start_handle(self) -> None:
         self._can_handle_events = True
 
     @state.setter
@@ -86,6 +96,10 @@ class Button(Drawable):
     @property
     def is_locked(self) -> bool:
         return self.state == int(ButtonState.LOCKED)
+
+    @property
+    def can_handle_events(self) -> bool:
+        return self._can_handle_events
 
     @property
     def is_selected(self) -> bool:
@@ -109,13 +123,13 @@ class Button(Drawable):
     def add_action(self, item: dict, *args) -> None:
         for k, v in item.items():
             if k.name == ButtonEventType.ON_CLICK_LB.name:
-                self.__action_list.append(v)
+                self._action_list.append(v)
             elif k.name == ButtonEventType.ON_HOVER_ON.name:
-                self.__on_hover_list.append(v)
+                self._on_hover_list.append(v)
             elif k.name == ButtonEventType.ON_HOVER_OUT.name:
-                self.__on_hover_out_list.append(v)
+                self._on_hover_out_list.append(v)
             elif k.name == ButtonEventType.ON_CLICK_RB.name:
-                self.__action_list_rb.append(v)
+                self._action_list_rb.append(v)
             else:
                 raise KeyError("Invalid flag: {0}".format(k))
 
@@ -135,18 +149,18 @@ class Button(Drawable):
     def on_hover_on(self) -> None:
         self.state |= int(ButtonState.HOVERED)
         self._can_call_out = True
-        [a() for a in self.__on_hover_list]
+        [a() for a in self._on_hover_list]
 
     def on_hover_out(self) -> None:
         self.state ^= int(ButtonState.HOVERED)
-        [a() for a in self.__on_hover_out_list]
+        [a() for a in self._on_hover_out_list]
         self._can_call_out = False
 
     def on_click(self) -> None:
-        [a() for a in self.__action_list]
+        [a() for a in self._action_list]
 
     def on_click_rb(self) -> None:
-        [a() for a in self.__action_list_rb]
+        [a() for a in self._action_list_rb]
 
     def handle_event(self, event) -> None:
         if self.is_locked or not self._can_handle_events:

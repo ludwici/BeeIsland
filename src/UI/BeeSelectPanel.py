@@ -1,5 +1,3 @@
-from copy import copy
-
 import pygame
 
 from src.BeeFamily.Bee import Bee
@@ -17,7 +15,7 @@ class BeeSelectPanel(Drawable):
         "__bee_list", "__allowable_position_x", "__allowable_position_y", "__socket", "close_btn",
         "_bg_image", "bee_list_view", "info_group", "__scene")
 
-    def __init__(self, parent, socket, bee_list: list, position: (int, int) = (0, 0)):
+    def __init__(self, parent, socket, bee_list: list, position: (int, int) = (0, 0)) -> None:
         Drawable.__init__(self, parent=parent, position=position)
         self.__bee_list = bee_list
         self.__allowable_position_x = 100
@@ -32,8 +30,8 @@ class BeeSelectPanel(Drawable):
         self._bg_image = pygame.image.load("{0}/select_bee_panel.png".format(self._res_dir)).convert_alpha()
         self._rect.width = self._bg_image.get_rect().width
         self._rect.height = self._bg_image.get_rect().height
-        self.bee_list_view = ListView(parent=self, position=(0, 0), padding=(33, 36), item_padding=(15, 10),
-                                      size=(308, 170))
+        self.bee_list_view = ListView(parent=self, position=(0, 0), padding=(23, 21), item_padding=(10, 10),
+                                      size=(308, 170), item_distance=(10, 15))
 
         name_label = TextLabel(parent=self, position=(self.position[0] + 323, self.position[1] + 30), font_size=14)
 
@@ -61,27 +59,27 @@ class BeeSelectPanel(Drawable):
 
         self.show_info(self.__socket.bee)
 
-    def destroy(self):
+    def destroy(self) -> None:
         self.__scene.remove_drawable(self)
 
-    def remove_from_socket(self, socket):
+    def remove_from_socket(self, socket) -> None:
         if socket.bee:
-            copied = copy(socket.bee)
-            self.__bee_list.append(copied)
-            self.add_bee_to_list(copied)
+            self.__bee_list.append(socket.bee)
+            self.add_bee_to_list(socket.bee)
             del socket.bee
 
-    def add_bee_to_socket(self, item: ListItem):
+    def add_bee_to_socket(self, item: ListItem) -> None:
         self.remove_from_socket(self.__socket)
-        b = copy(item.data)
+        b = item.data
         self.__socket.bee = b
 
         self.parent.add_bee_to_socket(b)
+        print("B" + repr(b))
 
         self.__bee_list.remove(item.data)
         self.bee_list_view.remove_item(item)
 
-    def add_bee_to_list(self, b: Bee):
+    def add_bee_to_list(self, b: Bee) -> None:
         if type(b) != self.__socket.socket_type:
             return
 
@@ -117,10 +115,6 @@ class BeeSelectPanel(Drawable):
 
         self.close_btn.handle_event(event)
         self.bee_list_view.handle_event(event)
-        # if event.type == pygame.MOUSEMOTION:
-        #     if self._rect.collidepoint(event.pos):
-        #         event.buttons = (0, 0, 0)
-        # self.parent.handle_events(event)
 
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self._bg_image, self._rect)
@@ -128,10 +122,11 @@ class BeeSelectPanel(Drawable):
         self.bee_list_view.draw(screen)
         self.info_group.draw(screen)
 
-    def show_info(self, b: Bee):
+    def show_info(self, b: Bee) -> None:
         if not b:
             return
-        self.info_group["b_name"].set_text(text="{0} {1}".format(self.__scene.localization.get_string("b_name"), b.name))
+        self.info_group["b_name"].set_text(
+            text="{0} {1}".format(self.__scene.localization.get_string("b_name"), b.name))
 
         self.info_group["b_level"].set_text(
             text="{0} {1}".format(self.__scene.localization.get_string("b_level"), b.current_level)

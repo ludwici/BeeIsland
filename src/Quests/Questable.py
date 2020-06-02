@@ -1,8 +1,15 @@
 from abc import ABC
+from enum import Enum
 
 from src.InGameResources.ResourceBag import ResourceBag
 from src.Quests.QuestTemplate import QuestTemplate
 from src.UI.Button import Button
+
+
+class QuestDifficult(Enum):
+    EASY = 1
+    MEDIUM = 2
+    HARD = 3
 
 
 class Questable(ABC):
@@ -17,10 +24,12 @@ class Questable(ABC):
         self.title = quest_template.title
         self._description = quest_template.desc
         self.zone = None
+        self.bee_list = []
         self.condition = None
         self.rewards = quest_template.resources_bag
         self.additional_rewards = ResourceBag()
         self.difficult = None
+        self.q_type = quest_template.q_type
         icon_pos = quest_template.icon_pos[0] + icon_offset[0], quest_template.icon_pos[1] + icon_offset[1]
         self.icon_btn = Button(parent=self.zone, normal_image_path="quest_icon1.png", position=icon_pos)
 

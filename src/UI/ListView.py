@@ -7,23 +7,25 @@ from src.UI.ListItem import ListItem
 
 
 class ListView(Drawable):
-    __slots__ = ("_data", "_item_padding", "padding", "bg_image", "_items_pos")
+    __slots__ = ("_data", "_item_padding", "padding", "bg_image", "_items_pos", "_item_distance")
 
     def __init__(self, parent, position: (int, int), size: (int, int), padding: (int, int) = (0, 0),
-                 item_padding: (int, int) = (0, 0)) -> None:
+                 item_padding: (int, int) = (0, 0), item_distance: (int, int) = (0, 0)) -> None:
         Drawable.__init__(self, parent=parent, position=position)
         self._data = []
         self._item_padding = item_padding
+        self._item_distance = item_distance
         self.padding = padding
         self.bg_image = None
         self._rect.width = size[0]
         self._rect.height = size[1]
-        self._items_pos = self.position[0] + self.padding[0], self.position[1] + self.padding[1]
+        self._items_pos = (self.position[0] + self.padding[0] + self._item_distance[0],
+                           self.position[1] + self.padding[1] + self._item_distance[1])
         self.set_position(position)
 
     @property
     def item_padding(self) -> (int, int):
-        return copy(self._item_padding)
+        return self._item_padding
 
     @item_padding.setter
     def item_padding(self, value: (int, int)):
@@ -38,26 +40,36 @@ class ListView(Drawable):
 
     def set_position(self, position: (int, int)) -> None:
         super().set_position(position)
-        self._items_pos = self.position[0] + self.padding[0], self.position[1] + self.padding[1]
+        self._items_pos = (self.position[0] + self.padding[0] + self._item_distance[0],
+                           self.position[1] + self.padding[1] + self._item_distance[1])
         self._redraw_list()
 
+    # def generate_list_items(self, item_template: ListItem):
+    #     for s in self.source:
+    #         i = item_template.copy()
+    #         i.data = s
+    #         self.add_item(i)
+    #     self._redraw_list()
+
     def _redraw_list(self) -> None:
-        self._items_pos = self.position[0] + self.padding[0], self.position[1] + self.padding[1]
+        self._items_pos = (self.position[0] + self.padding[0] + self._item_distance[0],
+                           self.position[1] + self.padding[1] + self._item_distance[1])
         for i in self._data:
             self._set_item_position(i)
-            self._items_pos = i.position[0] + i.get_size()[0] + self.item_padding[0], self._items_pos[1]
+            self._items_pos = i.position[0] + i.get_size()[0] + self._item_distance[0], self._items_pos[1]
 
     def _set_item_position(self, item: ListItem):
-        value = item.get_size()[0] + self._items_pos[0] + self.item_padding[0] - self.position[0]
-        if value > self.get_size()[0]:
-            self._items_pos = self.position[0] + self.padding[0], \
-                              self._items_pos[1] + item.get_size()[1] + self.item_padding[1]
-        item.set_position(self._items_pos)
+        value = item.get_size()[0] + self._items_pos[0] + self._item_distance[0] - self.position[0]
+        if len(self._data) != 1:
+            if value > self.get_size()[0]:
+                self._items_pos = self.position[0] + self.padding[0] + self._item_distance[0], \
+                                  self._items_pos[1] + item.get_size()[1] + self._item_distance[1]
+        item.set_position(position=self._items_pos, padding=self.item_padding)
 
     def add_item(self, item: ListItem) -> None:
         if len(self._data) > 0:
             last = self._data[-1]
-            self._items_pos = last.position[0] + last.get_size()[0] + self.item_padding[0], self._items_pos[1]
+            self._items_pos = (last.position[0] + last.get_size()[0] + self._item_distance[0], self._items_pos[1])
         self._data.append(item)
         self._set_item_position(item)
 

@@ -10,7 +10,8 @@ select q.id,
            else ql.desc_ru
            end as description,
        q.icon_x,
-       q.icon_y
+       q.icon_y,
+       q.type
 from quest q,
      quest_locale ql
 where q.type = ql.id;

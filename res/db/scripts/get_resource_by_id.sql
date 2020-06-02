@@ -4,6 +4,11 @@ select r.id,
            when 'en' then rl.name_en
            else rl.name_ru
            end as name,
+       case ?
+           when 'ua' then rl.desc_ua
+           when 'en' then rl.desc_en
+           else rl.desc_ru
+           end as desc,
        r.max_count
 from resource r,
      resource_locale rl

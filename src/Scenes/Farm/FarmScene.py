@@ -2,6 +2,7 @@ import pygame
 from pygame.event import Event
 
 from src import Constants
+from src.Scenes.Farm.BagMenu import BagMenu
 from src.Scenes.Farm.ModifyMenu import ModifyMenu
 from src.Scenes.Scene import Scene
 from src.UI.BeeNestButton import BeeNestButton
@@ -10,7 +11,8 @@ from src.UI.RadioGroup import RadioGroup
 
 
 class FarmScene(Scene):
-    __slots__ = ("main_image", "bg_image", "main_image_rect", "to_map_button", "to_upgrade_button", "nest_group")
+    __slots__ = ("main_image", "bg_image", "main_image_rect", "to_map_button", "to_upgrade_button", "nest_group",
+                 "to_bag_button")
 
     def __init__(self, main_window, name, player) -> None:
         Scene.__init__(self, main_window=main_window, player=player, name=name)
@@ -24,11 +26,19 @@ class FarmScene(Scene):
 
         self.to_upgrade_button = Button(parent=self, normal_image_path="to_upgrade_normal.png",
                                         position=(
-                                        10, self.to_map_button.position[1] + self.to_map_button.get_size()[1] + 10))
+                                            10, self.to_map_button.position[1] + self.to_map_button.get_size()[1] + 10)
+                                        )
         self.to_upgrade_button.set_image_by_state(ButtonState.HOVERED, "to_upgrade_hover.png")
 
-        self.to_map_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.main_window.change_scene("Map")})
+        self.to_bag_button = Button(parent=self, normal_image_path="bag_normal.png")
+        self.to_bag_button.set_position(
+            position=(10, self.to_upgrade_button.position[1] + self.to_upgrade_button.get_size()[1] + 10)
+        )
+        self.to_bag_button.set_image_by_state(ButtonState.HOVERED, "bag_hover.png")
+
+        self.to_map_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.change_scene("Map")})
         self.to_upgrade_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show_modify()})
+        self.to_bag_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show_bag()})
         bg_x = self.main_image_rect.x
         bg_y = self.main_image_rect.y
         positions = [(194, 104), (501, 104), (111, 340), (584, 340), (194, 577), (501, 577)]
@@ -39,16 +49,26 @@ class FarmScene(Scene):
                                      position=(bg_x + positions[i][0], bg_y + positions[i][1]))
             bee_nest.set_image_by_state(ButtonState.HOVERED, "hive/hive1_empty_hover.png")
 
-    def show_modify(self):
+    def show_modify(self) -> None:
+        self.remove_drawable(self.find_drawable_by_type(BagMenu))
+        self.remove_drawable(self.find_drawable_by_type(ModifyMenu))
         self.nest_group.unselect_all()
         m = ModifyMenu(parent=self)
         self.add_drawable(m)
+
+    def show_bag(self) -> None:
+        self.remove_drawable(self.find_drawable_by_type(BagMenu))
+        self.remove_drawable(self.find_drawable_by_type(ModifyMenu))
+        self.nest_group.unselect_all()
+        b = BagMenu(parent=self)
+        self.add_drawable(b)
 
     def handle_events(self, event: Event) -> None:
         self.nest_group.handle_event(event)
         [d.handle_event(event) for d in self._drawable_list]
         self.to_map_button.handle_event(event)
         self.to_upgrade_button.handle_event(event)
+        self.to_bag_button.handle_event(event)
 
     def draw(self, surface: pygame.Surface) -> None:
         surface.fill((0, 0, 0))
@@ -58,6 +78,7 @@ class FarmScene(Scene):
         super().draw(surface)
         self.to_map_button.draw(surface)
         self.to_upgrade_button.draw(surface)
+        self.to_bag_button.draw(surface)
 
     def on_scene_change(self) -> None:
         self.nest_group.unselect_all()

@@ -120,10 +120,11 @@ class ModifyMenu(Drawable):
                                                "b_speed": speed_label, "b_hp": hp_label,
                                                "b_bonuses": bonus_list_label})
 
-        self.bee_list_view = ListView(parent=self, size=(625, 253), item_padding=(15, 15), padding=(45, 24),
+        self.bee_list_view = ListView(parent=self, size=(625, 253), item_padding=(10, 10), padding=(30, 9),
                                       position=(
                                           self.position[0] + 9,
                                           self.info_block_rect.y + self.info_block_rect.height - 6),
+                                      item_distance=(15, 15)
                                       )
         self.bee_list_view.set_image("{0}/modify_popup1_bee_list.png".format(self._res_dir))
 
