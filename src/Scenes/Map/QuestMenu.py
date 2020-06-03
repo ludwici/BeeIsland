@@ -92,22 +92,20 @@ class QuestMenu(Menu):
         self.bee_socket_group = RadioGroup()
         all_bees = self.parent.player.farm.bees_from_all_hives
         for i in range(3):
-            b = BeeSocket(parent=self, normal_image_path="socket1_normal.png", can_change_id=False,
+            b = BeeSocket(parent=self, can_change_id=False,
                           group=self.bee_socket_group, socket_type=BeeSocketType.WORKER,
                           position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y))
             b.show_select_panel(self, all_bees)
             b.remove(self)
             bs_start_y += b.get_size()[1] + 8
 
-        self.bee_socket_hard = BeeSocket(parent=self, normal_image_path="socket2_normal.png",
+        self.bee_socket_hard = BeeSocket(parent=self,
                                          socket_type=BeeSocketType.WARRIOR, group=self.bee_socket_group,
                                          state=ButtonState.LOCKED, can_change_id=False,
                                          position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y + 15))
         self.bee_socket_hard.set_image_by_state(ButtonState.LOCKED, "socket3_normal.png")
 
         self.bee_socket_hard.show_select_panel(self, all_bees)
-        # TODO: Update it!
-        # self.bee_socket_hard.remove(self)
 
         start_label = TextLabel(parent=self, text=self.parent.localization.get_string("start_button"), position=(0, 0),
                                 font_size=24)

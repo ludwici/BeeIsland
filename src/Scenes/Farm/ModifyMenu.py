@@ -30,14 +30,14 @@ class ModifyMenu(Menu):
              self.position[1] + 3)
         )
         self.socket_group = RadioGroup()
-        self.socket1 = BeeSocket(parent=self, normal_image_path="socket1_normal.png", socket_type=BeeSocketType.ALL,
+        self.socket1 = BeeSocket(parent=self, socket_type=BeeSocketType.ALL,
                                  group=self.socket_group, position=(self.position[0] + 102, self.position[1] + 135))
         self.socket1.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
         self.dna_image = pygame.image.load("{0}/dna1.png".format(self._res_dir)).convert_alpha()
         self.dna_rect = self.dna_image.get_rect()
         self.dna_rect.x = self.socket1.position[0] + self.socket1.get_size()[1] + 12
         self.dna_rect.y = self.socket1.get_rect().centery - self.dna_rect.height / 2
-        self.socket2 = BeeSocket(parent=self, normal_image_path="socket1_normal.png", socket_type=BeeSocketType.ALL,
+        self.socket2 = BeeSocket(parent=self, socket_type=BeeSocketType.ALL,
                                  group=self.socket_group,
                                  position=(self.dna_rect.x + self.dna_rect.width + 7, self.socket1.position[1]))
         self.socket2.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
@@ -53,7 +53,7 @@ class ModifyMenu(Menu):
                                           self.socket2.position[1] + self.socket2.get_size()[1] + 15))
         self.upgrade_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.upgrade()})
 
-        self.result_socket = BeeSocket(parent=self, normal_image_path="socket1_normal.png",
+        self.result_socket = BeeSocket(parent=self,
                                        group=self.socket_group, position=(0, 0), socket_type=BeeSocketType.ALL)
         self.result_socket.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
         self.result_socket.set_image_by_state(ButtonState.LOCKED, "socket3_normal.png")
@@ -235,9 +235,7 @@ class ModifyMenu(Menu):
         )
 
     def draw(self, screen: pygame.Surface) -> None:
-        screen.blit(self._bg_image, self._rect)
-        self.close_btn.draw(screen)
-        self.title_label.draw(screen)
+        super().draw(screen)
         self.socket_group.draw(screen)
         self.upgrade_button.draw(screen)
         screen.blit(self.dna_image, self.dna_rect)
