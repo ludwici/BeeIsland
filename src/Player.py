@@ -1,7 +1,7 @@
 from src.BeeFamily.BeeQueen import BeeQueen
 from src.BeeFamily.BeeWarrior import BeeWarrior
 from src.BeeFamily.BeeWorker import BeeWorker
-from src.BeeFamily.Bonuses.IBonus import TimeBonus, ScoreBonus, RandomResourceBonus, IncreaseResourcesBonus
+from src.BeeFamily.Bonuses.IBonus import RandomResourceBonus, IncreaseResourcesBonus, IBonus
 from src.BeeNest import BeeNest
 from src.Farm import Farm
 from src.InGameResources.ResourceBag import ResourceBag
@@ -14,10 +14,17 @@ class Player:
         self.name = "Player"
         self.resources = ResourceBag()
         self.farm = Farm()
-        self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=TimeBonus(time_val=10)))
-        self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=ScoreBonus(score_val=10)))
-        self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=IncreaseResourcesBonus(percent=10)))
-        self.farm.add_out_of_hive_bee(BeeWarrior(parent=self, bonus=RandomResourceBonus(items_ids=[1, 2, 3, 4, 5])))
+        self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=IBonus.get_random_bonus()))
+        self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=IBonus.get_random_bonus()))
+        self.farm.add_out_of_hive_bee(BeeWorker(parent=self, bonus=IBonus.get_random_bonus()))
+        self.farm.add_out_of_hive_bee(BeeWarrior(parent=self, bonus=IBonus.get_random_bonus(
+            bonus_seq=[RandomResourceBonus(), IncreaseResourcesBonus()])))
+        self.farm.add_out_of_hive_bee(BeeWarrior(parent=self, bonus=IBonus.get_random_bonus(
+            bonus_seq=[RandomResourceBonus(), IncreaseResourcesBonus()])))
+        self.farm.add_out_of_hive_bee(BeeWarrior(parent=self, bonus=IBonus.get_random_bonus(
+            bonus_seq=[RandomResourceBonus(), IncreaseResourcesBonus()])))
+
+        self.farm.add_out_of_hive_bee(BeeQueen(parent=self))
         self.farm.add_out_of_hive_bee(BeeQueen(parent=self))
 
     def already_has_hive(self, hive: BeeNest):
