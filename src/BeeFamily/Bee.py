@@ -93,11 +93,11 @@ class Bee(Levelable, Drawable):
             return False
 
         if level == 1:
-            self.speed = 5
+            self.speed = 1
             self.__max_hp = 70
             self.need_hive_level = 1
         elif level == 2:
-            self.speed = 10
+            self.speed += 1
             self.__max_hp = 100
         elif level == 3:
             self.speed += 2
