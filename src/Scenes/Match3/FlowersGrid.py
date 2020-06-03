@@ -40,6 +40,7 @@ class FlowersGrid:
         self.bonus = int(self.max_bonus * .5)
         self.score_multiplier = 1
         self.elapsed = 0
+        self.spin_speed = 100
         self.bonus_cooldown = .01
         self.rows = []
         self.columns = []
