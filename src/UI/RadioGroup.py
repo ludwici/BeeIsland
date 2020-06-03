@@ -13,6 +13,23 @@ class RadioGroup:
     def __getitem__(self, index):
         return self.__buttons[index]
 
+    def set_position(self, position: (int, int)) -> None:
+        [b.set_position((b.position[0] + position[0], b.position[1] + position[1])) for b in self.__buttons]
+
+    def stop_handle(self) -> None:
+        [b.stop_handle() for b in self.__buttons]
+
+    def start_handle(self) -> None:
+        [b.start_handle() for b in self.__buttons]
+
+    @property
+    def position(self) -> (int, int):
+        try:
+            r = self.__buttons[0].position
+        except KeyError:
+            r = (0, 0)
+        return r
+
     def clear(self):
         self.__buttons.clear()
 
@@ -41,7 +58,7 @@ class RadioGroup:
         self.__buttons.append(b)
 
     def draw(self, screen: pygame.Surface) -> None:
-        [b.draw(screen) for b in self.__buttons]
+        [b.draw(screen) for b in self.__buttons if b.is_draw]
 
     def handle_event(self, event) -> None:
-        [b.handle_event(event) for b in self.__buttons]
+        [b.handle_event(event) for b in self.__buttons if b.is_draw]
