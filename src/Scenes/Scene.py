@@ -53,6 +53,12 @@ class Scene(ABC):
     def on_scene_started(self) -> None:
         self._localization = Localization(path="scenes/{0}".format(self.name))
 
+    def find_child_of(self, child, base) -> Drawable:
+        for d in self._drawable_list:
+            if issubclass(type(child), base):
+                return d
+        return None
+
     def find_drawable_by_type(self, t) -> Drawable:
         for d in self._drawable_list:
             if type(d) is t:
