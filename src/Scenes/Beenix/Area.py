@@ -22,7 +22,7 @@ class Area(pygame.sprite.Sprite):
     def __init__(self) -> None:
         pygame.sprite.Sprite.__init__(self)
         self.size = (800, 600)
-        self.image = pygame.Surface(self.size)
+        self.image = pygame.Surface(self.size)  # lgtm [py/call/wrong-arguments]
         self.image.fill((255, 255, 255))
         self.image.set_colorkey((255, 255, 255))
         self.rect = self.image.get_rect()
@@ -72,7 +72,7 @@ class Area(pygame.sprite.Sprite):
     def fill(self, x, y, color) -> None:
         x = int(x)
         y = int(y)
-        self.pixels = pygame.PixelArray(self.image)
+        self.pixels = pygame.PixelArray(self.image)  # lgtm [py/call/wrong-arguments]
         old_color = self.pixels[x, y]
 
         if old_color == color:
