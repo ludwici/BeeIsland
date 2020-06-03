@@ -38,6 +38,12 @@
     },
     "amount_res_label": {
       "text": "Количество"
+    },
+    "hives": {
+      "text": "Ульи"
+    },
+    "price": {
+      "text": "Цена:"
     }
   },
   "en": {
