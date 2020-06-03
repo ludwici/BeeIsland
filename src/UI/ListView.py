@@ -32,6 +32,9 @@ class ListView(Drawable):
         self._item_padding = value
         self._redraw_list()
 
+    def index_of_value(self, i: ListItem):
+        return self._data.index(i)
+
     def get_data(self) -> list:
         return copy(self._data)
 
