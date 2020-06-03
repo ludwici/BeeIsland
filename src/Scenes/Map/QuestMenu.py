@@ -1,56 +1,47 @@
 import pygame
 from pygame.event import Event
 
-from src import Constants
+from UI.Menu import Menu
 from src.BeeFamily.Bee import Bee
-from src.Interfaces.Drawable import Drawable
 from src.Quests.Quest import Quest, QuestDifficult
 from src.Scenes.Beenix.BeenixScene import BeenixScene
 from src.Scenes.Match3.Match3Scene import Match3Scene
 from src.UI.BeeSelectPanel import BeeSelectPanel
 from src.UI.BeeSocket import BeeSocket, BeeSocketType
-from src.UI.Button import Button, ButtonState, ButtonEventType
+from src.UI.Button import ButtonState, ButtonEventType
 from src.UI.MultilineTextLabel import MultilineTextLabel
 from src.UI.RadioGroup import RadioGroup
 from src.UI.TextButton import TextButton
 from src.UI.TextLabel import TextLabel
 
 
-class QuestMenu(Drawable):
-    __slots__ = ("close_btn", "quest", "_bg_image", "quest_settings", "panel_rect", "quest_label", "description_label",
+class QuestMenu(Menu):
+    __slots__ = ("quest", "quest_settings", "panel_rect", "description_label",
                  "difficult_label", "rewards_label", "easy_button", "medium_button", "hard_button", "rewards_panel",
                  "bonuses_panel", "bonuses_rect", "bonus_list", "bee_socket_group", "bee_socket_hard", "start_button",
                  "rewards_labels", "rewards_rect")
 
     def __init__(self, parent, quest: Quest) -> None:
-        Drawable.__init__(self, parent=parent)
-        self.close_btn = Button(parent=self, normal_image_path="close_button1.png")
-        self.close_btn.set_image_by_state(ButtonState.HOVERED, "close_button1_hover.png")
-        self.close_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.destroy()})
+        Menu.__init__(self, parent=parent, bg_name="popup3")
         self.quest = quest
-        self._bg_image = pygame.image.load("{0}/popup3.png".format(self._res_dir)).convert_alpha()
-        self._rect.width = self._bg_image.get_rect().width
-        self._rect.height = self._bg_image.get_rect().height
-        position = (Constants.WINDOW_W / 2 - self._bg_image.get_rect().width / 2, 70)
-        self.set_position(position)
-        self.panel_rect = pygame.Rect((self.position[0] + 15, self.position[1] + 155, self.get_size()[0] - 15 * 2, 277))
-
-        self.quest_label = TextLabel(parent=self, text=self.quest.title, position=self.position, font_size=16,
-                                     bold=True)
-        self.quest_label.set_position(
-            (self.position[0] + self._bg_image.get_rect().centerx - self.quest_label.get_size()[0] / 2,
+        self._title_label.set_text(text=self.quest.title)
+        self._title_label.set_position(
+            (self.position[0] + self._bg_image.get_rect().centerx - self._title_label.get_size()[0] / 2 + 10,
              self.position[1] + 3)
         )
+
+        self.panel_rect = pygame.Rect((self.position[0] + 15, self.position[1] + 155, self.get_size()[0] - 15 * 2, 277))
+
         ll = self._bg_image.get_rect().width - self.parent.localization.get_params_by_string("desc_label")[
             "line_length"] * 2 - 35
         self.description_label = MultilineTextLabel(parent=self, text=self.quest.description, line_length=ll,
                                                     position=(self.position[0] + 35, self.position[1] + 75),
                                                     font_size=14)
         self.difficult_label = TextLabel(parent=self, text=self.parent.localization.get_string("difficult_label"),
-                                         position=(position[0], self.panel_rect.y + 10), font_size=14)
+                                         position=(self.position[0], self.panel_rect.y + 10), font_size=14)
 
         self.rewards_label = TextLabel(parent=self, text=self.parent.localization.get_string("reward_label"),
-                                       position=position, font_size=14, )
+                                       position=self.position, font_size=14, )
 
         easy_label = TextLabel(parent=self, text=self.parent.localization.get_string("easy"), font_size=14)
         self.easy_button = TextButton(parent=self, normal_image_path="difficult/easy_normal.png",
@@ -229,17 +220,11 @@ class QuestMenu(Drawable):
         for z in self.parent.zones:
             z.start_handle()
         self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
-        self.parent.remove_drawable(self)
-
-    def set_position(self, position: (int, int)) -> None:
-        super().set_position(position)
-        self.close_btn.set_position(position=(self._rect.topright[0] - 50, self._rect.topright[1] - 10))
+        super().destroy()
 
     def draw(self, screen: pygame.Surface) -> None:
-        screen.blit(self._bg_image, self._rect)
+        super().draw(screen)
         pygame.draw.rect(screen, (24, 15, 7), self.panel_rect)
-        self.close_btn.draw(screen)
-        self.quest_label.draw(screen)
         self.description_label.draw(screen)
         self.difficult_label.draw(screen)
         self.easy_button.draw(screen)
@@ -257,7 +242,7 @@ class QuestMenu(Drawable):
         self.generate_bonuses_labels()
 
     def handle_event(self, event: Event) -> None:
-        self.close_btn.handle_event(event)
+        super().handle_event(event)
         self.easy_button.handle_event(event)
         self.medium_button.handle_event(event)
         self.hard_button.handle_event(event)

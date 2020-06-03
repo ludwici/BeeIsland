@@ -2,11 +2,10 @@ from copy import copy
 
 import pygame
 
-from src import Constants
+from UI.Menu import Menu
 from src.InGameResources.Resource import Resource
-from src.Interfaces.Drawable import Drawable
 from src.Scenes.Scene import Scene
-from src.UI.Button import Button, ButtonState, ButtonEventType
+from src.UI.Button import ButtonState, ButtonEventType
 from src.UI.DrawablesGroup import DrawablesGroup
 from src.UI.ListItem import ListItem
 from src.UI.ListView import ListView
@@ -14,28 +13,16 @@ from src.UI.PopupNotify import PopupNotify
 from src.UI.TextLabel import TextLabel
 
 
-class BagMenu(Drawable):
-    __slots__ = (
-        "close_btn", "_bg_image", "_rect", "title_label", "resource_list_view", "name_res_label", "amount_res_label",
-        "can_show_hint", "sec_to_show", "hint_text")
+class BagMenu(Menu):
+    __slots__ = ("resource_list_view", "name_res_label", "amount_res_label", "can_show_hint", "sec_to_show",
+                 "hint_text")
 
     def __init__(self, parent: Scene) -> None:
-        Drawable.__init__(self, parent=parent)
-        self.close_btn = Button(parent=self, normal_image_path="close_button1.png")
-        self.close_btn.set_image_by_state(ButtonState.HOVERED, "close_button1_hover.png")
-        self.close_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.destroy()})
+        Menu.__init__(self, parent=parent, bg_name="popup3")
 
-        self._bg_image = pygame.image.load("{0}/popup3.png".format(self._res_dir)).convert_alpha()
-        self._rect.width = self._bg_image.get_rect().width
-        self._rect.height = self._bg_image.get_rect().height
-        position = (Constants.WINDOW_W / 2 - self._bg_image.get_rect().width / 2, 70)
-        self.set_position(position)
-        self.close_btn.set_position(position=(self._rect.topright[0] - 50, self._rect.topright[1] - 10))
-
-        self.title_label = TextLabel(parent=self, text=self.parent.localization.get_string("bag_title"),
-                                     position=self.position, font_size=16, bold=True)
-        self.title_label.set_position(
-            (self.position[0] + self._bg_image.get_rect().centerx - self.title_label.get_size()[0] / 2 + 10,
+        self._title_label.set_text(text=self.parent.localization.get_string("bag_title"))
+        self._title_label.set_position(
+            (self.position[0] + self._bg_image.get_rect().centerx - self._title_label.get_size()[0] / 2 + 10,
              self.position[1] + 3)
         )
 
@@ -44,7 +31,8 @@ class BagMenu(Drawable):
         self.resource_list_view.set_image("{0}/bag/bg.png".format(self._res_dir))
 
         self.name_res_label = TextLabel(parent=self, text=self.parent.localization.get_string("res_name_label"),
-                                        position=(self.resource_list_view.position[0], position[1] + 56), font_size=14,
+                                        position=(self.resource_list_view.position[0], self.position[1] + 56),
+                                        font_size=14,
                                         bold=True)
         self.name_res_label.set_position((self.name_res_label.position[0] + self.resource_list_view.get_size()[0] / 4
                                           - self.name_res_label.get_size()[0] / 2, self.name_res_label.position[1]))
@@ -103,16 +91,14 @@ class BagMenu(Drawable):
 
     def destroy(self) -> None:
         self.parent.remove_drawable(self.parent.find_drawable_by_type(PopupNotify))
-        self.parent.remove_drawable(self)
+        super().destroy()
 
     def draw(self, screen: pygame.Surface) -> None:
-        screen.blit(self._bg_image, self._rect)
-        self.close_btn.draw(screen)
-        self.title_label.draw(screen)
+        super().draw(screen)
         self.resource_list_view.draw(screen)
         self.name_res_label.draw(screen)
         self.amount_res_label.draw(screen)
 
     def handle_event(self, event) -> None:
-        self.close_btn.handle_event(event)
+        super().handle_event(event)
         self.resource_list_view.handle_event(event)

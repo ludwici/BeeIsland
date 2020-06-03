@@ -3,12 +3,11 @@ import itertools
 import pygame
 from pygame.event import Event
 
-from src import Constants
+from UI.Menu import Menu
 from src.BeeFamily.Bee import Bee
-from src.Interfaces.Drawable import Drawable
 from src.Scenes.Scene import Scene
 from src.UI.BeeSocket import BeeSocket, BeeSocketType
-from src.UI.Button import Button, ButtonEventType, ButtonState
+from src.UI.Button import ButtonEventType, ButtonState
 from src.UI.DrawablesGroup import DrawablesGroup
 from src.UI.ListItem import ListItem
 from src.UI.ListView import ListView
@@ -18,29 +17,16 @@ from src.UI.TextButton import TextButton
 from src.UI.TextLabel import TextLabel
 
 
-class ModifyMenu(Drawable):
+class ModifyMenu(Menu):
     __slots__ = (
-        "close_btn", "_bg_image", "title_label", "socket_group", "socket1", "socket2", "upgrade_button",
-        "result_socket", "info_block_image", "info_block_rect", "info_text_label", "info_group", "bee_list_view",
-        "dna_image", "dna_rect")
+        "socket_group", "socket1", "socket2", "upgrade_button", "result_socket", "info_block_image", "info_block_rect",
+        "info_text_label", "info_group", "bee_list_view", "dna_image", "dna_rect")
 
     def __init__(self, parent: Scene) -> None:
-        Drawable.__init__(self, parent=parent)
-        self.close_btn = Button(parent=self, normal_image_path="close_button1.png")
-        self.close_btn.set_image_by_state(ButtonState.HOVERED, "close_button1_hover.png")
-        self.close_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.destroy()})
-
-        self._bg_image = pygame.image.load("{0}/modify_popup1.png".format(self._res_dir)).convert_alpha()
-        self._rect.width = self._bg_image.get_rect().width
-        self._rect.height = self._bg_image.get_rect().height
-        position = (Constants.WINDOW_W / 2 - self._bg_image.get_rect().width / 2, 70)
-        self.set_position(position)
-        self.close_btn.set_position(position=(self._rect.topright[0] - 50, self._rect.topright[1] - 10))
-
-        self.title_label = TextLabel(parent=self, text=self.parent.localization.get_string("modify_title"),
-                                     position=self.position, font_size=16, bold=True)
-        self.title_label.set_position(
-            (self.position[0] + self._bg_image.get_rect().centerx - self.title_label.get_size()[0] / 2 + 10,
+        Menu.__init__(self, parent=parent, bg_name="modify_popup1")
+        self._title_label.set_text(text=self.parent.localization.get_string("modify_title"))
+        self._title_label.set_position(
+            (self.position[0] + self._bg_image.get_rect().centerx - self._title_label.get_size()[0] / 2 + 10,
              self.position[1] + 3)
         )
         self.socket_group = RadioGroup()
@@ -142,6 +128,12 @@ class ModifyMenu(Drawable):
 
         self.clear_bee_info()
 
+        self.parent.nest_group.stop_handle()
+
+    def destroy(self):
+        self.parent.nest_group.start_handle()
+        super().destroy()
+
     def upgrade(self):
         self.upgrade_button.lock()
         self.parent.player.farm.remove_out_of_hive_bee(self.socket1.bee)
@@ -242,9 +234,6 @@ class ModifyMenu(Drawable):
             text="{0} {1}".format(self.parent.localization.get_string("b_bonuses"), b.bonus)
         )
 
-    def destroy(self) -> None:
-        self.parent.remove_drawable(self)
-
     def draw(self, screen: pygame.Surface) -> None:
         screen.blit(self._bg_image, self._rect)
         self.close_btn.draw(screen)
@@ -258,7 +247,7 @@ class ModifyMenu(Drawable):
         self.info_group.draw(screen)
 
     def handle_event(self, event: Event) -> None:
-        self.close_btn.handle_event(event)
+        super().handle_event(event)
         self.socket_group.handle_event(event)
         self.upgrade_button.handle_event(event)
         self.bee_list_view.handle_event(event)
