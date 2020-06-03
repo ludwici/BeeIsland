@@ -73,6 +73,12 @@ class Button(Drawable):
     def state(self) -> ButtonState:
         return self._state
 
+    def change_image_size(self, size: (int, int)) -> None:
+        for k, v in self._images.items():
+            self._images[k] = pygame.transform.smoothscale(v, size)
+
+        self.state = self.state
+
     def stop_handle(self) -> None:
         self._can_handle_events = False
 
