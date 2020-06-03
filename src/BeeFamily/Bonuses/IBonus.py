@@ -25,11 +25,17 @@ class IBonus(ABC):
     def __str__(self) -> str:
         return self._description
 
+    @staticmethod
+    def get_random_bonus(bonus_seq: list = None):
+        if not bonus_seq:
+            bonus_seq = [TimeBonus(), ScoreBonus()]
+        return random.choice(bonus_seq)
+
 
 class TimeBonus(IBonus):
     __slots__ = "__time"
 
-    def __init__(self, time_val) -> None:
+    def __init__(self, time_val=10) -> None:
         IBonus.__init__(self)
         self.__time = time_val
 
@@ -46,7 +52,7 @@ class TimeBonus(IBonus):
 class ScoreBonus(IBonus):
     __slots__ = "__score"
 
-    def __init__(self, score_val) -> None:
+    def __init__(self, score_val=10) -> None:
         IBonus.__init__(self)
         self.__score = score_val
 
@@ -63,9 +69,12 @@ class ScoreBonus(IBonus):
 class RandomResourceBonus(IBonus):
     __slots__ = ("resource", "__items_ids")
 
-    def __init__(self, items_ids: list):
+    def __init__(self, items_ids: list = None):
         IBonus.__init__(self)
-        self.__items_ids = items_ids
+        if not items_ids:
+            self.__items_ids = [1, 2, 3, 4, 5]
+        else:
+            self.__items_ids = items_ids
         db = Database.get_instance()
         r_id = random.choice(self.__items_ids)
         self.resource = db.get_resource_by_id(r_id)
@@ -95,7 +104,7 @@ class RandomResourceBonus(IBonus):
 class IncreaseResourcesBonus(IBonus):
     __slots__ = "__percent"
 
-    def __init__(self, percent) -> None:
+    def __init__(self, percent=10) -> None:
         IBonus.__init__(self)
         self.__percent = percent
 
