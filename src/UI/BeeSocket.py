@@ -34,12 +34,18 @@ class BeeSocket(RadioButton):
         self.__can_change_id = can_change_id
         self.__local_id = local_id
         self._bee = None
-        self.__socket_type = socket_type
         if self.__local_id != -1:
-            for b in self.parent.hive.bee_list:
-                if b.socket_id == self.__local_id:
-                    self.bee = b
-                    break
+            try:
+                for b in self.parent.hive.bee_list:
+                    if b.socket_id == self.__local_id:
+                        self.bee = b
+                        break
+            except AttributeError:
+                pass
+
+    @property
+    def full_socket_type(self):
+        return self.__socket_type
 
     @property
     def socket_type(self):
@@ -71,8 +77,15 @@ class BeeSocket(RadioButton):
         if self.__can_change_id:
             self._bee.socket_id = self.__local_id
 
+        if isinstance(b, BeeQueen):
+            self.parent.hive.add_queen()
+            self.parent.reload_sockets()
+
     @bee.deleter
     def bee(self):
+        if isinstance(self._bee, BeeQueen):
+            self.parent.hive.remove_queen()
+            self.parent.reload_sockets()
         self._bee = None
 
     @Button.register_event(ButtonEventType.ON_CLICK_RB)
