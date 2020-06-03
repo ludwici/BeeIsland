@@ -54,7 +54,7 @@ class FarmScene(Scene):
         self.nest_group = RadioGroup()
         for i in range(6):
             bee_nest = BeeNestButton(parent=self, normal_image_path="hive/hive1_empty_normal.png",
-                                     state=ButtonState.NORMAL, group=self.nest_group,
+                                     state=ButtonState.NORMAL, group=self.nest_group, local_id=i,
                                      position=(bg_x + positions[i][0], bg_y + positions[i][1]))
             bee_nest.set_image_by_state(ButtonState.HOVERED, "hive/hive1_empty_hover.png")
 
