@@ -12,6 +12,7 @@ class FlowersData(Enum):
     BLUE = 3
     GREEN = 4
     TURQUOISE = 5
+    WHITE = 6
 
 
 class Flower(Sprite):

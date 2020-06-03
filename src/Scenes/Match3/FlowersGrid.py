@@ -7,6 +7,7 @@ from pygame.rect import Rect
 
 from src import Constants
 from src.Animation import Animation
+from src.Quests.Quest import QuestDifficult
 from src.Scenes.Match3.Flower import FlowersData, Flower
 from src.Utils import get_distance
 
@@ -14,13 +15,21 @@ from src.Utils import get_distance
 class FlowersGrid:
     __slots__ = ("tile_size", "rows_count", "cols_count", "rect", "cells", "recheck", "done", "max_bonus", "parent",
                  "score_multiplier", "bonus", "elapsed", "spin_speed", "level", "num_combos", "bonus_cooldown",
-                 "rows", "columns", "possible_matches", "animations", "spin_animations", "flower_combos", "no_moves")
+                 "rows", "columns", "possible_matches", "animations", "spin_animations", "flower_combos", "no_moves",
+                 "difficult")
 
-    def __init__(self, parent, position: (int, int), size: (int, int)) -> None:
+    def __init__(self, parent, difficult: QuestDifficult, position: (int, int), size: (int, int)) -> None:
         self.parent = parent
+        self.difficult = difficult
         self.tile_size = 64, 64
         self.rows_count = size[0]
         self.cols_count = size[1]
+        if self.difficult == QuestDifficult.HARD:
+            self.num_combos = len(FlowersData)
+            self.rows_count -= 2
+            self.cols_count -= 2
+        else:
+            self.num_combos = len(FlowersData) - 1
         self.rect = Rect(position[0], position[1], self.cols_count * self.tile_size[0],
                          self.rows_count * self.tile_size[1])
         self.rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
@@ -31,10 +40,7 @@ class FlowersGrid:
         self.bonus = int(self.max_bonus * .5)
         self.score_multiplier = 1
         self.elapsed = 0
-        self.spin_speed = 100
-        self.level = 1
         self.bonus_cooldown = .01
-        self.num_combos = len(FlowersData)  # TODO: add dependence on difficulty level
         self.rows = []
         self.columns = []
         self.possible_matches = None
@@ -98,6 +104,8 @@ class FlowersGrid:
 
     def make_combos(self) -> List[FlowersData]:
         colors = [FlowersData.YELLOW, FlowersData.PURPLE, FlowersData.BLUE, FlowersData.GREEN, FlowersData.TURQUOISE]
+        if self.difficult == QuestDifficult.HARD:
+            colors.append(FlowersData.WHITE)
         shuffle(colors)
         colors = cycle(colors)
 
@@ -266,6 +274,7 @@ class FlowersGrid:
                          round_values=True)
         spin.start(self)
         self.spin_animations.add(spin)
+
 
 class GridCell:
     def __init__(self, position: (int, int), index: (int, int), size: (int, int)) -> None:

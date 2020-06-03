@@ -14,7 +14,8 @@ class Match3Scene(QuestScene):
 
     def __init__(self, main_window, name, player, quest: Quest) -> None:
         QuestScene.__init__(self, main_window=main_window, player=player, name=name, quest=quest)
-        self.grid = FlowersGrid(parent=self, position=(Constants.WINDOW_W / 2, Constants.WINDOW_H / 2), size=(8, 8))
+        self.grid = FlowersGrid(parent=self, difficult=quest.difficult,
+                                position=(Constants.WINDOW_W / 2, Constants.WINDOW_H / 2), size=(8, 8))
         self.grabbed = None
         self.grab_point = 0, 0
         self.dest_tile = None
