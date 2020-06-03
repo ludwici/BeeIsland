@@ -78,11 +78,6 @@ class BagMenu(Menu):
         i.set_image_by_state(ButtonState.HOVERED, "res_placeholder{0}_hover.png".format(list_elem))
         i.add_action({ButtonEventType.ON_HOVER_ON: lambda: self.show_hint(r.locale_desc)})
         i.add_action({ButtonEventType.ON_HOVER_OUT: lambda: self.stop_hint()})
-        # click_rect = copy(i.get_rect())
-        # click_rect.x += self.resource_list_view.position[0] + 9
-        # click_rect.y += self.resource_list_view.position[1]
-        # i.set_click_rect(click_rect)
-        # print(click_rect)
         self.resource_list_view.add_item(i)
         r_label.set_position(
             (r_label.position[0] + 14, r_label.position[1] + i.get_size()[1] / 2 - r_label.get_size()[1] / 2))
