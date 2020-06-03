@@ -55,6 +55,7 @@ class PopupNotify(Drawable):
         self.__text_label.set_text(text)
 
     def show(self) -> None:
+        super().show()
         self.parent.add_drawable(self)
 
     def destroy(self) -> None:
