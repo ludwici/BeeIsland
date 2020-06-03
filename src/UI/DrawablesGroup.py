@@ -10,7 +10,7 @@ class DrawablesGroup(Drawable):
     def __init__(self, parent, data: dict, position: (int, int) = (0, 0)) -> None:
         Drawable.__init__(self, parent=parent, position=position)
         self.group = data
-        self.set_position(position)
+        # self.set_position(position)
 
     def __getitem__(self, key):
         return self.group[key]
