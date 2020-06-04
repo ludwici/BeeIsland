@@ -71,6 +71,11 @@ class BeeSocket(RadioButton):
     def bee(self):
         return self._bee
 
+    def show(self) -> None:
+        super().show()
+        if self._bee:
+            self._bee.get_rect().center = self._rect.center
+
     @bee.setter
     def bee(self, b: Bee):
         self._bee = b
