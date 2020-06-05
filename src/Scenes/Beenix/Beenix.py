@@ -2,7 +2,7 @@ from enum import Enum
 
 import pygame
 
-from src.Interfaces.Drawable import Drawable
+from src.Interfaces.RenderObject import RenderObject
 from src.Utils import resource_path
 
 
@@ -25,10 +25,12 @@ class Direction(Enum):
             return Direction.DOWN
 
 
-class Beenix(Drawable):
+class Beenix(RenderObject):
+    __slots__ = ("images", "movement", "speed", "points", "area", "area_size", "mask", "in_conquered", "move_keys_wasd",
+                 "image")
 
     def __init__(self, parent, position: (int, int), area) -> None:
-        Drawable.__init__(self, parent=parent, position=position)
+        RenderObject.__init__(self, parent=parent, position=position)
         self.images = dict()
         self.images.update(
             {"right": pygame.image.load("{0}/images/bee/bee1_r.png".format(resource_path("res"))).convert_alpha()})
@@ -46,7 +48,7 @@ class Beenix(Drawable):
         self.in_conquered = False
         self.move_keys_wasd = [pygame.K_d, pygame.K_a, pygame.K_w, pygame.K_s]
 
-    def move_right(self, pixels) -> None:
+    def __move_right(self, pixels) -> None:
         if self._rect.right + pixels >= self.area.rect.right - 1:
             self._rect.right = self.area.rect.right - 1
             self.movement = Direction.STILL
@@ -54,7 +56,7 @@ class Beenix(Drawable):
             self._rect.x += pixels
             self.image = self.images["right"]
 
-    def move_left(self, pixels) -> None:
+    def __move_left(self, pixels) -> None:
         if self._rect.left - pixels <= self.area.rect.left - 1:
             self._rect.left = self.area.rect.left
             self.movement = Direction.STILL
@@ -62,7 +64,7 @@ class Beenix(Drawable):
             self._rect.x -= pixels
             self.image = pygame.transform.flip(self.images["right"], True, False)
 
-    def move_up(self, pixels) -> None:
+    def __move_up(self, pixels) -> None:
         if self._rect.top - pixels <= self.area.rect.top - 1:
             self._rect.top = self.area.rect.top
             self.movement = Direction.STILL
@@ -70,7 +72,7 @@ class Beenix(Drawable):
             self._rect.y -= pixels
             self.image = pygame.transform.flip(self.images["down"], False, True)
 
-    def move_down(self, pixels) -> None:
+    def __move_down(self, pixels) -> None:
         if self._rect.bottom + pixels >= self.area.rect.bottom - 1:
             self._rect.bottom = self.area.rect.bottom - 1
         else:
@@ -83,7 +85,7 @@ class Beenix(Drawable):
     def get_pos(self) -> list:
         return list(self._rect.center)
 
-    def add_point(self) -> None:
+    def __add_point(self) -> None:
         self.points.append(self.get_pos())
 
     def draw(self, surface: pygame.Surface) -> None:
@@ -121,8 +123,8 @@ class Beenix(Drawable):
                         fill_point = self.area.check_open_sides(self.points, 5, vertical, spiders)
                         self.area.fill(fill_point[0], fill_point[1], self.area.color)
                     else:
-                        self.extend_point(self.points[0], start_dir, True)
-                        self.extend_point(self.points[-1], end_dir, False)
+                        self.__extend_point(self.points[0], start_dir, True)
+                        self.__extend_point(self.points[-1], end_dir, False)
                         end = (self.points[0][0], self.points[-1][1])
                         if end not in [self.area.rect.topleft,
                                        (self.area.rect.left, self.area.rect.bottom - 1),
@@ -135,17 +137,17 @@ class Beenix(Drawable):
                 self.points = []
         elif self.in_conquered and not self.area.contains(self.get_pos()):
             self.in_conquered = False
-            self.add_point()
-            self.add_point()
+            self.__add_point()
+            self.__add_point()
 
         if self.movement == Direction.RIGHT:
-            self.move_right(self.speed)
+            self.__move_right(self.speed)
         elif self.movement == Direction.LEFT:
-            self.move_left(self.speed)
+            self.__move_left(self.speed)
         elif self.movement == Direction.UP:
-            self.move_up(self.speed)
+            self.__move_up(self.speed)
         elif self.movement == Direction.DOWN:
-            self.move_down(self.speed)
+            self.__move_down(self.speed)
         self.area.update_mask()
 
     def handle_events(self, event) -> None:
@@ -157,10 +159,10 @@ class Beenix(Drawable):
                     if abs(old_direction - new_direction) == 1 and (
                             min(old_direction, new_direction) == 1 or min(old_direction, new_direction) == 3):
                         self.parent.wasted()
-                    self.add_point()
+                    self.__add_point()
                 self.change_movement(Direction(new_direction))
 
-    def extend_point(self, p, direction, start) -> None:
+    def __extend_point(self, p, direction, start) -> None:
         if start and direction == Direction.RIGHT.value or not start and direction == Direction.LEFT.value:
             p[0] = self.area.rect.left
         elif start and direction == Direction.LEFT.value or not start and direction == Direction.RIGHT.value:

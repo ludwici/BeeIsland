@@ -10,34 +10,36 @@ from src.Scenes.QuestScene import QuestScene
 
 
 class BeenixScene(QuestScene):
+    __slots__ = ("__percent_zone", "__spider_count", "__area", "__area_surface", "__spiders", "__lives", "__beenix",
+                 "__current_bee_index",)
 
     def __init__(self, main_window, name, player, quest: Quest) -> None:
         QuestScene.__init__(self, main_window=main_window, player=player, name=name, quest=quest)
-        self._percent_zone = 60
-        self._spider_count = 2
-        self._area = Area()
-        self._area_surface = self._area.mask.count()
-        self._area.update_mask()
-        self._spiders = []
-        self.lives = len(self._quest.bee_list) + 1
-        self.current_bee_index = 0
-        self._beenix = Beenix(parent=self, area=self._area, position=self._area.rect.topleft)
+        self.__percent_zone = 60
+        self.__spider_count = 2
+        self.__area = Area()
+        self.__area_surface = self.__area.mask.count()
+        self.__area.update_mask()
+        self.__spiders = []
+        self.__lives = len(self._quest.bee_list) + 1
+        self.__current_bee_index = 0
+        self.__beenix = Beenix(parent=self, area=self.__area, position=self.__area.rect.topleft)
         if len(self._quest.bee_list) != 0:
-            self._beenix.speed = self._quest.bee_list[self.current_bee_index].speed
+            self.__beenix.speed = self._quest.bee_list[self.__current_bee_index].speed
 
         else:
-            self._beenix.speed = 2
-        for i in range(self._spider_count):
-            self._spiders.append(Spider(self._area))
+            self.__beenix.speed = 2
+        for i in range(self.__spider_count):
+            self.__spiders.append(Spider(self.__area))
 
     def _time_over_handle(self) -> None:
         pass
 
-    def check_collisions(self) -> None:
-        if self._beenix.is_self_destruct():
+    def __check_collisions(self) -> None:
+        if self.__beenix.is_self_destruct():
             return self.wasted()
-        for s in self._spiders:
-            if s.alive and s.on_line(self._beenix.points) or self._beenix.get_rect().colliderect(s.rect):
+        for s in self.__spiders:
+            if s.alive and s.on_line(self.__beenix.points) or self.__beenix.get_rect().colliderect(s.rect):
                 return self.wasted()
 
     def on_scene_started(self) -> None:
@@ -45,58 +47,58 @@ class BeenixScene(QuestScene):
         self._timer_label.set_text(text=self._localization.get_string("time"))
         self._score_label.set_text(text=self._localization.get_string("score"))
         self._score_val_label.set_text(text="0")
-        self._timer_label.set_position((10, self._area.size[1] + 10))
+        self._timer_label.set_position((10, self.__area.size[1] + 10))
         self._timer_val_label.set_position(
-            (self._timer_label.position[0] + self._timer_label.get_size()[0] + 10, self._timer_label.position[1]))
+            (self._timer_label.position[0] + self._timer_label.size[0] + 10, self._timer_label.position[1]))
 
         self._score_label.set_position(
-            (10, self._timer_label.get_size()[1] + self._timer_label.position[1] - 10))
+            (10, self._timer_label.size[1] + self._timer_label.position[1] - 10))
         self._score_val_label.set_position(
-            (self._score_label.position[0] + self._score_label.get_size()[0] + 10, self._score_label.position[1]))
+            (self._score_label.position[0] + self._score_label.size[0] + 10, self._score_label.position[1]))
 
         self._finish_button.set_text(text=self._localization.get_string("finish_label"))
         self._finish_button.set_padding(padding=(self._localization.get_params_by_string("finish_label")["x_off"], 0))
-        self._finish_button.set_position((Constants.WINDOW_W - self._finish_button.get_size()[0] - 10, 10))
-        print("Lives: ", self.lives)
+        self._finish_button.set_position((Constants.WINDOW_W - self._finish_button.size[0] - 10, 10))
+        print("Lives: ", self.__lives)
 
     def handle_events(self, event: Event) -> None:
         super().handle_events(event)
-        self._beenix.handle_events(event)
+        self.__beenix.handle_events(event)
 
-    def is_win(self) -> bool:
-        return self.percentage() > self._percent_zone
+    def __is_win(self) -> bool:
+        return self.__percentage() > self.__percent_zone
 
     def update(self, dt: float) -> None:
         super().update(dt)
-        self.check_collisions()
-        self._beenix.update(self._spiders)
-        [s.update() for s in self._spiders]
+        self.__check_collisions()
+        self.__beenix.update(self.__spiders)
+        [s.update() for s in self.__spiders]
 
-        self._score_val_label.set_text(str("{0:.1f}".format(self.percentage()) + '%'))
+        self._score_val_label.set_text(str("{0:.1f}".format(self.__percentage()) + '%'))
 
     def draw(self, surface: pygame.Surface) -> None:
         super().draw(surface)
-        self._area.draw(surface)
-        self._beenix.draw(surface)
-        [s.draw(surface) for s in self._spiders]
+        self.__area.draw(surface)
+        self.__beenix.draw(surface)
+        [s.draw(surface) for s in self.__spiders]
 
-    def percentage(self) -> float:
-        return float(self._area.mask.count() - self._area_surface) / (
-                    self._area.rect.w * self._area.rect.h - self._area_surface) * 100
+    def __percentage(self) -> float:
+        return float(self.__area.mask.count() - self.__area_surface) / (
+                self.__area.rect.w * self.__area.rect.h - self.__area_surface) * 100
 
     def wasted(self) -> None:
-        self.lives -= 1
-        if self.lives == 0:
+        self.__lives -= 1
+        if self.__lives == 0:
             self._finish_quest()
             return
 
-        if self.lives == 1:
+        if self.__lives == 1:
             speed = 3
         else:
-            self.current_bee_index += 1
-            speed = self._quest.bee_list[self.current_bee_index].speed
+            self.__current_bee_index += 1
+            speed = self._quest.bee_list[self.__current_bee_index].speed
 
-        self._beenix = Beenix(parent=self, area=self._area, position=self._area.rect.topleft)
-        self._beenix.speed = speed
-        self._beenix.change_movement(Direction.STILL)
+        self.__beenix = Beenix(parent=self, area=self.__area, position=self.__area.rect.topleft)
+        self.__beenix.speed = speed
+        self.__beenix.change_movement(Direction.STILL)
         pygame.time.delay(1000)

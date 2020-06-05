@@ -28,7 +28,7 @@ class FarmScene(Scene):
         self.to_upgrade_bee_button = Button(parent=self, normal_image_path="to_upgrade_normal.png",
                                             position=(
                                                 10,
-                                                self.to_map_button.position[1] + self.to_map_button.get_size()[1] + 10)
+                                                self.to_map_button.position[1] + self.to_map_button.size[1] + 10)
                                             )
         self.to_upgrade_bee_button.set_image_by_state(ButtonState.HOVERED, "to_upgrade_hover.png")
         self.to_upgrade_bee_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show_modify()})
@@ -75,7 +75,7 @@ class FarmScene(Scene):
 
     def handle_events(self, event: Event) -> None:
         self.nest_group.handle_event(event)
-        [d.handle_event(event) for d in self._drawable_list]
+        [r.handle_event(event) for r in self._render_list]
         self.to_map_button.handle_event(event)
         self.to_upgrade_bee_button.handle_event(event)
         self.to_bag_button.handle_event(event)
@@ -103,11 +103,11 @@ class FarmScene(Scene):
         self.main_image_rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
         self.set_nests_position()
         self.to_upgrade_hive_button.set_position(
-            position=(10, self.to_upgrade_bee_button.position[1] + self.to_upgrade_bee_button.get_size()[1] + 10)
+            position=(10, self.to_upgrade_bee_button.position[1] + self.to_upgrade_bee_button.size[1] + 10)
         )
         self.to_bag_button.set_position(
-            position=(10, self.to_upgrade_hive_button.position[1] + self.to_upgrade_hive_button.get_size()[1] + 10)
+            position=(10, self.to_upgrade_hive_button.position[1] + self.to_upgrade_hive_button.size[1] + 10)
         )
         self.to_exit_button.set_position(
-            position=(10, self.to_bag_button.position[1] + self.to_bag_button.get_size()[1] + 10)
+            position=(10, self.to_bag_button.position[1] + self.to_bag_button.size[1] + 10)
         )

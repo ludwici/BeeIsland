@@ -5,11 +5,11 @@ from src.Database.Database import Database
 from src.Scenes.Scene import Scene
 from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import Button, ButtonState, ButtonEventType
-from src.UI.DrawablesGroup import DrawablesGroup
 from src.UI.ListItem import ListItem
 from src.UI.ListView import ListView
 from src.UI.Menu import Menu
 from src.UI.RadioGroup import RadioGroup
+from src.UI.RenderGroup import RenderGroup
 from src.UI.TextButton import TextButton
 from src.UI.TextLabel import TextLabel
 
@@ -22,7 +22,7 @@ class UpgradeHiveMenu(Menu):
         self._title_label = TextLabel(parent=self, text=self.parent.localization.get_string("hives"),
                                       position=self.position, font_size=16, bold=True)
         self._title_label.set_position(
-            (self.position[0] + self._bg_image.get_rect().centerx - self._title_label.get_size()[0] / 2 + 10,
+            (self.position[0] + self._bg_image.get_rect().centerx - self._title_label.size[0] / 2 + 10,
              self.position[1] + 3)
         )
 
@@ -33,7 +33,7 @@ class UpgradeHiveMenu(Menu):
         wax = db.get_resource_by_id(1)
         self.__wax_amount = 0
 
-        for r in self.parent.player.resources.get_bag_copy():
+        for r in self.parent.player.resources.bag:
             if r.locale_name == wax.locale_name:
                 self.__wax_amount = r.value
 
@@ -58,13 +58,13 @@ class UpgradeHiveMenu(Menu):
             if socket.is_locked:
                 bs.lock()
             bs.change_image_size((28, 25))
-            sock_pos = sock_pos[0] + bs.get_size()[0] + 12, sock_pos[1]
+            sock_pos = sock_pos[0] + bs.size[0] + 12, sock_pos[1]
         upg_label = TextLabel(parent=self, font_size=14, text=self.parent.localization.get_string("upgrade_button"))
         upg_btn = TextButton(parent=self, text_label=upg_label, normal_image_path="start_quest_btn_normal.png",
                              text_padding=(10, 0))
         upg_btn.set_image_by_state(ButtonState.HOVERED, "start_quest_btn_hover.png")
         upg_btn.set_image_by_state(ButtonState.LOCKED, "start_quest_btn_locked.png")
-        upg_btn.set_position((h_b.get_size()[0] + 20, 57))
+        upg_btn.set_position((h_b.size[0] + 20, 57))
         upg_btn.change_image_size((106, 25))
         price_label = TextLabel(parent=self, font_size=14,
                                 text="{0} {1}/{2}".format(self.parent.localization.get_string("price"),
@@ -72,8 +72,8 @@ class UpgradeHiveMenu(Menu):
         upg_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.upgrade_socket(socket_group=socket_group,
                                                                                      hive=h, price_label=price_label)})
         price_label.set_position((upg_btn.get_rect().right + 12, upg_btn.position[1]))
-        hive_info_group = DrawablesGroup(parent=self, data={"img": h_b, "sockets": socket_group, "upg": upg_btn,
-                                                            "price": price_label})
+        hive_info_group = RenderGroup(parent=self, data={"img": h_b, "sockets": socket_group, "upg": upg_btn,
+                                                         "price": price_label})
         i = ListItem(parent=self, data=hive_info_group, normal_image_path="hive_placeholder.png")
         self.hives_list_view.add_item(i)
 

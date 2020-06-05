@@ -59,8 +59,5 @@ class BeeNest(Levelable):
         if self.size > self.__max_size:
             return False
 
-        # if bee.need_hive_level > self.current_level:
-        #     return False
-
         self.__bee_list.append(bee)
         return True

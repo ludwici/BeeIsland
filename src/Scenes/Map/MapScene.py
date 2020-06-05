@@ -84,7 +84,7 @@ class MapScene(Scene):
                             PopupNotify(parent=self, text=self.localization.get_string("locked_zone"))
 
         [z.handle_event(event) for z in self.zones]
-        [d.handle_event(event) for d in self._drawable_list]
+        [r.handle_event(event) for r in self._render_list]
         self.to_farm_button.handle_event(event)
 
     def draw(self, surface: pygame.Surface) -> None:

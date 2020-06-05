@@ -4,7 +4,7 @@ import pygame
 from pygame.event import Event
 
 from src.Database.Localization import Localization
-from src.Interfaces import Drawable
+from src.Interfaces import RenderObject
 from src.Player import Player
 from src.Utils import resource_path
 
@@ -12,7 +12,7 @@ from src.Utils import resource_path
 # TODO: Adapter pattern
 # TODO: Proxy pattern
 class Scene(ABC):
-    __slots__ = ("main_window", "player", "scene_settings", "_name", "_drawable_list", "_localization", "_res_dir",
+    __slots__ = ("main_window", "player", "scene_settings", "_name", "_render_list", "_localization", "_res_dir",
                  "_next_scenes", "prev_scene")
 
     def __init__(self, main_window, name: str, player: Player) -> None:
@@ -20,7 +20,7 @@ class Scene(ABC):
         self.main_window = main_window
         self.player = player
         self._name = name
-        self._drawable_list = []
+        self._render_list = []
         self._localization = None
 
     @property
@@ -32,14 +32,14 @@ class Scene(ABC):
         return self._localization
 
     def update(self, dt: float) -> None:
-        [d.update(dt) for d in self._drawable_list]
+        [r.update(dt) for r in self._render_list]
 
     @abstractmethod
     def handle_events(self, event: Event) -> None:
         pass
 
     def draw(self, surface: pygame.Surface) -> None:
-        [d.draw(surface) for d in self._drawable_list]
+        [r.draw(surface) for r in self._render_list]
 
     def add_scene(self, scene_name: str, scene) -> None:
         self.main_window.add_scene(scene_name=scene_name, scene=scene)
@@ -48,26 +48,26 @@ class Scene(ABC):
         self.main_window.change_scene(scene_name)
 
     def on_scene_change(self) -> None:
-        self._drawable_list.clear()
+        self._render_list.clear()
 
     def on_scene_started(self) -> None:
         self._localization = Localization(path="scenes/{0}".format(self.name))
 
-    def find_child_of(self, child, base) -> Drawable:
-        for d in self._drawable_list:
+    def find_child_of(self, child, base) -> RenderObject:
+        for r in self._render_list:
             if issubclass(type(child), base):
-                return d
+                return r
         return None
 
-    def find_drawable_by_type(self, t) -> Drawable:
-        for d in self._drawable_list:
-            if type(d) is t:
-                return d
+    def find_render_by_type(self, t) -> RenderObject:
+        for r in self._render_list:
+            if type(r) is t:
+                return r
         return None
 
-    def add_drawable(self, d: Drawable) -> None:
-        self._drawable_list.append(d)
+    def add_render(self, r: RenderObject) -> None:
+        self._render_list.append(r)
 
-    def remove_drawable(self, d: Drawable) -> None:
-        if d in self._drawable_list:
-            self._drawable_list.remove(d)
+    def remove_render(self, r: RenderObject) -> None:
+        if r in self._render_list:
+            self._render_list.remove(r)

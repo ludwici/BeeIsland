@@ -29,24 +29,23 @@ class Match3Scene(QuestScene):
         self._score_val_label.set_text(text="0")
         self._timer_label.set_position((self.grid.rect.x, 10))
         self._timer_val_label.set_position(
-            (self._timer_label.position[0] + self._timer_label.get_size()[0] + 10, self._timer_label.position[1]))
+            (self._timer_label.position[0] + self._timer_label.size[0] + 10, self._timer_label.position[1]))
 
         self._score_label.set_position(
-            (self.grid.rect.x, self._timer_label.get_size()[1] + self._timer_label.position[1] - 10))
+            (self.grid.rect.x, self._timer_label.size[1] + self._timer_label.position[1] - 10))
         self._score_val_label.set_position(
-            (self._score_label.position[0] + self._score_label.get_size()[0] + 10, self._score_label.position[1]))
+            (self._score_label.position[0] + self._score_label.size[0] + 10, self._score_label.position[1]))
 
         self._finish_button.set_text(text=self._localization.get_string("finish_label"))
         self._finish_button.set_padding(padding=(self._localization.get_params_by_string("finish_label")["x_off"], 0))
-        self._finish_button.set_position((self.grid.rect.centerx - self._finish_button.get_size()[0] / 2,
+        self._finish_button.set_position((self.grid.rect.centerx - self._finish_button.size[0] / 2,
                                           self.grid.rect.bottomleft[1]
                                           + (Constants.WINDOW_H - self.grid.rect.bottomleft[1])
-                                          / 2 - self._finish_button.get_size()[1] / 2))
+                                          / 2 - self._finish_button.size[1] / 2))
 
     def update(self, dt: float) -> None:
         super().update(dt)
         self.last_click += dt
-        # self.update_time_label(dt)
         if self.grabbed:
             current_dest = self.dest_tile
             flower = self.grabbed.flower
@@ -108,21 +107,10 @@ class Match3Scene(QuestScene):
 
         self.grid.update(dt)
         self._score_val_label.set_text(text=str(self.score))
-        # if self.grid.bonus >= self.grid.max_bonus:
 
     def _time_over_handle(self) -> None:
         self._timer_val_label.set_text("")
         self._timer_label.set_text(text=self._localization.get_string("time_over"))
-
-    # def update_time_label(self, dt) -> None:
-    #     if self.__time_over:
-    #         return
-    #     self.__sec_to_finish -= (1 * dt) / 1000
-    #     if self.__sec_to_finish > 0:
-    #         self.__timer_val_label.set_text(str(int(self.__sec_to_finish)))
-    #     else:
-    #         self.__time_over = True
-    #         self.__time_over_handle()
 
     def handle_events(self, event: Event) -> None:
         super().handle_events(event)

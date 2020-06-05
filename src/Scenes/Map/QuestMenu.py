@@ -16,21 +16,20 @@ from src.UI.TextLabel import TextLabel
 
 
 class QuestMenu(Menu):
-    __slots__ = ("quest", "quest_settings", "panel_rect", "description_label",
-                 "difficult_label", "rewards_label", "easy_button", "medium_button", "hard_button", "rewards_panel",
-                 "bonuses_panel", "bonuses_rect", "bonus_list", "bee_socket_group", "bee_socket_hard", "start_button",
-                 "rewards_labels", "rewards_rect")
+    __slots__ = ("quest", "quest_settings", "panel_rect", "description_label", "difficult_label", "rewards_label",
+                 "easy_button", "medium_button", "hard_button", "rewards_panel", "bonuses_panel", "bonuses_rect",
+                 "bonus_list", "bee_socket_group", "bee_socket_hard", "start_button", "rewards_labels", "rewards_rect")
 
     def __init__(self, parent, quest: Quest) -> None:
         Menu.__init__(self, parent=parent, bg_name="popup3")
         self.quest = quest
         self._title_label.set_text(text=self.quest.title)
         self._title_label.set_position(
-            (self.position[0] + self._bg_image.get_rect().centerx - self._title_label.get_size()[0] / 2 + 10,
+            (self.position[0] + self._bg_image.get_rect().centerx - self._title_label.size[0] / 2 + 10,
              self.position[1] + 3)
         )
 
-        self.panel_rect = pygame.Rect((self.position[0] + 15, self.position[1] + 155, self.get_size()[0] - 15 * 2, 277))
+        self.panel_rect = pygame.Rect((self.position[0] + 15, self.position[1] + 155, self.size[0] - 15 * 2, 277))
 
         ll = self._bg_image.get_rect().width - self.parent.localization.get_params_by_string("desc_label")[
             "line_length"] * 2 - 35
@@ -47,7 +46,7 @@ class QuestMenu(Menu):
         self.easy_button = TextButton(parent=self, normal_image_path="difficult/easy_normal.png",
                                       text_label=easy_label, text_padding=(19, 0))
         self.easy_button.set_position(
-            (self.position[0] + 35, self.difficult_label.position[1] + self.difficult_label.get_size()[1] + 9)
+            (self.position[0] + 35, self.difficult_label.position[1] + self.difficult_label.size[1] + 9)
         )
         self.easy_button.set_image_by_state(ButtonState.HOVERED, "difficult/easy_hovered.png")
 
@@ -57,7 +56,7 @@ class QuestMenu(Menu):
                                         normal_image_path="difficult/medium_normal.png",
                                         text_label=medium_label, text_padding=(19, 0))
         self.medium_button.set_position(
-            (self.easy_button.position[0], self.easy_button.position[1] + self.easy_button.get_size()[1])
+            (self.easy_button.position[0], self.easy_button.position[1] + self.easy_button.size[1])
         )
         self.medium_button.set_image_by_state(ButtonState.HOVERED,
                                               "difficult/medium_hovered.png")
@@ -67,7 +66,7 @@ class QuestMenu(Menu):
         self.hard_button = TextButton(parent=self, normal_image_path="difficult/hard_normal.png",
                                       text_label=hard_label, text_padding=(19, 0))
         self.hard_button.set_position(
-            (self.medium_button.position[0], self.medium_button.position[1] + self.medium_button.get_size()[1])
+            (self.medium_button.position[0], self.medium_button.position[1] + self.medium_button.size[1])
         )
         self.hard_button.set_image_by_state(ButtonState.HOVERED, "difficult/hard_hovered.png")
 
@@ -76,12 +75,12 @@ class QuestMenu(Menu):
         self.bonuses_panel = pygame.image.load(
             "{0}/buttons/difficult/bonuses.png".format(self._res_dir)).convert_alpha()
         self.bonuses_rect = self.bonuses_panel.get_rect()
-        self.bonuses_rect.x = self.easy_button.position[0] + self.easy_button.get_size()[0]
+        self.bonuses_rect.x = self.easy_button.position[0] + self.easy_button.size[0]
         self.bonuses_rect.y = self.easy_button.position[1]
 
         self.difficult_label.set_position(
-            (self.easy_button.position[0] + (self.easy_button.get_size()[0] + self.bonuses_rect.width) / 2
-             - self.difficult_label.get_size()[0] / 2, self.difficult_label.position[1])
+            (self.easy_button.position[0] + (self.easy_button.size[0] + self.bonuses_rect.width) / 2
+             - self.difficult_label.size[0] / 2, self.difficult_label.position[1])
         )
 
         self.bonus_list = []
@@ -97,7 +96,7 @@ class QuestMenu(Menu):
                           position=(self.bonuses_rect.x + self.bonuses_rect.width + 46, bs_start_y))
             b.show_select_panel(self, all_bees)
             b.remove(self)
-            bs_start_y += b.get_size()[1] + 8
+            bs_start_y += b.size[1] + 8
 
         self.bee_socket_hard = BeeSocket(parent=self,
                                          socket_type=BeeSocketType.WARRIOR, group=self.bee_socket_group,
@@ -113,7 +112,7 @@ class QuestMenu(Menu):
             self.parent.localization.get_params_by_string("start_button")["x_off"], 0),
                                        normal_image_path="start_quest_btn_normal.png")
         self.start_button.set_position(
-            (self.position[0] + self._bg_image.get_rect().centerx - self.start_button.get_size()[0] / 2,
+            (self.position[0] + self._bg_image.get_rect().centerx - self.start_button.size[0] / 2,
              self.panel_rect.y + self.panel_rect.height + 33)
         )
         self.start_button.set_image_by_state(ButtonState.HOVERED, "start_quest_btn_hover.png")
@@ -124,7 +123,7 @@ class QuestMenu(Menu):
         self.rewards_rect.y = self.bonuses_rect.y + self.bonuses_rect.height + 41
 
         self.rewards_label.set_position(
-            (self.rewards_rect.centerx - self.rewards_label.get_size()[0] / 2,
+            (self.rewards_rect.centerx - self.rewards_label.size[0] / 2,
              self.bonuses_rect.y + self.bonuses_rect.height + 8)
         )
 
@@ -182,22 +181,22 @@ class QuestMenu(Menu):
                 b_l = MultilineTextLabel(parent=self, text=bs.bee.bonus.description, bold=True, line_length=130,
                                          font_size=12, position=(self.bonuses_rect.x + 5, start_pos_y))
                 self.bonus_list.append(b_l)
-                start_pos_y += b_l.get_size()[1]
+                start_pos_y += b_l.size[1]
         self.generate_rewards_labels()
 
     def generate_rewards_labels(self) -> None:
         self.rewards_labels.clear()
         pos_x = self.rewards_rect.x + 20
         pos_y = self.rewards_rect.y + 10
-        for r in self.quest.rewards.get_bag_copy():
+        for r in self.quest.rewards.bag:
             r_l = TextLabel(parent=self, text="{0}: {1}".format(r.locale_name, int(r.value)), bold=True, font_size=12)
             r_l.set_position((pos_x, pos_y))
-            pos_y += r_l.get_size()[1] - 5
+            pos_y += r_l.size[1] - 5
             self.rewards_labels.append(r_l)
 
     def change_difficult(self, difficult: QuestDifficult) -> None:
         self.quest.difficult = difficult
-        bag = self.quest.rewards.get_bag_copy()
+        bag = self.quest.rewards.bag
         if difficult == QuestDifficult.EASY:
             percent = self.quest.resources_modifier * 0
         elif difficult == QuestDifficult.MEDIUM:
@@ -216,7 +215,7 @@ class QuestMenu(Menu):
     def destroy(self) -> None:
         for z in self.parent.zones:
             z.start_handle()
-        self.parent.remove_drawable(self.parent.find_drawable_by_type(BeeSelectPanel))
+        self.parent.remove_render(self.parent.find_render_by_type(BeeSelectPanel))
         super().destroy()
 
     def draw(self, screen: pygame.Surface) -> None:

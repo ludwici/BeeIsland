@@ -5,14 +5,13 @@ from enum import Enum
 import pygame
 
 from src.Database.Localization import Localization
-from src.Interfaces.Drawable import Drawable
 from src.Interfaces.Levelable import Levelable
+from src.Interfaces.RenderObject import RenderObject
 from src.Quests.Quest import Quest
 
 
-class Bee(Levelable, Drawable):
-    __slots__ = ("__base_speed", "speed_mod", "hp_mod", "__current_hp", "__max_hp", "need_hive_level", "name", "_image",
-                 "__current_level",
+class Bee(Levelable, RenderObject):
+    __slots__ = ("__base_speed", "speed_mod", "hp_mod", "__current_hp", "__max_hp", "name", "_image", "__current_level",
                  "__max_level", "xp_enabled", "__current_xp", "max_xp", "bonus", "_localization", "__sex", "socket_id")
 
     class BeeSex(Enum):
@@ -21,7 +20,7 @@ class Bee(Levelable, Drawable):
 
     def __init__(self, parent, bonus, position: (int, int) = (0, 0), level: int = 1, sex: BeeSex = None) -> None:
         Levelable.__init__(self)
-        Drawable.__init__(self, parent=parent, position=position)
+        RenderObject.__init__(self, parent=parent, position=position)
         self._localization = Localization("Bee")
         self.max_xp = 100
         self.__base_speed = 0
@@ -31,7 +30,6 @@ class Bee(Levelable, Drawable):
         self.__current_hp = 0
         self.__max_hp = 0
         self.__min_hp = 0
-        self.need_hive_level = 0
         prefix = self.get_prefix()
         self.name = self.get_random_name(prefix)
         self.change_level_to(level)
@@ -83,10 +81,6 @@ class Bee(Levelable, Drawable):
         self.bonus.modify()
         self.set_locale_to_bonus()
 
-    # @property
-    # def bonus(self) -> IBonus:
-    #     return self._bonus
-
     @property
     def max_hp(self) -> int:
         return self.__max_hp + self.hp_mod
@@ -129,13 +123,11 @@ class Bee(Levelable, Drawable):
         if level == 1:
             self.__base_speed = 3
             self.__max_hp = 70
-            self.need_hive_level = 1
         elif level == 2:
             self.__base_speed = 4
             self.__max_hp = 92
         elif level == 3:
             self.__max_hp = 100
-            self.need_hive_level = 2
         elif level == 4:
             self.__max_hp = 150
         elif level == 5:

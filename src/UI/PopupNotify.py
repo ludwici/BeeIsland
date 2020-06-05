@@ -3,17 +3,17 @@ from pygame.event import Event
 from pygame.rect import Rect
 
 from src import Constants
-from src.Interfaces.Drawable import Drawable
+from src.Interfaces.RenderObject import RenderObject
 from src.Scenes import Scene
 from src.UI.MultilineTextLabel import MultilineTextLabel
 
 
-class PopupNotify(Drawable):
+class PopupNotify(RenderObject):
     __slots__ = ("_bg_image", "_time_to_kill", "__start_time", "__text_label")
 
     def __init__(self, parent: Scene, time_to_kill: int = 3, text: str = "") -> None:
         self._rect = PopupNotify._check_position()
-        Drawable.__init__(self, parent=parent, position=(self._rect.x, self._rect.y))
+        RenderObject.__init__(self, parent=parent, position=(self._rect.x, self._rect.y))
         self._bg_image = None
         self.set_background("{0}/popup1.png".format(self._res_dir))
         self._time_to_kill = time_to_kill
@@ -56,10 +56,10 @@ class PopupNotify(Drawable):
 
     def show(self) -> None:
         super().show()
-        self.parent.add_drawable(self)
+        self.parent.add_render(self)
 
     def destroy(self) -> None:
-        self.parent.remove_drawable(self)
+        self.parent.remove_render(self)
 
     def handle_event(self, event: Event) -> None:
         pass

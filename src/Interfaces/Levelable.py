@@ -24,12 +24,10 @@ class Levelable(ABC):
         if (self.current_xp + value) > self.max_xp:
             over_xp = self.current_xp + value - self.max_xp
             self.change_level_to(self.current_level + 1)
-            # print("Over xp: {}".format(over_xp))
             value = over_xp
             self.__current_xp = value
         else:
             self.__current_xp += value
-        # print("Level {0} Xp: {1}/{2}".format(self.current_level, self.current_xp, self.max_xp))
 
     @property
     def current_level(self) -> int:

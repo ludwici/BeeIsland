@@ -7,7 +7,8 @@ class ResourceBag:
     def __init__(self) -> None:
         self.__bag = []
 
-    def get_bag_copy(self) -> list:
+    @property
+    def bag(self) -> list:
         return self.__bag
 
     def append(self, new_res: Resource) -> None:
@@ -32,10 +33,10 @@ class ResourceBag:
         return r
 
     def __add__(self, other: "ResourceBag") -> "ResourceBag":
-        for o in other.get_bag_copy():
+        for o in other.bag:
             self.append(o)
         return self
 
     def __sub__(self, other: "ResourceBag") -> "ResourceBag":
-        for o in other.get_bag_copy():
+        for o in other.bag:
             self.remove(o)

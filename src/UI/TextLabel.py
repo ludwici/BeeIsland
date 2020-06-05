@@ -1,16 +1,16 @@
 import pygame
 
-from src.Interfaces.Drawable import Drawable
+from src.Interfaces.RenderObject import RenderObject
 from src.Utils import resource_path
 
 
-class TextLabel(Drawable):
+class TextLabel(RenderObject):
     __slots__ = ("_font_name", "_font_size", "_bold", "_font", "_text", "_color", "_image")
 
     def __init__(self, parent, font_size: int, text: str = "", font_name: str = "segoeprint",
                  position: (int, int) = (0, 0),
                  bold: bool = False, color: tuple = (159, 80, 17)) -> None:
-        Drawable.__init__(self, parent=parent, position=position)
+        RenderObject.__init__(self, parent=parent, position=position)
         self._font_name = font_name
         self._font_size = font_size
         self._bold = bold

@@ -12,12 +12,12 @@ from src.BeeFamily.BeeWorker import BeeWorker
 from src.Scenes.Scene import Scene
 from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import ButtonEventType, ButtonState
-from src.UI.DrawablesGroup import DrawablesGroup
 from src.UI.ListItem import ListItem
 from src.UI.ListView import ListView
 from src.UI.Menu import Menu
 from src.UI.MultilineTextLabel import MultilineTextLabel
 from src.UI.RadioGroup import RadioGroup
+from src.UI.RenderGroup import RenderGroup
 from src.UI.TextButton import TextButton
 from src.UI.TextLabel import TextLabel
 
@@ -31,7 +31,7 @@ class ModifyMenu(Menu):
         Menu.__init__(self, parent=parent, bg_name="modify_popup1")
         self._title_label.set_text(text=self.parent.localization.get_string("modify_title"))
         self._title_label.set_position(
-            (self.position[0] + self._bg_image.get_rect().centerx - self._title_label.get_size()[0] / 2 + 10,
+            (self.position[0] + self._bg_image.get_rect().centerx - self._title_label.size[0] / 2 + 10,
              self.position[1] + 3)
         )
         self.socket_group = RadioGroup()
@@ -40,7 +40,7 @@ class ModifyMenu(Menu):
         self.socket1.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
         self.dna_image = pygame.image.load("{0}/dna1.png".format(self._res_dir)).convert_alpha()
         self.dna_rect = self.dna_image.get_rect()
-        self.dna_rect.x = self.socket1.position[0] + self.socket1.get_size()[1] + 12
+        self.dna_rect.x = self.socket1.position[0] + self.socket1.size[1] + 12
         self.dna_rect.y = self.socket1.get_rect().centery - self.dna_rect.height / 2
         self.socket2 = BeeSocket(parent=self, socket_type=BeeSocketType.ALL,
                                  group=self.socket_group,
@@ -55,7 +55,7 @@ class ModifyMenu(Menu):
         self.upgrade_button.set_image_by_state(ButtonState.LOCKED, "start_quest_btn_locked.png")
         self.upgrade_button.lock()
         self.upgrade_button.set_position((self.socket1.position[0],
-                                          self.socket2.position[1] + self.socket2.get_size()[1] + 15))
+                                          self.socket2.position[1] + self.socket2.size[1] + 15))
         self.upgrade_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.upgrade()})
 
         self.result_socket = BeeSocket(parent=self,
@@ -64,8 +64,8 @@ class ModifyMenu(Menu):
         self.result_socket.set_image_by_state(ButtonState.LOCKED, "socket3_normal.png")
         self.result_socket.lock()
         self.result_socket.set_position(
-            (self.upgrade_button.get_rect().centerx - self.result_socket.get_size()[1] / 2,
-             self.upgrade_button.position[1] + self.upgrade_button.get_size()[1] + 15)
+            (self.upgrade_button.get_rect().centerx - self.result_socket.size[1] / 2,
+             self.upgrade_button.position[1] + self.upgrade_button.size[1] + 15)
         )
         self.result_socket.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.pick_new_bee()})
 
@@ -74,10 +74,10 @@ class ModifyMenu(Menu):
         self.info_text_label = TextLabel(parent=self, text=self.parent.localization.get_string("upgrade_button"),
                                          font_size=14)
 
-        self.info_block_rect.x = self.upgrade_button.position[0] + self.upgrade_button.get_size()[0] + 95
+        self.info_block_rect.x = self.upgrade_button.position[0] + self.upgrade_button.size[0] + 95
         self.info_block_rect.y = self.position[1] + 71
         self.info_text_label.set_position(
-            (self.info_block_rect.centerx - self.info_text_label.get_size()[0] / 2, self.info_block_rect.y)
+            (self.info_block_rect.centerx - self.info_text_label.size[0] / 2, self.info_block_rect.y)
         )
 
         name_label = TextLabel(parent=self, font_size=14,
@@ -85,32 +85,32 @@ class ModifyMenu(Menu):
 
         level_label = TextLabel(parent=self, font_size=14,
                                 position=(name_label.position[0],
-                                          name_label.position[1] + name_label.get_size()[1]))
+                                          name_label.position[1] + name_label.size[1]))
 
         xp_label = TextLabel(parent=self, font_size=14,
                              position=(
                                  level_label.position[0],
-                                 level_label.position[1] + level_label.get_size()[1]))
+                                 level_label.position[1] + level_label.size[1]))
 
         speed_label = TextLabel(parent=self, font_size=14,
                                 position=(
                                     xp_label.position[0],
-                                    xp_label.position[1] + xp_label.get_size()[1]))
+                                    xp_label.position[1] + xp_label.size[1]))
 
         hp_label = TextLabel(parent=self, font_size=14,
                              position=(
                                  speed_label.position[0],
-                                 speed_label.position[1] + speed_label.get_size()[1]))
+                                 speed_label.position[1] + speed_label.size[1]))
 
         bonus_list_label = MultilineTextLabel(parent=self, font_size=14, line_length=230,
                                               position=(
                                                   hp_label.position[0],
-                                                  hp_label.position[1] + hp_label.get_size()[1]))
+                                                  hp_label.position[1] + hp_label.size[1]))
 
-        self.info_group = DrawablesGroup(parent=self,
-                                         data={"b_name": name_label, "b_level": level_label, "b_exp": xp_label,
-                                               "b_speed": speed_label, "b_hp": hp_label,
-                                               "b_bonus": bonus_list_label})
+        self.info_group = RenderGroup(parent=self,
+                                      data={"b_name": name_label, "b_level": level_label, "b_exp": xp_label,
+                                            "b_speed": speed_label, "b_hp": hp_label,
+                                            "b_bonus": bonus_list_label})
 
         self.bee_list_view = ListView(parent=self, size=(625, 253), item_padding=(10, 10), padding=(30, 9),
                                       position=(
@@ -246,19 +246,19 @@ class ModifyMenu(Menu):
 
         self.info_group["b_level"].set_position((self.info_group["b_name"].position[0],
                                                  self.info_group["b_name"].position[1]
-                                                 + self.info_group["b_name"].get_size()[1]))
+                                                 + self.info_group["b_name"].size[1]))
         self.info_group["b_exp"].set_position((self.info_group["b_level"].position[0],
                                                self.info_group["b_level"].position[1]
-                                               + self.info_group["b_level"].get_size()[1]))
+                                               + self.info_group["b_level"].size[1]))
         self.info_group["b_speed"].set_position((self.info_group["b_exp"].position[0],
                                                  self.info_group["b_exp"].position[1]
-                                                 + self.info_group["b_exp"].get_size()[1]))
+                                                 + self.info_group["b_exp"].size[1]))
         self.info_group["b_hp"].set_position((self.info_group["b_speed"].position[0],
                                               self.info_group["b_speed"].position[1]
-                                              + self.info_group["b_speed"].get_size()[1]))
+                                              + self.info_group["b_speed"].size[1]))
         self.info_group["b_bonus"].set_position((self.info_group["b_hp"].position[0],
                                                  self.info_group["b_hp"].position[1]
-                                                 + self.info_group["b_hp"].get_size()[1]))
+                                                 + self.info_group["b_hp"].size[1]))
 
     def reload_bee_info(self, b: Bee = None) -> None:
         if b is None and self.socket_group.current_button:

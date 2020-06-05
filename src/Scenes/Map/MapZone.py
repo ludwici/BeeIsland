@@ -8,8 +8,7 @@ from src.UI.Button import ButtonEventType, Button, ButtonState
 
 
 class MapZone(Button):
-    __slots__ = (
-        "zone_id", "parent", "__is_lock", "quest_label", "quest_list", "quest_icons")
+    __slots__ = ("zone_id", "parent", "__is_lock", "quest_label", "quest_list", "quest_icons")
 
     def __init__(self, parent: MapScene, zone_id: int, position: (int, int) = (0, 0),
                  state: ButtonState = ButtonState.NORMAL) -> None:
@@ -28,7 +27,6 @@ class MapZone(Button):
 
     def add_quest(self, quest: Quest, available: bool) -> None:
         quest.icon_btn.parent = quest
-        quest.zone = self
         quest.icon_btn.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.parent.show_quest_menu(quest)})
         self.quest_list.append(quest)
         self.quest_icons.append(quest.icon_btn)
@@ -41,15 +39,9 @@ class MapZone(Button):
 
     def lock(self) -> None:
         super().lock()
-        # for qi in self.quest_icons:
-        #     qi.lock()
-        #     qi.hide()
 
     def unlock(self) -> None:
         super().unlock()
-        # for qi in self.quest_icons:
-        #     qi.unlock()
-        #     qi.show()
 
     def add_quests(self, quest_list: list) -> None:
         self.quest_list.extend(quest_list)
