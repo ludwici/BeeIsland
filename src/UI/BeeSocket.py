@@ -64,7 +64,8 @@ class BeeSocket(RadioButton):
         self.__socket_type = value
         if self.__socket_type == BeeSocketType.ALL:
             normal_image_path = "WORKER.png"
-        normal_image_path = "{0}.png".format(self.__socket_type.name)
+        else:
+            normal_image_path = "{0}.png".format(self.__socket_type.name)
         self.set_image_by_state(ButtonState.NORMAL, normal_image_path)
 
     @property
