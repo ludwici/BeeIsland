@@ -82,6 +82,10 @@ class RenderWindow:
         self.__screen = pygame.display.set_mode(size)
         self.__current_scene.on_scene_started()
 
+    def change_lang(self, lang: LocalList) -> None:
+        Localization.set_locale(lang)
+        self.__current_scene.on_scene_started()
+
     def handle_events(self) -> None:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
