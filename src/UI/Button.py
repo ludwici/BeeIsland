@@ -150,7 +150,8 @@ class Button(Drawable):
         return process
 
     def draw(self, screen: pygame.Surface) -> None:
-        screen.blit(self._current_image, self._rect)
+        if self.is_draw:
+            screen.blit(self._current_image, self._rect)
 
     def on_hover_on(self) -> None:
         self.state |= int(ButtonState.HOVERED)
