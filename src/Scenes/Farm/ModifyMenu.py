@@ -1,16 +1,21 @@
 import itertools
+import math
+import random
 
 import pygame
 from pygame.event import Event
 
-from UI.Menu import Menu
 from src.BeeFamily.Bee import Bee
+from src.BeeFamily.BeeQueen import BeeQueen
+from src.BeeFamily.BeeWarrior import BeeWarrior
+from src.BeeFamily.BeeWorker import BeeWorker
 from src.Scenes.Scene import Scene
 from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import ButtonEventType, ButtonState
 from src.UI.DrawablesGroup import DrawablesGroup
 from src.UI.ListItem import ListItem
 from src.UI.ListView import ListView
+from src.UI.Menu import Menu
 from src.UI.MultilineTextLabel import MultilineTextLabel
 from src.UI.RadioGroup import RadioGroup
 from src.UI.TextButton import TextButton
@@ -62,6 +67,7 @@ class ModifyMenu(Menu):
             (self.upgrade_button.get_rect().centerx - self.result_socket.get_size()[1] / 2,
              self.upgrade_button.position[1] + self.upgrade_button.get_size()[1] + 15)
         )
+        self.result_socket.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.pick_new_bee()})
 
         self.info_block_image = pygame.image.load("{0}/modify_popup1_info.png".format(self._res_dir))
         self.info_block_rect = self.info_block_image.get_rect()
@@ -104,7 +110,7 @@ class ModifyMenu(Menu):
         self.info_group = DrawablesGroup(parent=self,
                                          data={"b_name": name_label, "b_level": level_label, "b_exp": xp_label,
                                                "b_speed": speed_label, "b_hp": hp_label,
-                                               "b_bonuses": bonus_list_label})
+                                               "b_bonus": bonus_list_label})
 
         self.bee_list_view = ListView(parent=self, size=(625, 253), item_padding=(10, 10), padding=(30, 9),
                                       position=(
@@ -131,17 +137,65 @@ class ModifyMenu(Menu):
         self.parent.nest_group.stop_handle()
 
     def destroy(self):
+        if not self.result_socket.is_locked:
+            self.pick_new_bee()
         self.parent.nest_group.start_handle()
         super().destroy()
 
+    def kill_bee(self, socket: BeeSocket) -> None:
+        self.parent.player.farm.kill_bee(socket.bee)
+        for h in self.parent.nest_group.buttons:
+            for bs in h.nest_group.buttons:
+                if bs.bee:
+                    if bs.bee == socket.bee:
+                        del bs.bee
+                        break
+        del socket.bee
+
+    def pick_new_bee(self):
+        self.parent.player.farm.add_out_of_hive_bee(self.result_socket.bee)
+        self.add_bee_to_list(self.result_socket.bee)
+        del self.result_socket.bee
+        self.result_socket.lock()
+
     def upgrade(self):
         self.upgrade_button.lock()
-        self.parent.player.farm.remove_out_of_hive_bee(self.socket1.bee)
-        self.parent.player.farm.remove_out_of_hive_bee(self.socket2.bee)
-        del self.socket1.bee
-        del self.socket2.bee
+        warrior_percent = (self.socket1.bee.current_level + self.socket2.bee.current_level) * 2
+        chance = random.random() * 100
+        if chance < warrior_percent:
+            bee = BeeWarrior(parent=self.parent.player)
+        else:
+            bee = BeeWorker(parent=self.parent.player)
+
+        chance = random.random() * 100
+        if chance <= 20:
+            t1 = self.socket1.bee.bonus
+            t2 = self.socket2.bee.bonus
+            n_t = random.choice([t1, t2])
+            bee.bonus = n_t
+            bee.modify_bonus()
+            mod = "bonus"
+        else:
+            random_param = random.randint(1, 2)
+            if random_param == 1:
+                up = (self.socket1.bee.speed + self.socket2.bee.speed) \
+                     * ((self.socket1.bee.current_level + self.socket2.bee.current_level) / 2) / 100
+                bee.speed_mod = up
+                mod = "speed"
+            else:
+                bee.hp_mod = math.ceil((((self.socket1.bee.current_hp * 10) / 100)
+                                        + ((self.socket2.bee.current_hp * 10) / 100)) / 2)
+                bee.current_hp = bee.max_hp
+                mod = "health"
+
+        bee.upgrade_name(mod)
+
+        self.kill_bee(self.socket1)
+        self.kill_bee(self.socket2)
         self.result_socket.unlock()
         self.result_socket.select()
+        self.result_socket.bee = bee
+        self.reload_bee_info()
 
     def add_bee_to_list(self, b: Bee) -> None:
         i = ListItem(parent=self, data=b, normal_image_path="holder1.png")
@@ -202,9 +256,9 @@ class ModifyMenu(Menu):
         self.info_group["b_hp"].set_position((self.info_group["b_speed"].position[0],
                                               self.info_group["b_speed"].position[1]
                                               + self.info_group["b_speed"].get_size()[1]))
-        self.info_group["b_bonuses"].set_position((self.info_group["b_hp"].position[0],
-                                                   self.info_group["b_hp"].position[1]
-                                                   + self.info_group["b_hp"].get_size()[1]))
+        self.info_group["b_bonus"].set_position((self.info_group["b_hp"].position[0],
+                                                 self.info_group["b_hp"].position[1]
+                                                 + self.info_group["b_hp"].get_size()[1]))
 
     def reload_bee_info(self, b: Bee = None) -> None:
         if b is None and self.socket_group.current_button:
@@ -212,27 +266,42 @@ class ModifyMenu(Menu):
         if not b:
             return
 
-        self.info_group["b_name"].set_text(
-            text="{0} {1}".format(self.parent.localization.get_string("b_name"), b.name))
+        try:
+            self.info_group["b_name"].set_text(
+                text="{0} {1}".format(self.parent.localization.get_string("b_name"), b.name))
 
-        self.info_group["b_level"].set_text(
-            text="{0} {1}".format(self.parent.localization.get_string("b_level"), b.current_level)
-        )
+            self.info_group["b_level"].set_text(
+                text="{0} {1}".format(self.parent.localization.get_string("b_level"), b.current_level)
+            )
 
-        self.info_group["b_exp"].set_text(
-            text="{0} {1}/{2}".format(self.parent.localization.get_string("b_exp"), b.current_xp, b.max_xp)
-        )
+            self.info_group["b_exp"].set_text(
+                text="{0} {1}/{2}".format(self.parent.localization.get_string("b_exp"), b.current_xp, b.max_xp)
+            )
 
-        self.info_group["b_speed"].set_text(
-            text="{0} {1}".format(self.parent.localization.get_string("b_speed"), b.speed))
+            if isinstance(b, BeeQueen):
+                self.info_group["b_speed"].hide()
+                self.info_group["b_hp"].hide()
+                self.info_group["b_bonus"].hide()
+            else:
+                self.info_group["b_speed"].show()
+                self.info_group["b_hp"].show()
+                self.info_group["b_bonus"].show()
 
-        self.info_group["b_hp"].set_text(
-            text="{0} {1}/{2}".format(self.parent.localization.get_string("b_hp"), b.current_hp, b.max_hp)
-        )
+                self.info_group["b_speed"].set_text(
+                    text="{0} {1}".format(self.parent.localization.get_string("b_speed"), b.speed))
 
-        self.info_group["b_bonuses"].set_text(
-            text="{0} {1}".format(self.parent.localization.get_string("b_bonuses"), b.bonus)
-        )
+                self.info_group["b_hp"].set_text(
+                    text="{0} {1}/{2}".format(self.parent.localization.get_string("b_hp"), b.current_hp, b.max_hp)
+                )
+                self.info_group["b_bonus"].set_text(
+                    text="{0} {1}".format(self.parent.localization.get_string("b_bonus"), b.bonus.description)
+                )
+        except AttributeError:
+            pass
+        except KeyError as ky:
+            field = str(ky).replace('\'', '')
+            print(field)
+            self.info_group[field].hide()
 
     def draw(self, screen: pygame.Surface) -> None:
         super().draw(screen)
