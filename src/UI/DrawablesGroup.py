@@ -22,8 +22,10 @@ class DrawablesGroup(Drawable):
 
     def handle_event(self, event: Event) -> None:
         for k, v in self.group.items():
-            v.handle_event(event)
+            if v.is_draw:
+                v.handle_event(event)
 
     def draw(self, screen: pygame.Surface) -> None:
         for k, v in self.group.items():
-            v.draw(screen)
+            if v.is_draw:
+                v.draw(screen)
