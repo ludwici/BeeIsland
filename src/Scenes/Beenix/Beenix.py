@@ -37,7 +37,7 @@ class Beenix(Drawable):
         self.image = self.images["right"]
         self.image.set_colorkey((0, 0, 0))
         self.movement = Direction.STILL
-        self.speed = 3
+        self.speed = 2
         self._rect = self.image.get_rect()
         self.points = []
         self.area = area
