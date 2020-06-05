@@ -9,6 +9,14 @@ class LocalList(Enum):
     EN = "en",
     UA = "ua"
 
+    def next(self):
+        if self == LocalList.RU:
+            return LocalList.EN
+        if self == LocalList.EN:
+            return LocalList.UA
+        if self == LocalList.UA:
+            return LocalList.RU
+
 
 class Localization:
     __current_locale = LocalList.RU
@@ -32,6 +40,10 @@ class Localization:
     @staticmethod
     def set_locale(locale: LocalList):
         Localization.__current_locale = locale
+
+    @staticmethod
+    def get_full_locale():
+        return Localization.__current_locale
 
     @staticmethod
     def get_current_locale():
