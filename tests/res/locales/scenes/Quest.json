@@ -14,17 +14,17 @@
       "x_off": 15
     }
   },
-  "en": {
-    "time": {
-      "text": "Time:"
-    },
-    "time_over": {
-      "text": "Time is over"
-    },
-    "score": {
-      "text": "Score:"
-    },
-    "finish_label": {
+    "en": {
+      "time": {
+        "text": "Time:"
+      },
+      "time_over": {
+        "text": "Time is over"
+      },
+      "score": {
+        "text": "Score:"
+      },
+      "finish_label": {
       "text": "Finish",
       "x_off": 15
     }
