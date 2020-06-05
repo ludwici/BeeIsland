@@ -75,11 +75,16 @@ class QuestScene(Scene):
         xp = math.ceil(((8 * bee_lvl) + QuestScene.__diff(bee_lvl)) * self.__mxp(bee_lvl) * QuestScene.rf(bee_lvl))
         return xp
 
+    @staticmethod
+    def _calculate_damage(bee_lvl):
+        return 16
+
     def _finish_quest(self) -> None:
         self.player.resources += self._quest.rewards
         self.player.resources += self._quest.additional_rewards
         for b in self._quest.bee_list:
             b.give_xp(self._calculate_xp(b.current_level))
+            b.current_hp -= QuestScene._calculate_damage(b.current_level)
         self.score += self.score * self._quest.score_modifier_percent / 100
 
         self.main_window.change_scene(self.main_window.prev_scene.name)
