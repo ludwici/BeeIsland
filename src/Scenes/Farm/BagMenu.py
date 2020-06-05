@@ -2,13 +2,13 @@ from copy import copy
 
 import pygame
 
-from UI.Menu import Menu
 from src.InGameResources.Resource import Resource
 from src.Scenes.Scene import Scene
 from src.UI.Button import ButtonState, ButtonEventType
 from src.UI.DrawablesGroup import DrawablesGroup
 from src.UI.ListItem import ListItem
 from src.UI.ListView import ListView
+from src.UI.Menu import Menu
 from src.UI.PopupNotify import PopupNotify
 from src.UI.TextLabel import TextLabel
 

@@ -1,10 +1,10 @@
 import pygame
 from pygame.event import Event
 
-from Scenes.Farm.UpgdareHiveMenu import UpgradeHiveMenu
 from src import Constants
 from src.Scenes.Farm.BagMenu import BagMenu
 from src.Scenes.Farm.ModifyMenu import ModifyMenu
+from src.Scenes.Farm.UpgdareHiveMenu import UpgradeHiveMenu
 from src.Scenes.Scene import Scene
 from src.UI.BeeNestButton import BeeNestButton
 from src.UI.Button import Button, ButtonEventType, ButtonState

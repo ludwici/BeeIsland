@@ -1,7 +1,6 @@
 import pygame
 from pygame.event import Event
 
-from UI.Menu import Menu
 from src.BeeFamily.Bee import Bee
 from src.Quests.Quest import Quest, QuestDifficult
 from src.Scenes.Beenix.BeenixScene import BeenixScene
@@ -9,6 +8,7 @@ from src.Scenes.Match3.Match3Scene import Match3Scene
 from src.UI.BeeSelectPanel import BeeSelectPanel
 from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import ButtonState, ButtonEventType
+from src.UI.Menu import Menu
 from src.UI.MultilineTextLabel import MultilineTextLabel
 from src.UI.RadioGroup import RadioGroup
 from src.UI.TextButton import TextButton

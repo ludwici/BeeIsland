@@ -1,11 +1,11 @@
 import pygame
 from pygame.event import Event
 
-import Constants
-from Interfaces.Drawable import Drawable
-from Scenes.Scene import Scene
-from UI.Button import Button, ButtonState, ButtonEventType
-from UI.TextLabel import TextLabel
+from src import Constants
+from src.Interfaces.Drawable import Drawable
+from src.Scenes.Scene import Scene
+from src.UI.Button import Button, ButtonState, ButtonEventType
+from src.UI.TextLabel import TextLabel
 
 
 class Menu(Drawable):
