@@ -17,6 +17,14 @@ class LocalList(Enum):
         if self == LocalList.UA:
             return LocalList.RU
 
+    def prev(self):
+        if self == LocalList.RU:
+            return LocalList.UA
+        if self == LocalList.EN:
+            return LocalList.RU
+        if self == LocalList.UA:
+            return LocalList.EN
+
 
 class Localization:
     __current_locale = LocalList.RU
