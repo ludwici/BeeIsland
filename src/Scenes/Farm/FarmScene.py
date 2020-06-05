@@ -60,16 +60,15 @@ class FarmScene(Scene):
 
     def show_modify(self) -> None:
         self.nest_group.unselect_all()
-
-        m = ModifyMenu(parent=self)
+        ModifyMenu(parent=self)
 
     def show_upgrade_hives(self) -> None:
         self.nest_group.unselect_all()
-        m = UpgradeHiveMenu(parent=self)
+        UpgradeHiveMenu(parent=self)
 
     def show_bag(self) -> None:
         self.nest_group.unselect_all()
-        b = BagMenu(parent=self)
+        BagMenu(parent=self)
 
     def handle_events(self, event: Event) -> None:
         self.nest_group.handle_event(event)

@@ -33,7 +33,7 @@ class MapScene(Scene):
 
     def show_quest_menu(self, quest) -> None:
         self.remove_drawable(self.find_drawable_by_type(QuestMenu))
-        q = QuestMenu(parent=self, quest=quest)
+        QuestMenu(parent=self, quest=quest)
 
     def init_zones(self) -> None:
         bg_x, bg_y = self.__bg_map_rect.x, self.__bg_map_rect.y
