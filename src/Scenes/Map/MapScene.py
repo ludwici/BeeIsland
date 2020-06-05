@@ -18,10 +18,8 @@ class MapScene(Scene):
         Scene.__init__(self, main_window=main_window, player=player, name=name)
         self.__bg_image = pygame.image.load("{0}/images/map1_bg.jpg".format(self._res_dir))
         self.__bg_rect = self.__bg_image.get_rect()
-        self.__bg_rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
         self.__map_image = pygame.image.load("{0}/images/map1.jpg".format(self._res_dir)).convert()
         self.__bg_map_rect = self.__map_image.get_rect()
-        self.__bg_map_rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
         self.zones = []
         self.to_farm_button = Button(parent=self, position=(10, 10), normal_image_path="to_farm_normal.png")
         self.to_farm_button.set_image_by_state(ButtonState.HOVERED, "to_farm_hover.png")
@@ -29,6 +27,8 @@ class MapScene(Scene):
 
     def on_scene_started(self) -> None:
         super().on_scene_started()
+        self.__bg_rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
+        self.__bg_map_rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
         self.init_zones()
 
     def show_quest_menu(self, quest) -> None:

@@ -20,7 +20,6 @@ class FarmScene(Scene):
         self.main_image = pygame.image.load("{0}/images/farm1.jpg".format(self._res_dir)).convert()
         self.bg_image = pygame.image.load("{0}/images/farm1_bg.jpg".format(self._res_dir)).convert()
         self.main_image_rect = self.main_image.get_rect()
-        self.main_image_rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
         self.to_map_button = Button(parent=self, normal_image_path="to_map_normal.png",
                                     position=(10, 10))
         self.to_map_button.set_image_by_state(ButtonState.HOVERED, "to_map_hover.png")
@@ -36,23 +35,13 @@ class FarmScene(Scene):
 
         self.to_upgrade_hive_button = Button(parent=self, normal_image_path="to_upgrade_hive_normal.png")
         self.to_upgrade_hive_button.set_image_by_state(ButtonState.HOVERED, "to_upgrade_hive_hover.png")
-        self.to_upgrade_hive_button.set_position(
-            position=(10, self.to_upgrade_bee_button.position[1] + self.to_upgrade_bee_button.get_size()[1] + 10)
-        )
         self.to_upgrade_hive_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show_upgrade_hives()})
 
         self.to_bag_button = Button(parent=self, normal_image_path="bag_normal.png")
-        self.to_bag_button.set_position(
-            position=(10, self.to_upgrade_hive_button.position[1] + self.to_upgrade_hive_button.get_size()[1] + 10)
-        )
         self.to_bag_button.set_image_by_state(ButtonState.HOVERED, "bag_hover.png")
         self.to_bag_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show_bag()})
 
         self.to_exit_button = Button(parent=self, normal_image_path="to_exit_normal.png")
-        self.to_exit_button.set_position(
-            position=(10, self.to_bag_button.position[1] + self.to_bag_button.get_size()[1] + 10)
-
-        )
         self.to_exit_button.set_image_by_state(ButtonState.HOVERED, "to_exit_hover.png")
         self.to_exit_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.change_scene("Main")})
 
@@ -69,6 +58,12 @@ class FarmScene(Scene):
     def show_modify(self) -> None:
         self.nest_group.unselect_all()
         ModifyMenu(parent=self)
+
+    def set_nests_position(self):
+        positions = [(194, 104), (501, 104), (111, 340), (584, 340), (194, 577), (501, 577)]
+        for i in range(6):
+            self.nest_group.buttons[i].set_position(
+                (self.main_image_rect.x + positions[i][0], self.main_image_rect.y + positions[i][1]))
 
     def show_upgrade_hives(self) -> None:
         self.nest_group.unselect_all()
@@ -105,3 +100,14 @@ class FarmScene(Scene):
 
     def on_scene_started(self) -> None:
         super().on_scene_started()
+        self.main_image_rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
+        self.set_nests_position()
+        self.to_upgrade_hive_button.set_position(
+            position=(10, self.to_upgrade_bee_button.position[1] + self.to_upgrade_bee_button.get_size()[1] + 10)
+        )
+        self.to_bag_button.set_position(
+            position=(10, self.to_upgrade_hive_button.position[1] + self.to_upgrade_hive_button.get_size()[1] + 10)
+        )
+        self.to_exit_button.set_position(
+            position=(10, self.to_bag_button.position[1] + self.to_bag_button.get_size()[1] + 10)
+        )

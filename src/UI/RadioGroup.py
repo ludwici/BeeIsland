@@ -34,6 +34,10 @@ class RadioGroup:
         self.__buttons.clear()
 
     @property
+    def is_draw(self) -> bool:
+        return self.__buttons[0].is_draw
+
+    @property
     def buttons(self) -> list:
         return self.__buttons
 
