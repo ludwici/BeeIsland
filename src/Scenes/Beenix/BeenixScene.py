@@ -19,7 +19,14 @@ class BeenixScene(QuestScene):
         self._area_surface = self._area.mask.count()
         self._area.update_mask()
         self._spiders = []
+        self.lives = len(self._quest.bee_list) + 1
+        self.current_bee_index = 0
         self._beenix = Beenix(parent=self, area=self._area, position=self._area.rect.topleft)
+        if len(self._quest.bee_list) != 0:
+            self._beenix.speed = self._quest.bee_list[self.current_bee_index].speed
+
+        else:
+            self._beenix.speed = 2
         for i in range(self._spider_count):
             self._spiders.append(Spider(self._area))
 
@@ -50,6 +57,7 @@ class BeenixScene(QuestScene):
         self._finish_button.set_text(text=self._localization.get_string("finish_label"))
         self._finish_button.set_padding(padding=(self._localization.get_params_by_string("finish_label")["x_off"], 0))
         self._finish_button.set_position((Constants.WINDOW_W - self._finish_button.get_size()[0] - 10, 10))
+        print("Lives: ", self.lives)
 
     def handle_events(self, event: Event) -> None:
         super().handle_events(event)
@@ -77,6 +85,18 @@ class BeenixScene(QuestScene):
                     self._area.rect.w * self._area.rect.h - self._area_surface) * 100
 
     def wasted(self) -> None:
+        self.lives -= 1
+        if self.lives == 0:
+            self._finish_quest()
+            return
+
+        if self.lives == 1:
+            speed = 3
+        else:
+            self.current_bee_index += 1
+            speed = self._quest.bee_list[self.current_bee_index].speed
+
         self._beenix = Beenix(parent=self, area=self._area, position=self._area.rect.topleft)
+        self._beenix.speed = speed
         self._beenix.change_movement(Direction.STILL)
         pygame.time.delay(1000)
