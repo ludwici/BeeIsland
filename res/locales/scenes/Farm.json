@@ -48,7 +48,7 @@
   },
   "en": {
     "locked_nest": {
-      "text": "You can’t buy this nest yet"
+      "text": "You can not buy this nest yet"
     },
     "upgrade_button": {
       "text": "Modify"
@@ -76,6 +76,9 @@
     },
     "b_bonuses": {
       "text": "Bonuses:"
+    },
+    "price": {
+      "text": "Price:"
     }
   }
 }
