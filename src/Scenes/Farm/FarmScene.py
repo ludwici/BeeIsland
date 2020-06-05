@@ -13,7 +13,7 @@ from src.UI.RadioGroup import RadioGroup
 
 class FarmScene(Scene):
     __slots__ = ("main_image", "bg_image", "main_image_rect", "to_map_button", "to_upgrade_bee_button", "nest_group",
-                 "to_bag_button", "to_upgrade_hive_button")
+                 "to_bag_button", "to_upgrade_hive_button", "to_exit_button")
 
     def __init__(self, main_window, name, player) -> None:
         Scene.__init__(self, main_window=main_window, player=player, name=name)
@@ -48,6 +48,14 @@ class FarmScene(Scene):
         self.to_bag_button.set_image_by_state(ButtonState.HOVERED, "bag_hover.png")
         self.to_bag_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.show_bag()})
 
+        self.to_exit_button = Button(parent=self, normal_image_path="to_exit_normal.png")
+        self.to_exit_button.set_position(
+            position=(10, self.to_bag_button.position[1] + self.to_bag_button.get_size()[1] + 10)
+
+        )
+        self.to_exit_button.set_image_by_state(ButtonState.HOVERED, "to_exit_hover.png")
+        self.to_exit_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.change_scene("Main")})
+
         bg_x = self.main_image_rect.x
         bg_y = self.main_image_rect.y
         positions = [(194, 104), (501, 104), (111, 340), (584, 340), (194, 577), (501, 577)]
@@ -77,6 +85,7 @@ class FarmScene(Scene):
         self.to_upgrade_bee_button.handle_event(event)
         self.to_bag_button.handle_event(event)
         self.to_upgrade_hive_button.handle_event(event)
+        self.to_exit_button.handle_event(event)
 
     def draw(self, surface: pygame.Surface) -> None:
         surface.fill((0, 0, 0))
@@ -88,6 +97,7 @@ class FarmScene(Scene):
         self.to_upgrade_bee_button.draw(surface)
         self.to_bag_button.draw(surface)
         self.to_upgrade_hive_button.draw(surface)
+        self.to_exit_button.draw(surface)
 
     def on_scene_change(self) -> None:
         self.nest_group.unselect_all()
