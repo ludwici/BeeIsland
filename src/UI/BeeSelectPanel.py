@@ -53,7 +53,7 @@ class BeeSelectPanel(Drawable):
         self.info_group = DrawablesGroup(parent=self,
                                          data={"b_name": name_label, "b_level": level_label, "b_exp": xp_label,
                                                "b_speed": speed_label, "b_hp": hp_label,
-                                               "b_bonuses": bonus_list_label})
+                                               "b_bonus": bonus_list_label})
         for b in self.__bee_list:
             self.add_bee_to_list(b)
 
@@ -124,39 +124,47 @@ class BeeSelectPanel(Drawable):
     def show_info(self, b: Bee) -> None:
         if not b:
             return
-        self.info_group["b_name"].set_text(
-            text="{0} {1}".format(self.__scene.localization.get_string("b_name"), b.name))
 
-        self.info_group["b_level"].set_text(
-            text="{0} {1}".format(self.__scene.localization.get_string("b_level"), b.current_level)
-        )
-        self.info_group["b_level"].set_position((self.info_group["b_name"].position[0],
-                                                 self.info_group["b_name"].position[1]
-                                                 + self.info_group["b_name"].get_size()[1] - 5))
+        # self.info_group["b_bonus"].show()
+        try:
+            self.info_group["b_name"].set_text(
+                text="{0} {1}".format(self.__scene.localization.get_string("b_name"), b.name))
 
-        self.info_group["b_exp"].set_text(
-            text="{0} {1}/{2}".format(self.__scene.localization.get_string("b_exp"), b.current_xp, b.max_xp)
-        )
-        self.info_group["b_exp"].set_position((self.info_group["b_level"].position[0],
-                                               self.info_group["b_level"].position[1]
-                                               + self.info_group["b_level"].get_size()[1] - 5))
+            self.info_group["b_level"].set_text(
+                text="{0} {1}".format(self.__scene.localization.get_string("b_level"), b.current_level)
+            )
+            self.info_group["b_level"].set_position((self.info_group["b_name"].position[0],
+                                                     self.info_group["b_name"].position[1]
+                                                     + self.info_group["b_name"].get_size()[1] - 5))
 
-        self.info_group["b_speed"].set_text(
-            text="{0} {1}".format(self.__scene.localization.get_string("b_speed"), b.speed))
-        self.info_group["b_speed"].set_position((self.info_group["b_exp"].position[0],
-                                                 self.info_group["b_exp"].position[1]
-                                                 + self.info_group["b_exp"].get_size()[1] - 5))
+            self.info_group["b_exp"].set_text(
+                text="{0} {1}/{2}".format(self.__scene.localization.get_string("b_exp"), b.current_xp, b.max_xp)
+            )
+            self.info_group["b_exp"].set_position((self.info_group["b_level"].position[0],
+                                                   self.info_group["b_level"].position[1]
+                                                   + self.info_group["b_level"].get_size()[1] - 5))
 
-        self.info_group["b_hp"].set_text(
-            text="{0} {1}/{2}".format(self.__scene.localization.get_string("b_hp"), b.current_hp, b.max_hp)
-        )
-        self.info_group["b_hp"].set_position((self.info_group["b_speed"].position[0],
-                                              self.info_group["b_speed"].position[1]
-                                              + self.info_group["b_speed"].get_size()[1] - 5))
+            self.info_group["b_speed"].set_text(
+                text="{0} {1}".format(self.__scene.localization.get_string("b_speed"), b.speed))
+            self.info_group["b_speed"].set_position((self.info_group["b_exp"].position[0],
+                                                     self.info_group["b_exp"].position[1]
+                                                     + self.info_group["b_exp"].get_size()[1] - 5))
 
-        self.info_group["b_bonuses"].set_text(
-            text="{0} {1}".format(self.__scene.localization.get_string("b_bonuses"), b.bonus)
-        )
-        self.info_group["b_bonuses"].set_position((self.info_group["b_hp"].position[0],
-                                                   self.info_group["b_hp"].position[1]
-                                                   + self.info_group["b_hp"].get_size()[1] - 5))
+            self.info_group["b_hp"].set_text(
+                text="{0} {1}/{2}".format(self.__scene.localization.get_string("b_hp"), b.current_hp, b.max_hp)
+            )
+            self.info_group["b_hp"].set_position((self.info_group["b_speed"].position[0],
+                                                  self.info_group["b_speed"].position[1]
+                                                  + self.info_group["b_speed"].get_size()[1] - 5))
+
+            self.info_group["b_bonus"].set_text(
+                text="{0} {1}".format(self.__scene.localization.get_string("b_bonus"), b.bonus.description)
+            )
+            self.info_group["b_bonus"].set_position((self.info_group["b_hp"].position[0],
+                                                     self.info_group["b_hp"].position[1]
+                                                     + self.info_group["b_hp"].get_size()[1] - 5))
+        except AttributeError:
+            pass
+        except KeyError as ky:
+            field = str(ky).replace('\'', '')
+            self.info_group[field].hide()
