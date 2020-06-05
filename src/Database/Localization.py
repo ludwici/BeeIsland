@@ -9,7 +9,7 @@ class LocalList(Enum):
     EN = "en",
     UA = "ua"
 
-    def next(self):
+    def get_next(self):
         if self == LocalList.RU:
             return LocalList.EN
         if self == LocalList.EN:
@@ -17,7 +17,7 @@ class LocalList(Enum):
         if self == LocalList.UA:
             return LocalList.RU
 
-    def prev(self):
+    def get_prev(self):
         if self == LocalList.RU:
             return LocalList.UA
         if self == LocalList.EN:

@@ -97,9 +97,9 @@ class SettingsMenu(Menu):
 
     def change_lang(self, right: bool) -> None:
         if right:
-            self.parent.main_window.change_lang(Localization.get_full_locale().next())
+            self.parent.main_window.change_lang(Localization.get_full_locale().get_next())
         else:
-            self.parent.main_window.change_lang(Localization.get_full_locale().prev())
+            self.parent.main_window.change_lang(Localization.get_full_locale().get_prev())
 
         self.__current_lang_label.set_text(Localization.get_current_locale().upper())
 
