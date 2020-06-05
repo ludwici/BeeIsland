@@ -23,10 +23,10 @@ class BeeNest(Levelable):
             self.__max_size = 3
             self.max_xp = 3
         elif level == 2:
-            self.__max_size = 4
+            self.__max_size += 1
             self.max_xp = 5
         elif level == 3:
-            self.__max_size = 5
+            self.__max_size += 1
             self.max_xp = 10
 
         return True
@@ -52,12 +52,15 @@ class BeeNest(Levelable):
     def bee_list(self) -> list:
         return self.__bee_list
 
+    def remove_bee(self, bee: Bee) -> None:
+        self.__bee_list.remove(bee)
+
     def add_bee(self, bee: Bee) -> bool:
         if self.size > self.__max_size:
             return False
 
-        if bee.need_hive_level > self.current_level:
-            return False
+        # if bee.need_hive_level > self.current_level:
+        #     return False
 
         self.__bee_list.append(bee)
         return True
