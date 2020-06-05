@@ -48,13 +48,13 @@
   },
   "en": {
     "locked_nest": {
-      "text": "You can’t buy this nest yet"
+      "text": "You can not buy this nest yet"
     },
     "upgrade_button": {
-      "text": "Modify"
+      "text": "Improve"
     },
     "modify_title": {
-      "text": "Modify"
+      "text": "Improve"
     },
     "info_label": {
       "text": "Information"
@@ -76,6 +76,21 @@
     },
     "b_bonuses": {
       "text": "Bonuses:"
+    },
+    "bag_title": {
+      "text": "Resources"
+    },
+    "res_name_label": {
+      "text": "Name"
+    },
+    "amount_res_label": {
+      "text": "Amount"
+    },
+    "hives": {
+      "text": "Hives"
+    },
+    "price": {
+      "text": "Price:"
     }
   }
 }
