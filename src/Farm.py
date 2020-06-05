@@ -32,6 +32,18 @@ class Farm:
 
         return bees
 
+    def kill_bee(self, b: Bee) -> None:
+        for target in self.__out_of_hive_bee_list:
+            if b == target:
+                self.remove_out_of_hive_bee(b)
+                return
+
+        for h in self.__hive_list:
+            for target in h.bee_list:
+                if b == target:
+                    h.remove_bee(b)
+                    return
+
     def remove_out_of_hive_bee(self, b: Bee) -> None:
         self.__out_of_hive_bee_list.remove(b)
 
