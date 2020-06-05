@@ -1,0 +1,22 @@
+{
+  "ru": {
+    "start": {
+      "text": "Начать игру",
+      "padding": 20
+    },
+    "settings": {
+      "text": "Настройки",
+      "padding": 30
+    },
+    "exit": {
+      "text": "Выйти",
+      "padding": 52
+    },
+    "resolution": {
+      "text": "Разрешение экрана:"
+    },
+    "lang": {
+      "text": "Язык:"
+    }
+  }
+}
