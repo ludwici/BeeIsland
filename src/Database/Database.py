@@ -35,7 +35,7 @@ class Database:
         all_quests = cursor.fetchall()
         template_list = []
         for i in all_quests:
-            q = QuestTemplate(title=i[1], desc=i[2], icon_pos=(i[3], i[4]), q_type=i[5])
+            q = QuestTemplate(title=i[1], desc=i[2], icon_pos=(i[3], i[4]), q_type=i[5], zone_id=i[6], quest_id=i[0])
             rb = ResourceBag()
             for j in self.get_rewards_by_quest_id(i[0]):
                 r = self.get_resource_by_id(j[0])

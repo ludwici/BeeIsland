@@ -13,16 +13,18 @@ class QuestDifficult(Enum):
 
 class Quest:
     __slots__ = ("__is_allow", "time", "score_modifier_percent", "title", "_description", "zone", "condition",
-                 "rewards", "difficult", "icon_btn", "bee_list", "additional_rewards", "q_type", "resources_modifier")
+                 "rewards", "difficult", "icon_btn", "bee_list", "additional_rewards", "q_type", "resources_modifier",
+                 "__quest_id")
 
     def __init__(self, quest_template: QuestTemplate, icon_offset: (int, int)) -> None:
         self.__is_allow = False
         self.time = 0
+        self.__quest_id = quest_template.quest_id
         self.score_modifier_percent = 0
         self.title = quest_template.title
         self._description = quest_template.desc
         self.resources_modifier = 1
-        self.zone = None
+        self.zone = quest_template.zone_id
         self.bee_list = []
         self.condition = None
         self.rewards = quest_template.resources_bag
@@ -36,7 +38,11 @@ class Quest:
             icon_name = "quest_icon4.png"
         else:
             icon_name = "quest_icon1.png"
-        self.icon_btn = Button(parent=self.zone, normal_image_path=icon_name, position=icon_pos)
+        self.icon_btn = Button(parent=self, normal_image_path=icon_name, position=icon_pos)
+
+    @property
+    def quest_id(self) -> int:
+        return self.__quest_id
 
     @property
     def is_allow(self) -> bool:
