@@ -12,9 +12,9 @@ class TestEntities(unittest.TestCase):
         self.nest = BeeNest()
 
     def test_bee_xp_1(self):
-        xp = 160
+        xp = 282
         self.bee.give_xp(xp)
-        self.assertEqual(self.bee.current_xp, 61)
+        self.assertEqual(self.bee.current_xp, 11)
         self.check_bee_min_max()
 
     def test_nest_xp_1(self):
@@ -25,14 +25,14 @@ class TestEntities(unittest.TestCase):
 
     def test_bee_xp_2(self):
         self.bee.change_level_to(1)
-        self.bee.give_xp(70)
+        self.bee.give_xp(80)
         self.assertEqual(self.bee.current_level, 1)
-        self.bee.give_xp(100)
+        self.bee.give_xp(200)
         self.assertEqual(self.bee.current_level, 2)
         self.check_bee_min_max()
 
     def test_add_bee_to_nest(self):
-        b = Bee(1, bonus=None)
+        b = Bee(parent=None, bonus=None)
 
         for i in range(self.nest.max_size):
             if not self.nest.add_bee(b):
