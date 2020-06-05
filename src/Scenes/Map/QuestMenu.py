@@ -151,7 +151,6 @@ class QuestMenu(Menu):
         for b in self.bee_socket_group.buttons:
             if b.bee:
                 bee_list.append(b.bee)
-                print("Q" + repr(b.bee))
 
         self.quest.bee_list = bee_list
         if self.quest.q_type == 1:
@@ -180,8 +179,8 @@ class QuestMenu(Menu):
         self.bonus_list.clear()
         for bs in self.bee_socket_group.buttons:
             if bs.bee:
-                b_l = MultilineTextLabel(parent=self, text=bs.bee.bonus, bold=True, line_length=130, font_size=12,
-                                         position=(self.bonuses_rect.x + 5, start_pos_y))
+                b_l = MultilineTextLabel(parent=self, text=bs.bee.bonus.description, bold=True, line_length=130,
+                                         font_size=12, position=(self.bonuses_rect.x + 5, start_pos_y))
                 self.bonus_list.append(b_l)
                 start_pos_y += b_l.get_size()[1]
         self.generate_rewards_labels()
