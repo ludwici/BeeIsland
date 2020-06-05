@@ -1,12 +1,12 @@
 import pygame
 from pygame.event import Event
 
-from Database.Localization import Localization
-from UI.Button import ButtonEventType, ButtonState
-from UI.Menu import Menu
-from UI.TextButton import TextButton
-from UI.TextLabel import TextLabel
 from src import Constants
+from src.Database.Localization import Localization
+from src.UI.Button import ButtonEventType, ButtonState
+from src.UI.Menu import Menu
+from src.UI.TextButton import TextButton
+from src.UI.TextLabel import TextLabel
 
 
 class SettingsMenu(Menu):
