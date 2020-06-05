@@ -11,7 +11,8 @@ select q.id,
            end as description,
        q.icon_x,
        q.icon_y,
-       q.type
+       q.type,
+       q.zone
 from quest q,
      quest_locale ql
 where q.type = ql.id;
