@@ -27,8 +27,8 @@
     "b_hp": {
       "text": "Здоровье:"
     },
-    "b_bonuses": {
-      "text": "Бонусы:"
+    "b_bonus": {
+      "text": "Бонус:"
     },
     "bag_title": {
       "text": "Ресурсы"
