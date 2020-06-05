@@ -25,19 +25,14 @@ class MainMenuScene(Scene):
 
         self.__start_button = TextButton(parent=self, text_label=start_label,
                                          normal_image_path="start_quest_btn_normal.png")
-        self.__start_button.set_position((self.__main_rect.centerx - self.__start_button.get_size()[0] / 2, 240))
         self.__start_button.set_image_by_state(ButtonState.HOVERED, "start_quest_btn_hover.png")
 
         self.__settings_button = TextButton(parent=self, text_label=settings_label,
                                             normal_image_path="start_quest_btn_normal.png")
-        self.__settings_button.set_position((self.__start_button.position[0],
-                                             self.__start_button.get_rect().bottom + 20))
         self.__settings_button.set_image_by_state(ButtonState.HOVERED, "start_quest_btn_hover.png")
 
         self.__exit_button = TextButton(parent=self, text_label=exit_label,
                                         normal_image_path="start_quest_btn_normal.png")
-        self.__exit_button.set_position((self.__settings_button.position[0],
-                                         self.__settings_button.get_rect().bottom + 20))
         self.__exit_button.set_image_by_state(ButtonState.HOVERED, "start_quest_btn_hover.png")
 
         self.__start_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.change_scene("Farm")})
@@ -49,6 +44,14 @@ class MainMenuScene(Scene):
 
     def on_scene_started(self) -> None:
         super().on_scene_started()
+        self.__main_rect.center = (Constants.WINDOW_W / 2, Constants.WINDOW_H / 2)
+
+        self.__start_button.set_position((self.__main_rect.centerx - self.__start_button.get_size()[0] / 2, 240))
+        self.__settings_button.set_position((self.__start_button.position[0],
+                                             self.__start_button.get_rect().bottom + 20))
+        self.__exit_button.set_position((self.__settings_button.position[0],
+                                         self.__settings_button.get_rect().bottom + 20))
+
         self.__start_button.set_text(text=self._localization.get_string("start"))
         self.__start_button.set_padding(padding=(self._localization.get_params_by_string("start")["padding"], 3))
 
