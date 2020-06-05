@@ -66,6 +66,27 @@
     "start_button": {
       "text": "Start",
       "x_off": 55
+    },
+    "locked_zone": {
+      "text": "Complete more missions to open this area."
+    },
+    "b_name": {
+      "text": "Name:"
+    },
+    "b_level": {
+      "text": "Level:"
+    },
+    "b_exp": {
+      "text": "Experience:"
+    },
+    "b_speed": {
+      "text": "Speed:"
+    },
+    "b_hp": {
+      "text": "Health:"
+    },
+    "b_bonuses": {
+      "text": "Bonuses:"
     }
   }
 }
