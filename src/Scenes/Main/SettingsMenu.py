@@ -1,6 +1,7 @@
 import pygame
 from pygame.event import Event
 
+from Database.Localization import Localization
 from UI.Button import ButtonEventType, ButtonState
 from UI.Menu import Menu
 from UI.TextButton import TextButton
@@ -73,10 +74,19 @@ class SettingsMenu(Menu):
 
         self.__right_resolution_button.add_action(
             {ButtonEventType.ON_CLICK_LB: lambda: self.change_resolution(right=True)})
+        self.__left_resolution_button.add_action(
+            {ButtonEventType.ON_CLICK_LB: lambda: self.change_resolution(right=False)})
 
         self.__current_resolution_label = TextLabel(parent=self, font_size=18, bold=True,
                                                     text="{0}x{1}".format(Constants.WINDOW_W, Constants.WINDOW_H))
         self.__current_resolution_label.get_rect().center = self.__resolution_val_bg_rect.center
+
+        self.__current_lang_label = TextLabel(parent=self, font_size=18, bold=True,
+                                              text=Localization.get_current_locale().upper())
+        self.__current_lang_label.get_rect().center = self.__lang_bg_rect.center
+
+        self.__right_lang_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.change_lang(right=True)})
+        self.__left_lang_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.change_lang(right=False)})
 
         self.parent.stop_handle()
 
@@ -85,15 +95,24 @@ class SettingsMenu(Menu):
         super().destroy()
         self.parent.start_handle()
 
-    def change_resolution(self, right: bool = True) -> None:
+    def change_lang(self, right: bool) -> None:
         if right:
-            index = Constants.SIZE.index((Constants.WINDOW_W, Constants.WINDOW_H))
-            index += 1
-            print("Next", Constants.SIZE[index])
-            self.parent.main_window.change_resolution(Constants.SIZE[index])
+            self.parent.main_window.change_lang(Localization.get_full_locale().next())
         else:
-            # prev
-            pass
+            self.parent.main_window.change_lang(Localization.get_full_locale().prev())
+
+        self.__current_lang_label.set_text(Localization.get_current_locale().upper())
+
+    def change_resolution(self, right: bool) -> None:
+        index = Constants.SIZE.index((Constants.WINDOW_W, Constants.WINDOW_H))
+        index = index + (1 if right else -1)
+        if index == len(Constants.SIZE):
+            index = 0
+        print("Next", Constants.SIZE[index])
+        Constants.WINDOW_W, Constants.WINDOW_H = Constants.SIZE[index]
+        self.__current_resolution_label.set_text(text="{0}x{1}".format(Constants.WINDOW_W, Constants.WINDOW_H))
+        self.__current_resolution_label.get_rect().center = self.__resolution_val_bg_rect.center
+        self.parent.main_window.change_resolution(Constants.SIZE[index])
 
     def handle_event(self, event: Event) -> None:
         super().handle_event(event)
@@ -113,3 +132,4 @@ class SettingsMenu(Menu):
         self.__right_lang_button.draw(screen)
         self.__left_lang_button.draw(screen)
         self.__current_resolution_label.draw(screen)
+        self.__current_lang_label.draw(screen)
