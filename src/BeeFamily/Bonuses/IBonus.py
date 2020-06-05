@@ -2,6 +2,7 @@ import random
 from abc import ABC, abstractmethod
 
 from src.Database.Database import Database
+from src.InGameResources.ResourceBag import ResourceBag
 from src.Quests.Quest import Quest
 
 
@@ -20,15 +21,18 @@ class IBonus(ABC):
         pass
 
     def set_description(self, description: str) -> None:
-        pass
+        self._description = description
 
-    def __str__(self) -> str:
+    @property
+    def description(self) -> str:
         return self._description
+
+    @abstractmethod
+    def modify(self) -> None:
+        pass
 
     @staticmethod
     def get_random_bonus(bonus_seq: list = None):
-        if not bonus_seq:
-            bonus_seq = [TimeBonus(), ScoreBonus()]
         return random.choice(bonus_seq)
 
 
@@ -48,6 +52,9 @@ class TimeBonus(IBonus):
     def set_description(self, description: str) -> None:
         self._description = description.format(self.__time)
 
+    def modify(self) -> None:
+        self.__time += 2
+
 
 class ScoreBonus(IBonus):
     __slots__ = "__score"
@@ -65,6 +72,9 @@ class ScoreBonus(IBonus):
     def set_description(self, description: str) -> None:
         self._description = description.format(self.__score)
 
+    def modify(self) -> None:
+        self.__score += 5
+
 
 class RandomResourceBonus(IBonus):
     __slots__ = ("resource", "__items_ids")
@@ -75,9 +85,13 @@ class RandomResourceBonus(IBonus):
             self.__items_ids = [1, 2, 3, 4, 5]
         else:
             self.__items_ids = items_ids
+        self.resource = ResourceBag()
+        self.resource.append(self.__get_random_resource())
+
+    def __get_random_resource(self):
         db = Database.get_instance()
         r_id = random.choice(self.__items_ids)
-        self.resource = db.get_resource_by_id(r_id)
+        resource = db.get_resource_by_id(r_id)
         value = 0
         if r_id == 1:
             value = random.randint(5, 10)
@@ -89,7 +103,8 @@ class RandomResourceBonus(IBonus):
             value = random.randint(1, 5)
         elif r_id == 5:
             value = random.randint(1, 3)
-        self.resource.value = value
+        resource.value = value
+        return resource
 
     def setup_bonus(self, q: Quest) -> None:
         q.additional_rewards.append(self.resource)
@@ -97,8 +112,8 @@ class RandomResourceBonus(IBonus):
     def remove_bonus(self, q: Quest) -> None:
         q.additional_rewards.remove(self.resource)
 
-    def set_description(self, description: str) -> None:
-        self._description = description
+    def modify(self) -> None:
+        self.resource.append(self.__get_random_resource())
 
 
 class IncreaseResourcesBonus(IBonus):
@@ -114,5 +129,46 @@ class IncreaseResourcesBonus(IBonus):
     def remove_bonus(self, q: Quest) -> None:
         q.resources_modifier -= self.__percent
 
+    def modify(self) -> None:
+        self.__percent += 2
+
+
+class SpeedUpBonus(IBonus):
+    __slots__ = "__speed"
+
+    def __init__(self, speed=0.5) -> None:
+        IBonus.__init__(self)
+        self.__speed = speed
+
+    def setup_bonus(self, q: Quest) -> None:
+        for b in q.bee_list:
+            b.speed_mod += self.__speed
+
+    def remove_bonus(self, q: Quest) -> None:
+        for b in q.bee_list:
+            b.speed_mod -= self.__speed
+
+    def modify(self) -> None:
+        self.__speed += 0.2
+
+
+class HealthBonus(IBonus):
+    __slots__ = "__health"
+
+    def __init__(self, health=10):
+        IBonus.__init__(self)
+        self.__health = health
+
+    def setup_bonus(self, q: Quest) -> None:
+        for b in q.bee_list:
+            b.current_hp += self.__health
+
+    def remove_bonus(self, q: Quest) -> None:
+        for b in q.bee_list:
+            b.current_hp -= self.__health
+
     def set_description(self, description: str) -> None:
-        self._description = description
+        self._description = description.format(self.__health)
+
+    def modify(self) -> None:
+        self.__health += 2
