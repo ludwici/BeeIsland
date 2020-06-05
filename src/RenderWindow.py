@@ -4,6 +4,7 @@ import traceback
 import pygame
 from pygame.time import Clock
 
+from Scenes.Main.MainScene import MainMenuScene
 from src.Database.Database import Database
 from src.Database.Localization import Localization, LocalList
 from src.Player import Player
@@ -31,10 +32,11 @@ class RenderWindow:
         self.main_player = Player()
         self.__scene_map = {
             "Map": MapScene(self, name="Map", player=self.main_player),
-            "Farm": FarmScene(self, name="Farm", player=self.main_player)
+            "Farm": FarmScene(self, name="Farm", player=self.main_player),
+            "Main": MainMenuScene(self, name="Main", player=self.main_player)
         }
         self.__current_scene = self.__scene_map["Map"]
-        self.change_scene("Farm")
+        self.change_scene("Main")
         self.__prev_scene = None
         self.__done = False
         self.__clock = Clock()
@@ -67,11 +69,18 @@ class RenderWindow:
         self.__current_scene = self.__scene_map[scene_name]
         self.__current_scene.on_scene_started()
 
+    def stop(self):
+        self.__done = True
+
     def start(self) -> None:
         while not self.done:
             self.loop()
         pygame.quit()
         quit()
+
+    def change_resolution(self, size: (int, int)) -> None:
+        self.__screen = pygame.display.set_mode(size)
+        self.__current_scene.on_scene_started()
 
     def handle_events(self) -> None:
         for event in pygame.event.get():
