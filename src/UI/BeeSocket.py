@@ -85,14 +85,20 @@ class BeeSocket(RadioButton):
             self._bee.socket_id = self.__local_id
 
         if isinstance(b, BeeQueen):
-            self.parent.hive.add_queen()
-            self.parent.reload_sockets()
+            try:
+                self.parent.hive.add_queen()
+                self.parent.reload_sockets()
+            except AttributeError:
+                pass
 
     @bee.deleter
     def bee(self):
         if isinstance(self._bee, BeeQueen):
-            self.parent.hive.remove_queen()
-            self.parent.reload_sockets()
+            try:
+                self.parent.hive.remove_queen()
+                self.parent.reload_sockets()
+            except AttributeError:
+                pass
         self._bee = None
 
     @Button.register_event(ButtonEventType.ON_CLICK_RB)
