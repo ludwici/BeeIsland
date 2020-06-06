@@ -54,8 +54,5 @@ class Farm:
         if self.active_hives_count > self.max_active_hive_count:
             return False
 
-        if hive.current_level > self.max_hive_level:
-            return False
-
         self.__hive_list.append(hive)
         return True
