@@ -27,6 +27,6 @@ class TextLabel(RenderObject):
         self._rect.w, self._rect.h = self._image.get_rect().w, self._image.get_rect().h
 
     def draw(self, screen: pygame.Surface) -> None:
-        if not self._text:
+        if not self._text or not self.is_draw:
             return
         screen.blit(self._image, self._rect)
