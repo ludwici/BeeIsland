@@ -4,32 +4,32 @@ from enum import Enum
 
 import pygame
 
+from Interfaces.GeneCode import GeneCode
 from src.Database.Localization import Localization
-from src.Interfaces.Levelable import Levelable
 from src.Interfaces.RenderObject import RenderObject
 from src.Quests.Quest import Quest
 
 
-class Bee(Levelable, RenderObject):
-    __slots__ = ("__base_speed", "speed_mod", "hp_mod", "__current_hp", "__max_hp", "name", "_image", "__current_level",
-                 "__max_level", "xp_enabled", "__current_xp", "max_xp", "bonus", "_localization", "__sex", "socket_id")
+class Bee(RenderObject, GeneCode):
+    __slots__ = ("_base_speed", "speed_mod", "hp_mod", "__current_hp", "name", "_image", "_max_hp", "__max_level",
+                 "xp_enabled", "__current_xp", "max_xp", "bonus", "_localization", "__sex", "socket_id", "_dna_code",
+                 "generation")
 
     class BeeSex(Enum):
         MALE = 1,
         FEMALE = 2
 
     def __init__(self, parent, bonus, position: (int, int) = (0, 0), level: int = 1, sex: BeeSex = None) -> None:
-        Levelable.__init__(self)
         RenderObject.__init__(self, parent=parent, position=position)
+        GeneCode.__init__(self)
         self._localization = Localization("Bee")
         self.max_xp = 100
-        self.__base_speed = 0
-        self.speed_mod = 0
-        self.hp_mod = 0
+        self.generation = 1
         self.__sex = sex if sex else random.choice([Bee.BeeSex.MALE, Bee.BeeSex.FEMALE])
         self.__current_hp = 0
-        self.__max_hp = 0
-        self.__min_hp = 0
+        self.__max_level = 5
+        self.__current_xp = 1
+        self.xp_enabled = True
         prefix = self.get_prefix()
         self.name = self.get_random_name(prefix)
         self.change_level_to(level)
@@ -38,6 +38,10 @@ class Bee(Levelable, RenderObject):
         self.socket_id = -1
         self.current_hp = self.max_hp
         self.set_locale_to_bonus()
+
+    @property
+    def dna_code(self) -> str:
+        return self._dna_code
 
     def get_prefix(self) -> str:
         return "m" if self.__sex is Bee.BeeSex.MALE else "f"
@@ -81,59 +85,50 @@ class Bee(Levelable, RenderObject):
         self.bonus.modify()
         self.set_locale_to_bonus()
 
-    @property
-    def max_hp(self) -> int:
-        return self.__max_hp + self.hp_mod
-
-    @max_hp.deleter
-    def max_hp(self) -> None:
-        del self.hp_mod
-        del self.__max_hp
-
-    @property
-    def current_hp(self) -> int:
-        return self.__current_hp
-
-    @current_hp.setter
-    def current_hp(self, value) -> None:
-        if value < self.__min_hp:
-            self.__current_hp = self.__min_hp
-        elif value >= self.max_hp:
-            self.__current_hp = self.max_hp
+    def give_xp(self, value: int) -> None:
+        if not self.xp_enabled:
+            return
+        if (self.current_xp + value) > self.max_xp:
+            over_xp = self.current_xp + value - self.max_xp
+            self.change_level_to(self.current_level + 1)
+            value = over_xp
+            self.__current_xp = value
         else:
-            self.__current_hp = value
-
-    @current_hp.deleter
-    def current_hp(self) -> None:
-        del self.__current_hp
+            self.__current_xp += value
 
     @property
-    def speed(self) -> float:
-        return self.__base_speed + self.speed_mod
+    def current_xp(self) -> int:
+        return self.__current_xp
 
-    @speed.deleter
-    def speed(self) -> None:
-        del self.speed_mod
-        del self.__base_speed
+    @property
+    def max_level(self) -> int:
+        return self.__max_level
 
     def change_level_to(self, level: int) -> bool:
-        if not super().change_level_to(level):
+        if level < 0 or level > self.max_level:
             return False
 
+        self.current_level = level
+        self.__current_xp = 1
+
         if level == 1:
-            self.__base_speed = 3
-            self.__max_hp = 70
+            self._base_speed = 3
+            self._max_hp = 70
         elif level == 2:
-            self.__base_speed = 4
-            self.__max_hp = 92
+            self._base_speed = 4
+            self._max_hp = 92
         elif level == 3:
-            self.__max_hp = 100
+            self._max_hp = 100
         elif level == 4:
-            self.__max_hp = 150
+            self._max_hp = 150
         elif level == 5:
-            self.__max_hp = 180
-            self.__base_speed = 5
+            self._max_hp = 180
+            self._base_speed = 5
 
         self.max_xp = math.ceil(math.exp(level) * 100)
+
+        if level == self.max_level:
+            self.xp_enabled = False
+            self.max_xp = 0
 
         return True
