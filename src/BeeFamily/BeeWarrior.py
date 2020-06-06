@@ -9,3 +9,4 @@ class BeeWarrior(Bee):
                                              SpeedUpBonus(), HealthBonus()])
         Bee.__init__(self, parent=parent, position=position, level=level, bonus=bonus)
         self.set_image("/bee/bee2.png")
+        self._dna_code = "B"
