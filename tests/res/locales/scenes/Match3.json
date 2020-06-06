@@ -25,8 +25,8 @@
         "text": "Score:"
       },
       "finish_label": {
-      "text": "Finish",
-      "x_off": 15
+        "text": "Finish",
+        "x_off": 15
+      }
     }
-  }
 }
