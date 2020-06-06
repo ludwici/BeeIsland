@@ -4,8 +4,8 @@ from enum import Enum
 
 import pygame
 
-from Interfaces.GeneCode import GeneCode
 from src.Database.Localization import Localization
+from src.Interfaces.GeneCode import GeneCode
 from src.Interfaces.RenderObject import RenderObject
 from src.Quests.Quest import Quest
 

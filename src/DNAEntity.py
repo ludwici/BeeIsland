@@ -1,7 +1,7 @@
 import pygame
 
-from Interfaces.GeneCode import GeneCode
-from Interfaces.RenderObject import RenderObject
+from src.Interfaces.GeneCode import GeneCode
+from src.Interfaces.RenderObject import RenderObject
 
 
 class DNAEntity(RenderObject, GeneCode):

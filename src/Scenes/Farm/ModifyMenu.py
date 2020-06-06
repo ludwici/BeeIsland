@@ -5,12 +5,12 @@ import random
 import pygame
 from pygame.event import Event
 
-from DNAEntity import DNAEntity
-from Database.Database import Database
 from src.BeeFamily.Bee import Bee
 from src.BeeFamily.BeeQueen import BeeQueen
 from src.BeeFamily.BeeWarrior import BeeWarrior
 from src.BeeFamily.BeeWorker import BeeWorker
+from src.DNAEntity import DNAEntity
+from src.Database.Database import Database
 from src.Scenes.Scene import Scene
 from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import ButtonEventType, ButtonState
