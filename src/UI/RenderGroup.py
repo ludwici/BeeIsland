@@ -19,6 +19,16 @@ class RenderGroup(RenderObject):
         for k, v in self.group.items():
             v.set_position((v.position[0] + self.position[0], v.position[1] + self.position[1]))
 
+    def hide(self) -> None:
+        super().hide()
+        for k, v in self.group.items():
+            v.hide()
+
+    def show(self) -> None:
+        super().show()
+        for k, v in self.group.items():
+            v.show()
+
     def handle_event(self, event: Event) -> None:
         for k, v in self.group.items():
             if v.is_draw:
