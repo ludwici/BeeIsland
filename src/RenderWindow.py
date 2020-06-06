@@ -36,7 +36,7 @@ class RenderWindow:
             "Main": MainMenuScene(self, name="Main", player=self.main_player)
         }
         self.__current_scene = self.__scene_map["Map"]
-        self.change_scene("Main")
+        self.change_scene("Farm")
         self.__prev_scene = None
         self.__done = False
         self.__clock = Clock()
