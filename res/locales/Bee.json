@@ -116,6 +116,67 @@
       "score": "+{0}% to total score",
       "resource": "Additional reward"
     }
+  },
+  "en": {
+    "m_prefixes": {
+      "speed": [
+        "Fast-moving",
+        "Lightning fast",
+        "Quick paws"
+      ],
+      "health": [
+        "Enduring",
+        "Sturdy"
+      ],
+      "bonus": [
+        "Shining",
+        "Crank",
+        "Thaumaturge",
+        "Master"
+      ]
+    },
+    "f_prefixes": {
+      "speed": [
+        "Fast-moving",
+        "Lightning fast",
+        "Quick paws"
+      ],
+      "health": [
+        "Enduring",
+        "Sturdy"
+      ],
+      "bonus": [
+        "Shining",
+        "Miracle",
+        "Thaumaturge",
+        "Master"
+      ]
+    },
+    "bonuses": {
+      "time": "+{0} to time",
+      "score": "+{0}% to the total score",
+      "resource": "Additional reward",
+      "percent": "Increases the quantity of the resources",
+      "speed": "Increases the speed of all bees on a mission",
+      "health": "Restores {0} lives after mission"
+    }
+  },
+  "en": {
+    "f_names": [
+      "Lily",
+      "Sarah",
+      "Bonnie"
+    ],
+    "m_names": [
+      "John",
+      "Richard",
+      "Paul"
+    ],
+    "bonuses": {
+      "time": "+{0} to total time",
+      "score": "+{0}% to total score",
+      "resource": "Additional reward"
+    }
   }
 
 }
