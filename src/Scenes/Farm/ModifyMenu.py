@@ -124,6 +124,7 @@ class ModifyMenu(Menu):
         worker_dna_name = db.get_resource_by_id(3).locale_name
         warrior_dna_name = db.get_resource_by_id(4).locale_name
         queen_dna_name = db.get_resource_by_id(5).locale_name
+        jelly_name = db.get_resource_by_id(2).locale_name
 
         dna_list = []
         for r in self.parent.player.resources.bag:
@@ -136,6 +137,9 @@ class ModifyMenu(Menu):
             if r.locale_name == queen_dna_name:
                 for i in range(r.value):
                     dna_list.append(DNAEntity(parent=self, dna_type="queen", r=r))
+            if r.locale_name == jelly_name:
+                for i in range(r.value):
+                    dna_list.append(DNAEntity(parent=self, dna_type="jelly", r=r))
 
         for b in itertools.chain(dna_list,
                                  self.parent.player.farm.out_of_hive_bee_list,
