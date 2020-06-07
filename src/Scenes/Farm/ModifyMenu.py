@@ -1,14 +1,10 @@
 import itertools
-import math
-import random
 
 import pygame
 from pygame.event import Event
 
 from src.BeeFamily.Bee import Bee
 from src.BeeFamily.BeeQueen import BeeQueen
-from src.BeeFamily.BeeWarrior import BeeWarrior
-from src.BeeFamily.BeeWorker import BeeWorker
 from src.DNAEntity import DNAEntity
 from src.Database.Database import Database
 from src.Scenes.Scene import Scene
@@ -180,70 +176,13 @@ class ModifyMenu(Menu):
         del self.result_socket.bee
         self.result_socket.lock()
 
-    @staticmethod
-    def parse_code(code) -> str:
-        return ''.join(sorted(code, reverse=any(char.isdigit() for char in code)))
-
     def upgrade(self):
         self.upgrade_button.lock()
 
-        valid_codes = ["AA", "BB", "AB", "A1", "B2", "11", "22", "33"]
+        bee = self.socket1.bee + self.socket2.bee
 
-        dna_code = ModifyMenu.parse_code(self.socket1.bee.dna_code + self.socket2.bee.dna_code)
-        if dna_code not in valid_codes:
+        if not bee:
             return
-
-        if dna_code == "33":
-            bee = BeeQueen(parent=self.parent.player)
-        else:
-            warrior_mod = 2
-
-            if "B" in dna_code:
-                warrior_mod += 4
-
-            warrior_percent = (self.socket1.bee.current_level + self.socket2.bee.current_level) * warrior_mod
-
-            if dna_code == "BB":
-                warrior_percent = 75
-
-            chance = random.random() * 100
-
-            if chance <= warrior_percent or dna_code == "22":
-                bee = BeeWarrior(parent=self.parent.player)
-            else:
-                bee = BeeWorker(parent=self.parent.player)
-
-            chance = random.random() * 100
-            if dna_code in ["AA", "BB", "AB"]:
-                if chance <= 45:
-                    t1 = self.socket1.bee.bonus
-                    t2 = self.socket2.bee.bonus
-                    bonus_chance = 75 if self.socket1.bee.generation > self.socket2.bee.generation else 25
-                    if bonus_chance < random.random() * 100:
-                        bee.bonus = t1
-                    else:
-                        bee.bonus = t2
-                    bee.modify_bonus()
-                    bee.hp_mod = max(self.socket1.bee.hp_mod, self.socket2.bee.hp_mod)
-                    bee.speed_mod = max(self.socket1.bee.speed_mod, self.socket2.bee.speed_mod)
-                    mod = "bonus"
-                else:
-                    random_param = random.randint(1, 2)
-                    if random_param == 1:
-                        up = (self.socket1.bee.speed + self.socket2.bee.speed) \
-                             * ((self.socket1.bee.current_level + self.socket2.bee.current_level) / 2) / 100
-                        bee.speed_mod = up
-                        bee.hp_mod = max(self.socket1.bee.hp_mod, self.socket2.bee.hp_mod)
-                        mod = "speed"
-                    else:
-                        bee.hp_mod = math.ceil((((self.socket1.bee.current_hp * 10) / 100)
-                                                + ((self.socket2.bee.current_hp * 10) / 100)) / 2)
-                        bee.current_hp = bee.max_hp
-                        bee.speed_mod = max(self.socket1.bee.speed_mod, self.socket2.bee.speed_mod)
-                        mod = "health"
-
-                bee.upgrade_name(mod)
-                bee.generation = max(self.socket1.bee.generation, self.socket2.bee.generation) + 1
 
         self.kill_bee(self.socket1)
         self.kill_bee(self.socket2)
