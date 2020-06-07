@@ -8,7 +8,7 @@ from src.Utils import resource_path
 
 
 class Database:
-    __slots__ = ("__db_location_dir", "__localization", "__conn")
+    __slots__ = ("__db_location_dir", "__conn")
 
     __instance = None
 
@@ -24,7 +24,6 @@ class Database:
         else:
             Database.__instance = self
         self.__db_location_dir = resource_path("res/db")
-        self.__localization = Localization.get_current_locale()
         p = "{0}/main.db".format(self.__db_location_dir)
         self.__conn = sqlite3.connect(p)
 
@@ -33,7 +32,7 @@ class Database:
 
     def get_all_quests(self) -> list:
         query = open("{0}/scripts/get_all_quests.sql".format(self.__db_location_dir), 'r').read()
-        cursor = self.__conn.execute(query, (self.__localization, self.__localization))
+        cursor = self.__conn.execute(query, (Localization.get_current_locale(), Localization.get_current_locale()))
         all_quests = cursor.fetchall()
         template_list = []
         for i in all_quests:
@@ -49,13 +48,13 @@ class Database:
 
     def get_rewards_by_quest_id(self, quest_id: int) -> list:
         query = open("{0}/scripts/get_rewards_by_quest_id.sql".format(self.__db_location_dir), 'r').read()
-        cursor = self.__conn.execute(query, (self.__localization, quest_id))
+        cursor = self.__conn.execute(query, (Localization.get_current_locale(), quest_id))
         rewards = cursor.fetchall()
         return rewards
 
     def get_resource_by_id(self, res_id: int) -> Resource:
         query = open("{0}/scripts/get_resource_by_id.sql".format(self.__db_location_dir), 'r').read()
-        cursor = self.__conn.execute(query, (self.__localization, self.__localization, res_id))
+        cursor = self.__conn.execute(query, (Localization.get_current_locale(), Localization.get_current_locale(), res_id))
         template = cursor.fetchone()
-        r = Resource(locale_name=template[1], locale_desc=template[2], max_value=template[3])
+        r = Resource(locale_name=template[1], locale_desc=template[2], max_value=template[3], r_id=template[0])
         return r
