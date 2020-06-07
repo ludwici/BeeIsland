@@ -1,4 +1,4 @@
-from BeeFamily.Bee import Bee
+from src.BeeFamily.Bee import Bee
 from src.BeeFamily.Bonuses.IBonus import IBonus, ScoreBonus, TimeBonus
 
 

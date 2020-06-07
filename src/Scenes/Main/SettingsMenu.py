@@ -3,8 +3,8 @@ import itertools
 import pygame
 from pygame.event import Event
 
-from Database.Database import Database
 from src import Constants
+from src.Database.Database import Database
 from src.Database.Localization import Localization
 from src.UI.Button import ButtonEventType, ButtonState
 from src.UI.Menu import Menu
