@@ -78,8 +78,9 @@ class Bee(RenderObject, GeneCode):
         return result
 
     def modify_bonus(self):
-        self.bonus.modify()
-        self.set_locale_to_bonus()
+        if self.bonus:
+            self.bonus.modify()
+            self.set_locale_to_bonus()
 
     def give_xp(self, value: int) -> None:
         if not self.xp_enabled:

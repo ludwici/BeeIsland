@@ -37,17 +37,17 @@ class GeneCode(ABC):
 
         if "J" in code:
             self.current_hp += 10
-            from BeeFamily.Bee import Bee
+            from src.BeeFamily.Bee import Bee
             return self if issubclass(type(self), Bee) else other
 
         warrior_mod = 2
-        warrior_percent = (self.current_level + other.current_level) * warrior_mod
-
         if "B" in code:
             warrior_mod += 4
 
+        warrior_percent = (self.current_level + other.current_level) * warrior_mod
+
         warrior_change = random.random() * 100
-        if warrior_change <= warrior_percent or code == "22":
+        if warrior_change <= warrior_percent or "2" in code and "1" not in code:
             from src.BeeFamily.BeeWarrior import BeeWarrior
             bee = BeeWarrior(parent=self)
         else:
