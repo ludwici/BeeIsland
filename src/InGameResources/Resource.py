@@ -1,16 +1,21 @@
 class Resource:
-    __slots__ = ("__locale_name", "__value", "__base_value", "__max_value", "__locale_desc")
+    __slots__ = ("__locale_name", "__value", "__base_value", "__max_value", "__locale_desc", "__r_id")
 
-    def __init__(self, locale_name, locale_desc="", amount=0, max_value=0) -> None:
+    def __init__(self, locale_name, r_id, locale_desc="", amount=0, max_value=0) -> None:
         self.__locale_name = locale_name
         self.__locale_desc = locale_desc
         self.__value = amount
         self.__base_value = amount
         self.__max_value = max_value
+        self.__r_id = r_id
 
     def increase_by_percent(self, percent) -> None:
         self.__value = self.base_value
         self.__value += self.base_value * percent / 100
+
+    @property
+    def r_id(self) -> int:
+        return self.__r_id
 
     @property
     def value(self) -> int:
