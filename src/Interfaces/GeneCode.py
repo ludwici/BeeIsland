@@ -15,7 +15,7 @@ class GeneCode(ABC):
         self.generation = 0
         self._dna_code = code
         self.bonus = bonus
-        self.__valid_codes = ["AA", "BB", "AB", "A1", "B2", "11", "22", "33", "AJ", "BJ"]
+        self.__valid_codes = ["AA", "BB", "AB", "Q3", "A1", "B2", "11", "22", "33", "AJ", "BJ"]
 
     @staticmethod
     def parse_code(code) -> str:
@@ -26,14 +26,19 @@ class GeneCode(ABC):
         if code not in self.__valid_codes:
             return None
 
-        if code == "33":
+        if "3" in code:
             from src.BeeFamily.BeeQueen import BeeQueen
-            bee = BeeQueen(parent=self)
+            if code[0] == "Q":
+                bee = self if isinstance(self, BeeQueen) else other
+                bee.give_xp(1)
+            else:
+                bee = BeeQueen(parent=self)
             return bee
 
         if "J" in code:
             self.current_hp += 10
-            return self
+            from BeeFamily.Bee import Bee
+            return self if issubclass(type(self), Bee) else other
 
         warrior_mod = 2
         warrior_percent = (self.current_level + other.current_level) * warrior_mod
