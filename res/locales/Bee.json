@@ -101,23 +101,6 @@
     }
   },
   "en": {
-    "f_names": [
-      "Lily",
-      "Sarah",
-      "Bonnie"
-    ],
-    "m_names": [
-      "John",
-      "Richard",
-      "Paul"
-    ],
-    "bonuses": {
-      "time": "+{0} to total time",
-      "score": "+{0}% to total score",
-      "resource": "Additional reward"
-    }
-  },
-  "en": {
     "m_prefixes": {
       "speed": [
         "Fast-moving",
@@ -160,23 +143,5 @@
       "speed": "Increases the speed of all bees on a mission",
       "health": "Restores {0} lives after mission"
     }
-  },
-  "en": {
-    "f_names": [
-      "Lily",
-      "Sarah",
-      "Bonnie"
-    ],
-    "m_names": [
-      "John",
-      "Richard",
-      "Paul"
-    ],
-    "bonuses": {
-      "time": "+{0} to total time",
-      "score": "+{0}% to total score",
-      "resource": "Additional reward"
-    }
   }
-
 }
