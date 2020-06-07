@@ -1,11 +1,11 @@
 import sys
 import unittest
+sys.path.append('../')
 
 from src.BeeFamily.BeeQueen import BeeQueen
 from src.BeeFamily.BeeWarrior import BeeWarrior
 from src.BeeFamily.BeeWorker import BeeWorker
 
-sys.path.append('../')
 from src.BeeNest import BeeNest
 from src.BeeFamily.Bee import Bee
 
