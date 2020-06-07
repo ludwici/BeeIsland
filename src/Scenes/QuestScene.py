@@ -50,11 +50,11 @@ class QuestScene(Scene):
             return 6
 
     def __mxp(self, bee_lvl: int):
-        if self._quest.zone.name == "zone1":
+        if self._quest.zone == 1:
             mod = 5
-        elif self._quest.zone.name == "zone2":
+        elif self._quest.zone == 2:
             mod = 25
-        elif self._quest.zone.name == "zone3":
+        elif self._quest.zone == 3:
             mod = 65
         else:
             mod = 205
@@ -76,7 +76,7 @@ class QuestScene(Scene):
         return xp
 
     @staticmethod
-    def _calculate_damage(bee_lvl):
+    def _calculate_damage():
         return 16
 
     def _finish_quest(self) -> None:
@@ -84,9 +84,10 @@ class QuestScene(Scene):
         self.player.resources += self._quest.additional_rewards
         for b in self._quest.bee_list:
             b.give_xp(self._calculate_xp(b.current_level))
-            b.current_hp -= QuestScene._calculate_damage(b.current_level)
+            b.current_hp -= QuestScene._calculate_damage()
         self.score += self.score * self._quest.score_modifier_percent / 100
 
+        self.main_window.prev_scene.complete_quest(self._quest.quest_id)
         self.main_window.change_scene(self.main_window.prev_scene.name)
         self.main_window.remove_scene(self.name)
 

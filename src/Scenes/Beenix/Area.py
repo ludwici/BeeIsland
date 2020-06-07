@@ -5,6 +5,8 @@ import pygame
 
 
 class InverseArea(pygame.sprite.Sprite):
+    __slots__ = ("width", "image", "mask", "rect")
+
     def __init__(self, area, mask):
         super(InverseArea, self).__init__()
         self.width, self.height = area.size
@@ -18,6 +20,7 @@ class InverseArea(pygame.sprite.Sprite):
 
 
 class Area(pygame.sprite.Sprite):
+    __slots__ = ("size", "image", "rect", "position", "mask", "color", "border_size")
 
     def __init__(self) -> None:
         pygame.sprite.Sprite.__init__(self)

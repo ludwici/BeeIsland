@@ -6,7 +6,7 @@ import pygame
 from flags import Flags
 from pygame.rect import Rect
 
-from src.Interfaces.Drawable import Drawable
+from src.Interfaces.RenderObject import RenderObject
 from src.Utils import resource_path
 
 
@@ -25,13 +25,13 @@ class ButtonState(Flags):
 
 
 # TODO: Mixed Strategy pattern
-class Button(Drawable):
+class Button(RenderObject):
     __slots__ = ("_current_image", "_images", "_state", "_action_list", "_action_list_rb", "_on_hover_list",
                  "_on_hover_out_list", "_can_call_out", "_can_handle_events", "_click_rect")
 
     def __init__(self, parent, normal_image_path: str, position: (int, int) = (0, 0),
                  state: ButtonState = ButtonState.NORMAL) -> None:
-        Drawable.__init__(self, parent=parent, position=position)
+        RenderObject.__init__(self, parent=parent, position=position)
         self._res_dir += "/buttons"
         self._current_image = None
         self._images = dict()
@@ -150,7 +150,8 @@ class Button(Drawable):
         return process
 
     def draw(self, screen: pygame.Surface) -> None:
-        screen.blit(self._current_image, self._rect)
+        if self.is_draw:
+            screen.blit(self._current_image, self._rect)
 
     def on_hover_on(self) -> None:
         self.state |= int(ButtonState.HOVERED)

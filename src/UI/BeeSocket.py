@@ -85,14 +85,20 @@ class BeeSocket(RadioButton):
             self._bee.socket_id = self.__local_id
 
         if isinstance(b, BeeQueen):
-            self.parent.hive.add_queen()
-            self.parent.reload_sockets()
+            try:
+                self.parent.hive.add_queen()
+                self.parent.reload_sockets()
+            except AttributeError:
+                pass
 
     @bee.deleter
     def bee(self):
         if isinstance(self._bee, BeeQueen):
-            self.parent.hive.remove_queen()
-            self.parent.reload_sockets()
+            try:
+                self.parent.hive.remove_queen()
+                self.parent.reload_sockets()
+            except AttributeError:
+                pass
         self._bee = None
 
     @Button.register_event(ButtonEventType.ON_CLICK_RB)
@@ -103,7 +109,7 @@ class BeeSocket(RadioButton):
     @Button.register_event(ButtonEventType.ON_CLICK_LB)
     def show_select_panel(self, parent, bee_list) -> None:
         bsp = BeeSelectPanel(parent=parent, socket=self, bee_list=bee_list)
-        bsp.set_position((self.position[0] - bsp.get_size()[0] / 2, self.position[1] - bsp.get_size()[1]))
+        bsp.set_position((self.position[0] - bsp.size[0] / 2, self.position[1] - bsp.size[1]))
 
     def draw(self, screen: pygame.Surface) -> None:
         super().draw(screen)

@@ -9,15 +9,17 @@ from src.BeeFamily.Bee import Bee
 from src.BeeFamily.BeeQueen import BeeQueen
 from src.BeeFamily.BeeWarrior import BeeWarrior
 from src.BeeFamily.BeeWorker import BeeWorker
+from src.DNAEntity import DNAEntity
+from src.Database.Database import Database
 from src.Scenes.Scene import Scene
 from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import ButtonEventType, ButtonState
-from src.UI.DrawablesGroup import DrawablesGroup
 from src.UI.ListItem import ListItem
 from src.UI.ListView import ListView
 from src.UI.Menu import Menu
 from src.UI.MultilineTextLabel import MultilineTextLabel
 from src.UI.RadioGroup import RadioGroup
+from src.UI.RenderGroup import RenderGroup
 from src.UI.TextButton import TextButton
 from src.UI.TextLabel import TextLabel
 
@@ -31,7 +33,7 @@ class ModifyMenu(Menu):
         Menu.__init__(self, parent=parent, bg_name="modify_popup1")
         self._title_label.set_text(text=self.parent.localization.get_string("modify_title"))
         self._title_label.set_position(
-            (self.position[0] + self._bg_image.get_rect().centerx - self._title_label.get_size()[0] / 2 + 10,
+            (self.position[0] + self._bg_image.get_rect().centerx - self._title_label.size[0] / 2 + 10,
              self.position[1] + 3)
         )
         self.socket_group = RadioGroup()
@@ -40,7 +42,7 @@ class ModifyMenu(Menu):
         self.socket1.set_image_by_state(ButtonState.SELECTED, "socket5_normal.png")
         self.dna_image = pygame.image.load("{0}/dna1.png".format(self._res_dir)).convert_alpha()
         self.dna_rect = self.dna_image.get_rect()
-        self.dna_rect.x = self.socket1.position[0] + self.socket1.get_size()[1] + 12
+        self.dna_rect.x = self.socket1.position[0] + self.socket1.size[1] + 12
         self.dna_rect.y = self.socket1.get_rect().centery - self.dna_rect.height / 2
         self.socket2 = BeeSocket(parent=self, socket_type=BeeSocketType.ALL,
                                  group=self.socket_group,
@@ -55,7 +57,7 @@ class ModifyMenu(Menu):
         self.upgrade_button.set_image_by_state(ButtonState.LOCKED, "start_quest_btn_locked.png")
         self.upgrade_button.lock()
         self.upgrade_button.set_position((self.socket1.position[0],
-                                          self.socket2.position[1] + self.socket2.get_size()[1] + 15))
+                                          self.socket2.position[1] + self.socket2.size[1] + 15))
         self.upgrade_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.upgrade()})
 
         self.result_socket = BeeSocket(parent=self,
@@ -64,8 +66,8 @@ class ModifyMenu(Menu):
         self.result_socket.set_image_by_state(ButtonState.LOCKED, "socket3_normal.png")
         self.result_socket.lock()
         self.result_socket.set_position(
-            (self.upgrade_button.get_rect().centerx - self.result_socket.get_size()[1] / 2,
-             self.upgrade_button.position[1] + self.upgrade_button.get_size()[1] + 15)
+            (self.upgrade_button.get_rect().centerx - self.result_socket.size[1] / 2,
+             self.upgrade_button.position[1] + self.upgrade_button.size[1] + 15)
         )
         self.result_socket.add_action({ButtonEventType.ON_CLICK_LB: lambda: self.pick_new_bee()})
 
@@ -74,53 +76,73 @@ class ModifyMenu(Menu):
         self.info_text_label = TextLabel(parent=self, text=self.parent.localization.get_string("upgrade_button"),
                                          font_size=14)
 
-        self.info_block_rect.x = self.upgrade_button.position[0] + self.upgrade_button.get_size()[0] + 95
+        self.info_block_rect.x = self.upgrade_button.position[0] + self.upgrade_button.size[0] + 95
         self.info_block_rect.y = self.position[1] + 71
         self.info_text_label.set_position(
-            (self.info_block_rect.centerx - self.info_text_label.get_size()[0] / 2, self.info_block_rect.y)
+            (self.info_block_rect.centerx - self.info_text_label.size[0] / 2, self.info_block_rect.y)
         )
 
-        name_label = TextLabel(parent=self, font_size=14,
-                               position=(self.info_block_rect.x + 25, self.info_block_rect.y + 40))
+        name_label = MultilineTextLabel(parent=self, font_size=14, line_length=220,
+                                        position=(self.info_block_rect.x + 25, self.info_block_rect.y + 40))
+
+        generation_label = TextLabel(parent=self, font_size=14,
+                                     position=(name_label.position[0], name_label.position[1] + name_label.size[1]))
 
         level_label = TextLabel(parent=self, font_size=14,
-                                position=(name_label.position[0],
-                                          name_label.position[1] + name_label.get_size()[1]))
+                                position=(generation_label.position[0],
+                                          generation_label.position[1] + generation_label.size[1]))
 
         xp_label = TextLabel(parent=self, font_size=14,
                              position=(
                                  level_label.position[0],
-                                 level_label.position[1] + level_label.get_size()[1]))
+                                 level_label.position[1] + level_label.size[1]))
 
         speed_label = TextLabel(parent=self, font_size=14,
                                 position=(
                                     xp_label.position[0],
-                                    xp_label.position[1] + xp_label.get_size()[1]))
+                                    xp_label.position[1] + xp_label.size[1]))
 
         hp_label = TextLabel(parent=self, font_size=14,
                              position=(
                                  speed_label.position[0],
-                                 speed_label.position[1] + speed_label.get_size()[1]))
+                                 speed_label.position[1] + speed_label.size[1]))
 
-        bonus_list_label = MultilineTextLabel(parent=self, font_size=14, line_length=230,
+        bonus_list_label = MultilineTextLabel(parent=self, font_size=14, line_length=220,
                                               position=(
                                                   hp_label.position[0],
-                                                  hp_label.position[1] + hp_label.get_size()[1]))
+                                                  hp_label.position[1] + hp_label.size[1]))
 
-        self.info_group = DrawablesGroup(parent=self,
-                                         data={"b_name": name_label, "b_level": level_label, "b_exp": xp_label,
-                                               "b_speed": speed_label, "b_hp": hp_label,
-                                               "b_bonus": bonus_list_label})
+        self.info_group = RenderGroup(parent=self,
+                                      data={"b_name": name_label, "b_gen": generation_label, "b_level": level_label,
+                                            "b_exp": xp_label, "b_speed": speed_label, "b_hp": hp_label,
+                                            "b_bonus": bonus_list_label})
 
-        self.bee_list_view = ListView(parent=self, size=(625, 253), item_padding=(10, 10), padding=(30, 9),
+        self.bee_list_view = ListView(parent=self, size=(625, 253), padding=(30, 9), item_distance=(15, 15),
                                       position=(
                                           self.position[0] + 9,
-                                          self.info_block_rect.y + self.info_block_rect.height - 6),
-                                      item_distance=(15, 15)
+                                          self.info_block_rect.y + self.info_block_rect.height - 6)
                                       )
         self.bee_list_view.set_image("{0}/modify_popup1_bee_list.png".format(self._res_dir))
 
-        for b in itertools.chain(self.parent.player.farm.out_of_hive_bee_list,
+        db = Database.get_instance()
+        worker_dna_name = db.get_resource_by_id(3).locale_name
+        warrior_dna_name = db.get_resource_by_id(4).locale_name
+        queen_dna_name = db.get_resource_by_id(5).locale_name
+
+        dna_list = []
+        for r in self.parent.player.resources.bag:
+            if r.locale_name == worker_dna_name:
+                for i in range(r.value):
+                    dna_list.append(DNAEntity(parent=self, dna_type="worker", r=r))
+            if r.locale_name == warrior_dna_name:
+                for i in range(r.value):
+                    dna_list.append(DNAEntity(parent=self, dna_type="warrior", r=r))
+            if r.locale_name == queen_dna_name:
+                for i in range(r.value):
+                    dna_list.append(DNAEntity(parent=self, dna_type="queen", r=r))
+
+        for b in itertools.chain(dna_list,
+                                 self.parent.player.farm.out_of_hive_bee_list,
                                  self.parent.player.farm.bees_from_all_hives):
             self.add_bee_to_list(b)
 
@@ -158,37 +180,70 @@ class ModifyMenu(Menu):
         del self.result_socket.bee
         self.result_socket.lock()
 
+    @staticmethod
+    def parse_code(code) -> str:
+        return ''.join(sorted(code, reverse=any(char.isdigit() for char in code)))
+
     def upgrade(self):
         self.upgrade_button.lock()
-        warrior_percent = (self.socket1.bee.current_level + self.socket2.bee.current_level) * 2
-        chance = random.random() * 100
-        if chance < warrior_percent:
-            bee = BeeWarrior(parent=self.parent.player)
-        else:
-            bee = BeeWorker(parent=self.parent.player)
 
-        chance = random.random() * 100
-        if chance <= 20:
-            t1 = self.socket1.bee.bonus
-            t2 = self.socket2.bee.bonus
-            n_t = random.choice([t1, t2])
-            bee.bonus = n_t
-            bee.modify_bonus()
-            mod = "bonus"
+        valid_codes = ["AA", "BB", "AB", "A1", "B2", "11", "22", "33"]
+
+        dna_code = ModifyMenu.parse_code(self.socket1.bee.dna_code + self.socket2.bee.dna_code)
+        if dna_code not in valid_codes:
+            return
+
+        if dna_code == "33":
+            bee = BeeQueen(parent=self.parent.player)
         else:
-            random_param = random.randint(1, 2)
-            if random_param == 1:
-                up = (self.socket1.bee.speed + self.socket2.bee.speed) \
-                     * ((self.socket1.bee.current_level + self.socket2.bee.current_level) / 2) / 100
-                bee.speed_mod = up
-                mod = "speed"
+            warrior_mod = 2
+
+            if "B" in dna_code:
+                warrior_mod += 4
+
+            warrior_percent = (self.socket1.bee.current_level + self.socket2.bee.current_level) * warrior_mod
+
+            if dna_code == "BB":
+                warrior_percent = 75
+
+            chance = random.random() * 100
+
+            if chance <= warrior_percent or dna_code == "22":
+                bee = BeeWarrior(parent=self.parent.player)
             else:
-                bee.hp_mod = math.ceil((((self.socket1.bee.current_hp * 10) / 100)
-                                        + ((self.socket2.bee.current_hp * 10) / 100)) / 2)
-                bee.current_hp = bee.max_hp
-                mod = "health"
+                bee = BeeWorker(parent=self.parent.player)
 
-        bee.upgrade_name(mod)
+            chance = random.random() * 100
+            if dna_code in ["AA", "BB", "AB"]:
+                if chance <= 45:
+                    t1 = self.socket1.bee.bonus
+                    t2 = self.socket2.bee.bonus
+                    bonus_chance = 75 if self.socket1.bee.generation > self.socket2.bee.generation else 25
+                    if bonus_chance < random.random() * 100:
+                        bee.bonus = t1
+                    else:
+                        bee.bonus = t2
+                    bee.modify_bonus()
+                    bee.hp_mod = max(self.socket1.bee.hp_mod, self.socket2.bee.hp_mod)
+                    bee.speed_mod = max(self.socket1.bee.speed_mod, self.socket2.bee.speed_mod)
+                    mod = "bonus"
+                else:
+                    random_param = random.randint(1, 2)
+                    if random_param == 1:
+                        up = (self.socket1.bee.speed + self.socket2.bee.speed) \
+                             * ((self.socket1.bee.current_level + self.socket2.bee.current_level) / 2) / 100
+                        bee.speed_mod = up
+                        bee.hp_mod = max(self.socket1.bee.hp_mod, self.socket2.bee.hp_mod)
+                        mod = "speed"
+                    else:
+                        bee.hp_mod = math.ceil((((self.socket1.bee.current_hp * 10) / 100)
+                                                + ((self.socket2.bee.current_hp * 10) / 100)) / 2)
+                        bee.current_hp = bee.max_hp
+                        bee.speed_mod = max(self.socket1.bee.speed_mod, self.socket2.bee.speed_mod)
+                        mod = "health"
+
+                bee.upgrade_name(mod)
+                bee.generation = max(self.socket1.bee.generation, self.socket2.bee.generation) + 1
 
         self.kill_bee(self.socket1)
         self.kill_bee(self.socket2)
@@ -198,7 +253,7 @@ class ModifyMenu(Menu):
         self.reload_bee_info()
 
     def add_bee_to_list(self, b: Bee) -> None:
-        i = ListItem(parent=self, data=b, normal_image_path="holder1.png")
+        i = ListItem(parent=self, data=b, normal_image_path="holder1.png", center=True)
         i.set_image_by_state(ButtonState.LOCKED, "holder1_lock.png")
         i.set_image_by_state(ButtonState.HOVERED, "holder1_hover.png")
         i.add_action({ButtonEventType.ON_CLICK_LB: lambda e=i: self.select_bee(e)})
@@ -244,21 +299,25 @@ class ModifyMenu(Menu):
     def set_info_position(self):
         self.info_group["b_name"].set_position((self.info_block_rect.x + 25, self.info_block_rect.y + 40))
 
-        self.info_group["b_level"].set_position((self.info_group["b_name"].position[0],
-                                                 self.info_group["b_name"].position[1]
-                                                 + self.info_group["b_name"].get_size()[1]))
+        self.info_group["b_gen"].set_position((self.info_group["b_name"].position[0],
+                                               self.info_group["b_name"].position[1]
+                                               + self.info_group["b_name"].size[1]))
+
+        self.info_group["b_level"].set_position((self.info_group["b_gen"].position[0],
+                                                 self.info_group["b_gen"].position[1]
+                                                 + self.info_group["b_gen"].size[1]))
         self.info_group["b_exp"].set_position((self.info_group["b_level"].position[0],
                                                self.info_group["b_level"].position[1]
-                                               + self.info_group["b_level"].get_size()[1]))
+                                               + self.info_group["b_level"].size[1]))
         self.info_group["b_speed"].set_position((self.info_group["b_exp"].position[0],
                                                  self.info_group["b_exp"].position[1]
-                                                 + self.info_group["b_exp"].get_size()[1]))
+                                                 + self.info_group["b_exp"].size[1]))
         self.info_group["b_hp"].set_position((self.info_group["b_speed"].position[0],
                                               self.info_group["b_speed"].position[1]
-                                              + self.info_group["b_speed"].get_size()[1]))
+                                              + self.info_group["b_speed"].size[1]))
         self.info_group["b_bonus"].set_position((self.info_group["b_hp"].position[0],
                                                  self.info_group["b_hp"].position[1]
-                                                 + self.info_group["b_hp"].get_size()[1]))
+                                                 + self.info_group["b_hp"].size[1]))
 
     def reload_bee_info(self, b: Bee = None) -> None:
         if b is None and self.socket_group.current_button:
@@ -266,9 +325,22 @@ class ModifyMenu(Menu):
         if not b:
             return
 
+        if isinstance(b, DNAEntity):
+            self.info_group.hide()
+            self.info_group["b_name"].set_text(
+                text="{0} {1}".format(self.parent.localization.get_string("b_desc"), b.resource.locale_desc)
+            )
+
+            self.info_group["b_name"].show()
+        else:
+            self.info_group.show()
+
         try:
             self.info_group["b_name"].set_text(
                 text="{0} {1}".format(self.parent.localization.get_string("b_name"), b.name))
+
+            self.info_group["b_gen"].set_text(
+                text="{0} {1}".format(self.parent.localization.get_string("b_gen"), b.generation))
 
             self.info_group["b_level"].set_text(
                 text="{0} {1}".format(self.parent.localization.get_string("b_level"), b.current_level)

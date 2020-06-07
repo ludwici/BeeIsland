@@ -1,16 +1,15 @@
 import pygame
 from pygame.event import Event
 
-from src.Interfaces.Drawable import Drawable
+from src.Interfaces.RenderObject import RenderObject
 
 
-class DrawablesGroup(Drawable):
+class RenderGroup(RenderObject):
     __slots__ = "group"
 
     def __init__(self, parent, data: dict, position: (int, int) = (0, 0)) -> None:
-        Drawable.__init__(self, parent=parent, position=position)
+        RenderObject.__init__(self, parent=parent, position=position)
         self.group = data
-        # self.set_position(position)
 
     def __getitem__(self, key):
         return self.group[key]
@@ -19,6 +18,16 @@ class DrawablesGroup(Drawable):
         super().set_position(position)
         for k, v in self.group.items():
             v.set_position((v.position[0] + self.position[0], v.position[1] + self.position[1]))
+
+    def hide(self) -> None:
+        super().hide()
+        for k, v in self.group.items():
+            v.hide()
+
+    def show(self) -> None:
+        super().show()
+        for k, v in self.group.items():
+            v.show()
 
     def handle_event(self, event: Event) -> None:
         for k, v in self.group.items():

@@ -2,16 +2,16 @@ from copy import copy
 
 import pygame
 
-from src.Interfaces.Drawable import Drawable
+from src.Interfaces.RenderObject import RenderObject
 from src.UI.ListItem import ListItem
 
 
-class ListView(Drawable):
+class ListView(RenderObject):
     __slots__ = ("_data", "_item_padding", "padding", "bg_image", "_items_pos", "_item_distance")
 
     def __init__(self, parent, position: (int, int), size: (int, int), padding: (int, int) = (0, 0),
                  item_padding: (int, int) = (0, 0), item_distance: (int, int) = (0, 0)) -> None:
-        Drawable.__init__(self, parent=parent, position=position)
+        RenderObject.__init__(self, parent=parent, position=position)
         self._data = []
         self._item_padding = item_padding
         self._item_distance = item_distance
@@ -59,20 +59,20 @@ class ListView(Drawable):
                            self.position[1] + self.padding[1] + self._item_distance[1])
         for i in self._data:
             self._set_item_position(i)
-            self._items_pos = i.position[0] + i.get_size()[0] + self._item_distance[0], self._items_pos[1]
+            self._items_pos = i.position[0] + i.size[0] + self._item_distance[0], self._items_pos[1]
 
     def _set_item_position(self, item: ListItem):
-        value = item.get_size()[0] + self._items_pos[0] + self._item_distance[0] - self.position[0]
+        value = item.size[0] + self._items_pos[0] + self._item_distance[0] - self.position[0]
         if len(self._data) != 1:
-            if value > self.get_size()[0]:
+            if value > self.size[0]:
                 self._items_pos = self.position[0] + self.padding[0] + self._item_distance[0], \
-                                  self._items_pos[1] + item.get_size()[1] + self._item_distance[1]
+                                  self._items_pos[1] + item.size[1] + self._item_distance[1]
         item.set_position(position=self._items_pos, padding=self.item_padding)
 
     def add_item(self, item: ListItem) -> None:
         if len(self._data) > 0:
             last = self._data[-1]
-            self._items_pos = (last.position[0] + last.get_size()[0] + self._item_distance[0], self._items_pos[1])
+            self._items_pos = (last.position[0] + last.size[0] + self._item_distance[0], self._items_pos[1])
         self._data.append(item)
         self._set_item_position(item)
 
@@ -86,4 +86,4 @@ class ListView(Drawable):
     def draw(self, screen: pygame.Surface) -> None:
         if self.bg_image:
             screen.blit(self.bg_image, self._rect)
-        [d.draw(screen) for d in self._data if isinstance(d, Drawable)]
+        [d.draw(screen) for d in self._data if isinstance(d, RenderObject)]

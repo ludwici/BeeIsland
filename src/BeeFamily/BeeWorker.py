@@ -8,3 +8,4 @@ class BeeWorker(Bee):
             bonus = IBonus.get_random_bonus([TimeBonus(), ScoreBonus()])
         Bee.__init__(self, parent=parent, position=position, level=level, bonus=bonus)
         self.set_image("/bee/bee1.png")
+        self._dna_code = "A"

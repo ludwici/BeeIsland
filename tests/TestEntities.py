@@ -17,12 +17,6 @@ class TestEntities(unittest.TestCase):
         self.assertEqual(self.bee.current_xp, 11)
         self.check_bee_min_max()
 
-    def test_nest_xp_1(self):
-        xp = 3
-        self.nest.give_xp(xp)
-        self.nest.give_xp(xp)
-        self.check_nest_min_max()
-
     def test_bee_xp_2(self):
         self.bee.change_level_to(1)
         self.bee.give_xp(80)
@@ -37,16 +31,6 @@ class TestEntities(unittest.TestCase):
         for i in range(self.nest.max_size):
             if not self.nest.add_bee(b):
                 self.fail("Too many bees")
-
-        self.check_nest_min_max()
-
-    def check_nest_min_max(self):
-        self.assertGreaterEqual(self.nest.current_xp, 1)
-        self.assertGreaterEqual(self.nest.current_level, 1)
-
-        self.assertLessEqual(self.nest.current_xp, self.nest.max_xp)
-        self.assertLessEqual(self.nest.current_level, self.nest.max_level)
-        self.assertLessEqual(self.nest.size, self.nest.max_size)
 
     def check_bee_min_max(self):
         self.assertGreaterEqual(self.bee.current_xp, 1)
