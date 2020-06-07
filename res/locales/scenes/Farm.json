@@ -80,7 +80,7 @@
     "b_hp": {
       "text": "Health:"
     },
-    "b_bonuses": {
+    "b_bonus": {
       "text": "Bonuses:"
     },
     "bag_title": {
@@ -97,6 +97,12 @@
     },
     "price": {
       "text": "Price:"
+    },
+    "b_desc": {
+      "text": "Description:"
+    },
+    "b_gen": {
+      "text": "Generation:"
     }
   }
 }
