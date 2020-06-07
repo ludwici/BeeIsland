@@ -1,6 +1,9 @@
+import itertools
+
 import pygame
 from pygame.event import Event
 
+from Database.Database import Database
 from src import Constants
 from src.Database.Localization import Localization
 from src.UI.Button import ButtonEventType, ButtonState
@@ -106,6 +109,20 @@ class SettingsMenu(Menu):
             self.parent.main_window.change_lang(Localization.get_full_locale().get_prev())
 
         self.current_lang_label.set_text(Localization.get_current_locale().upper())
+        db = Database.get_instance()
+        old_resources = []
+        for r in self.parent.player.resources.bag:
+            old_resources.append(r)
+        self.parent.player.resources.bag.clear()
+
+        for i in range(len(old_resources)):
+            r = db.get_resource_by_id(old_resources[i].r_id)
+            r.value = old_resources[i].value
+            self.parent.player.resources.append(r)
+
+        for b in itertools.chain(self.parent.player.farm.bees_from_all_hives,
+                                 self.parent.player.farm.out_of_hive_bee_list):
+            b.set_locale_to_bonus()
 
     def change_resolution(self, right: bool) -> None:
         index = Constants.SIZE.index((Constants.WINDOW_W, Constants.WINDOW_H))
