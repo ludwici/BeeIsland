@@ -18,5 +18,25 @@
     "lang": {
       "text": "Язык:"
     }
+  },
+  "en": {
+    "start": {
+      "text": "Start game",
+      "padding": 20
+    },
+    "settings": {
+      "text": "Settings",
+      "padding": 30
+    },
+    "exit": {
+      "text": "Exit",
+      "padding": 52
+    },
+    "resolution": {
+      "text": "Screen resolution:"
+    },
+    "lang": {
+      "text": "Language:"
+    }
   }
 }
