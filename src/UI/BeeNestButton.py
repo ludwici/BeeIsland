@@ -47,6 +47,7 @@ class BeeNestButton(RadioButton):
         for i in range(6):
             self.nest_group.buttons[i].set_position(
                 ((self.position[0] + self.__socket_positions[i][0]), self.position[1] + self.__socket_positions[i][1]))
+
         self.queen_socket.set_position(((self.position[0] + self.__socket_positions[2][0] + 18 + 48),
                                         self.position[1] + self.__socket_positions[2][1]))
 

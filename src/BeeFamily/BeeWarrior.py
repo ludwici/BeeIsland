@@ -7,6 +7,5 @@ class BeeWarrior(Bee):
         if not bonus:
             bonus = IBonus.get_random_bonus([RandomResourceBonus(), IncreaseResourcesBonus(),
                                              SpeedUpBonus(), HealthBonus()])
-        Bee.__init__(self, parent=parent, position=position, level=level, bonus=bonus)
+        Bee.__init__(self, parent=parent, position=position, level=level, bonus=bonus, code="B")
         self.set_image("/bee/bee2.png")
-        self._dna_code = "B"

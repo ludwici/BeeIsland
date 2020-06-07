@@ -12,16 +12,17 @@ from src.Quests.Quest import Quest
 
 class Bee(RenderObject, GeneCode):
     __slots__ = ("_base_speed", "speed_mod", "hp_mod", "__current_hp", "name", "_image", "_max_hp", "__max_level",
-                 "xp_enabled", "__current_xp", "max_xp", "bonus", "_localization", "__sex", "socket_id", "_dna_code",
+                 "xp_enabled", "__current_xp", "max_xp", "bonus", "_localization", "__sex", "socket_id",
                  "generation")
 
     class BeeSex(Enum):
         MALE = 1,
         FEMALE = 2
 
-    def __init__(self, parent, bonus, position: (int, int) = (0, 0), level: int = 1, sex: BeeSex = None) -> None:
+    def __init__(self, parent, bonus, code: str, position: (int, int) = (0, 0), level: int = 1,
+                 sex: BeeSex = None) -> None:
         RenderObject.__init__(self, parent=parent, position=position)
-        GeneCode.__init__(self)
+        GeneCode.__init__(self, code, bonus)
         self._localization = Localization("Bee")
         self.max_xp = 100
         self.generation = 1
@@ -34,14 +35,9 @@ class Bee(RenderObject, GeneCode):
         self.name = self.get_random_name(prefix)
         self.change_level_to(level)
         self._image = None
-        self.bonus = bonus
         self.socket_id = -1
         self.current_hp = self.max_hp
         self.set_locale_to_bonus()
-
-    @property
-    def dna_code(self) -> str:
-        return self._dna_code
 
     def get_prefix(self) -> str:
         return "m" if self.__sex is Bee.BeeSex.MALE else "f"

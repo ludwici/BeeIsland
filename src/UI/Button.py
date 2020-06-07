@@ -77,7 +77,7 @@ class Button(RenderObject):
         for k, v in self._images.items():
             self._images[k] = pygame.transform.smoothscale(v, size)
 
-        self.state = self.state
+        self.state = self._state
 
     def stop_handle(self) -> None:
         self._can_handle_events = False

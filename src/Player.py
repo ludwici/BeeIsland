@@ -31,10 +31,16 @@ class Player:
         r = db.get_resource_by_id(3)
         r.value = 5
         self.resources.append(r)
+
         r = db.get_resource_by_id(4)
         r.value = 5
         self.resources.append(r)
+
         r = db.get_resource_by_id(5)
+        r.value = 5
+        self.resources.append(r)
+
+        r = db.get_resource_by_id(2)
         r.value = 5
         self.resources.append(r)
 

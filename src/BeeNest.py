@@ -7,7 +7,7 @@ class BeeNest:
 
     def __init__(self) -> None:
         self.__bee_list = []
-        self.__max_size = 0
+        self.__max_size = 3
         self.__have_queen = False
 
     def add_queen(self) -> None:
