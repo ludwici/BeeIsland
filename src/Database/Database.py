@@ -53,8 +53,11 @@ class Database:
         return rewards
 
     def get_resource_by_id(self, res_id: int) -> Resource:
-        query = open("{0}/scripts/get_resource_by_id.sql".format(self.__db_location_dir), 'r').read()
-        cursor = self.__conn.execute(query, (Localization.get_current_locale(), Localization.get_current_locale(), res_id))
+        script_path = "{0}/scripts/get_resource_by_id.sql".format(self.__db_location_dir)
+        query = open(script_path, 'r').read()
+        locale = Localization.get_current_locale()
+        cursor = self.__conn.execute(query, (locale, locale, res_id))
         template = cursor.fetchone()
-        r = Resource(locale_name=template[1], locale_desc=template[2], max_value=template[3], r_id=template[0])
+        r = Resource(r_id=template[0], locale_name=template[1], locale_desc=template[2],
+                     max_value=template[3])
         return r
