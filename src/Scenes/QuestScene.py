@@ -1,5 +1,4 @@
 import math
-from abc import abstractmethod
 
 import pygame
 from pygame.event import Event
@@ -34,12 +33,12 @@ class QuestScene(Scene):
         self._finish_button.set_image_by_state(ButtonState.HOVERED, "start_quest_btn_hover.png")
         self._finish_button.add_action({ButtonEventType.ON_CLICK_LB: lambda: self._finish_quest()})
 
-    @abstractmethod
     def _time_over_handle(self) -> None:
-        pass
+        self._finish_button.show()
+        self._finish_button.start_handle()
 
     @staticmethod
-    def __diff(bee_lvl: int):
+    def __diff(bee_lvl: int) -> int:
         if bee_lvl <= 1:
             return 0
         elif bee_lvl == 2:
@@ -49,7 +48,7 @@ class QuestScene(Scene):
         else:
             return 6
 
-    def __mxp(self, bee_lvl: int):
+    def __mxp(self, bee_lvl: int) -> int:
         if self._quest.zone == 1:
             mod = 5
         elif self._quest.zone == 2:
@@ -61,7 +60,7 @@ class QuestScene(Scene):
         return mod + (2 * bee_lvl)
 
     @staticmethod
-    def rf(bee_lvl):
+    def rf(bee_lvl) -> float:
         if bee_lvl == 1:
             return 1
         elif bee_lvl <= 2 or bee_lvl <= 4:
@@ -106,6 +105,8 @@ class QuestScene(Scene):
     def on_scene_started(self) -> None:
         self._localization = Localization(path="scenes/Quest")
         self._start_time = pygame.time.get_ticks()
+        self._finish_button.hide()
+        self._finish_button.stop_handle()
 
     def handle_events(self, event: Event) -> None:
         self._finish_button.handle_event(event)

@@ -109,6 +109,7 @@ class Match3Scene(QuestScene):
         self._score_val_label.set_text(text=str(self.score))
 
     def _time_over_handle(self) -> None:
+        super()._time_over_handle()
         self._timer_val_label.set_text("")
         self._timer_label.set_text(text=self._localization.get_string("time_over"))
 
