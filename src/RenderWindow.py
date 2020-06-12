@@ -11,6 +11,7 @@ from src.Scenes.Farm.FarmScene import FarmScene
 from src.Scenes.Main.MainScene import MainMenuScene
 from src.Scenes.Map.MapScene import MapScene
 from src.Scenes.Scene import Scene
+from src.Utils import resource_path
 
 
 class RenderWindow:
@@ -25,6 +26,8 @@ class RenderWindow:
         self.__FPS = 60
         self.__size = self.width, self.height = width, height
         self.__screen = pygame.display.set_mode(self.size)
+        icon = pygame.image.load("{0}/icon.ico".format(resource_path(".")))
+        pygame.display.set_icon(icon)
 
         Localization.set_locale(LocalList.RU)
         self.database = Database()
@@ -36,7 +39,7 @@ class RenderWindow:
             "Main": MainMenuScene(self, name="Main", player=self.main_player)
         }
         self.__current_scene = self.__scene_map["Map"]
-        self.change_scene("Farm")
+        self.change_scene("Main")
         self.__prev_scene = None
         self.__done = False
         self.__clock = Clock()
