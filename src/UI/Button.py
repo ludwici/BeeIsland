@@ -24,7 +24,6 @@ class ButtonState(Flags):
     SELECTED = 4
 
 
-# TODO: Mixed Strategy pattern
 class Button(RenderObject):
     __slots__ = ("_current_image", "_images", "_state", "_action_list", "_action_list_rb", "_on_hover_list",
                  "_on_hover_out_list", "_can_call_out", "_can_handle_events", "_click_rect")

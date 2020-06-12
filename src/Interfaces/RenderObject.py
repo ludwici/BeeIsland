@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 import pygame
 from pygame.rect import Rect
 
-# TODO: Template pattern
 from src.Utils import resource_path
 
 
