@@ -9,8 +9,6 @@ from src.Player import Player
 from src.Utils import resource_path
 
 
-# TODO: Adapter pattern
-# TODO: Proxy pattern
 class Scene(ABC):
     __slots__ = ("main_window", "player", "scene_settings", "_name", "_render_list", "_localization", "_res_dir",
                  "_next_scenes", "prev_scene")
@@ -41,7 +39,7 @@ class Scene(ABC):
     def draw(self, surface: pygame.Surface) -> None:
         [r.draw(surface) for r in self._render_list]
 
-    def add_scene(self, scene_name: str, scene) -> None:
+    def add_scene(self, scene_name: str, scene: "Scene") -> None:
         self.main_window.add_scene(scene_name=scene_name, scene=scene)
 
     def change_scene(self, scene_name: str) -> None:
@@ -53,13 +51,13 @@ class Scene(ABC):
     def on_scene_started(self) -> None:
         self._localization = Localization(path="scenes/{0}".format(self.name))
 
-    def find_child_of(self, child, base) -> RenderObject:
+    def find_child_of(self, child: RenderObject, base: RenderObject) -> RenderObject:
         for r in self._render_list:
             if issubclass(type(child), base):
                 return r
         return None
 
-    def find_render_by_type(self, t) -> RenderObject:
+    def find_render_by_type(self, t: RenderObject) -> RenderObject:
         for r in self._render_list:
             if type(r) is t:
                 return r
