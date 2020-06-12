@@ -165,8 +165,6 @@ class BeeSelectPanel(RenderObject):
             self.info_group["b_bonus"].set_position((self.info_group["b_hp"].position[0],
                                                      self.info_group["b_hp"].position[1]
                                                      + self.info_group["b_hp"].size[1] - 5))
-        except AttributeError as ae:
-            pass
         except KeyError as ky:
             field = str(ky).replace('\'', '')
             self.info_group[field].hide()
