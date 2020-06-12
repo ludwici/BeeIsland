@@ -69,8 +69,9 @@ class BagMenu(Menu):
         self.can_show_hint = False
 
     def add_resource_to_list(self, r: Resource, index: int) -> None:
-        r_label = TextLabel(parent=self, text=r.locale_name, font_size=12)
-        amount_label = TextLabel(parent=self, text="{0} / {1}".format(str(r.value), str(r.max_value)), font_size=12)
+        r_label = TextLabel(parent=self, text=r.locale_name, font_size=12, bold=True)
+        amount_label = TextLabel(parent=self, text="{0} / {1}".format(str(r.value), str(r.max_value)), font_size=12,
+                                 bold=True)
         group = RenderGroup(parent=self, data={"name": r_label, "amount": amount_label})
         list_elem = index % 2
         i = ListItem(parent=self, data=group, normal_image_path="res_placeholder{0}_normal.png".format(list_elem))
