@@ -1,4 +1,5 @@
 import os
+import sys
 import traceback
 
 import pygame
@@ -26,7 +27,7 @@ class RenderWindow:
         self.__FPS = 60
         self.__size = self.width, self.height = width, height
         self.__screen = pygame.display.set_mode(self.size)
-        icon = pygame.image.load("{0}/icon.ico".format(resource_path(".")))
+        icon = pygame.image.load("{0}/icon.ico".format(resource_path("res/images/")))
         pygame.display.set_icon(icon)
 
         Localization.set_locale(LocalList.RU)
@@ -79,7 +80,7 @@ class RenderWindow:
         while not self.done:
             self.loop()
         pygame.quit()
-        quit()
+        sys.exit()
 
     def change_resolution(self, size: (int, int)) -> None:
         self.__screen = pygame.display.set_mode(size)
