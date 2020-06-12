@@ -13,6 +13,14 @@ class TextButton(Button):
         self.text_label = text_label
         self.padding = text_padding
 
+    def show(self) -> None:
+        super().show()
+        self.text_label.show()
+
+    def hide(self) -> None:
+        super().hide()
+        self.text_label.hide()
+
     def set_position(self, position: (int, int)) -> None:
         super().set_position(position)
         self.text_label.set_position((self.position[0] + self.padding[0], self.position[1] + self.padding[1]))
