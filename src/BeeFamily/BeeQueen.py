@@ -9,3 +9,4 @@ class BeeQueen(Bee):
         del self.speed
         del self.current_hp
         del self.max_hp
+        self.max_xp = 10
