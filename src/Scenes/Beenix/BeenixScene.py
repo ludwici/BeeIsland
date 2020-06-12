@@ -1,7 +1,6 @@
 import pygame
 from pygame.event import Event
 
-from src import Constants
 from src.Quests.Quest import Quest
 from src.Scenes.Beenix.Area import Area
 from src.Scenes.Beenix.Beenix import Beenix, Direction
@@ -26,14 +25,11 @@ class BeenixScene(QuestScene):
         self.__beenix = Beenix(parent=self, area=self.__area, position=self.__area.rect.topleft)
         if len(self._quest.bee_list) != 0:
             self.__beenix.speed = self._quest.bee_list[self.__current_bee_index].speed
-
         else:
             self.__beenix.speed = 2
+
         for i in range(self.__spider_count):
             self.__spiders.append(Spider(self.__area))
-
-    def _time_over_handle(self) -> None:
-        pass
 
     def __check_collisions(self) -> None:
         if self.__beenix.is_self_destruct():
@@ -58,8 +54,8 @@ class BeenixScene(QuestScene):
 
         self._finish_button.set_text(text=self._localization.get_string("finish_label"))
         self._finish_button.set_padding(padding=(self._localization.get_params_by_string("finish_label")["x_off"], 0))
-        self._finish_button.set_position((Constants.WINDOW_W - self._finish_button.size[0] - 10, 10))
-        print("Lives: ", self.__lives)
+        self._finish_button.set_position((self._score_label.position[0],
+                                          self._score_label.size[1] + self._score_label.position[1]))
 
     def handle_events(self, event: Event) -> None:
         super().handle_events(event)
@@ -73,8 +69,8 @@ class BeenixScene(QuestScene):
         self.__check_collisions()
         self.__beenix.update(self.__spiders)
         [s.update() for s in self.__spiders]
-
-        self._score_val_label.set_text(str("{0:.1f}".format(self.__percentage()) + '%'))
+        rounded = round(self.__percentage(), 1)
+        self._score_val_label.set_text(str("{0}/{1}".format(rounded, self.__percent_zone)))
 
     def draw(self, surface: pygame.Surface) -> None:
         super().draw(surface)
