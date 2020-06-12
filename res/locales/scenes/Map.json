@@ -40,7 +40,7 @@
     "b_hp": {
       "text": "Здоровье:"
     },
-    "b_bonuses": {
+    "b_bonus": {
       "text": "Бонусы:"
     }
   },
@@ -85,7 +85,7 @@
     "b_hp": {
       "text": "Health:"
     },
-    "b_bonuses": {
+    "b_bonus": {
       "text": "Bonuses:"
     }
   }
