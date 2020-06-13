@@ -104,5 +104,58 @@
     "b_gen": {
       "text": "Generation:"
     }
+  },
+  "ua": {
+    "locked_nest": {
+      "text": "Ви поки не можете купити це гніздо"
+    },
+    "upgrade_button": {
+      "text": "Покращити"
+    },
+    "modify_title": {
+      "text": "Модифікування"
+    },
+    "info_label": {
+      "text": "Інформація"
+    },
+    "b_name": {
+      "text": "Ім'я:"
+    },
+    "b_level": {
+      "text": "Рівень:"
+    },
+    "b_exp": {
+      "text": "Досвід:"
+    },
+    "b_speed": {
+      "text": "Швидкість:"
+    },
+    "b_hp": {
+      "text": "Здоров'я:"
+    },
+    "b_bonus": {
+      "text": "Бонус:"
+    },
+    "bag_title": {
+      "text": "Ресурси"
+    },
+    "res_name_label": {
+      "text": "Назва"
+    },
+    "amount_res_label": {
+      "text": "Кількість"
+    },
+    "hives": {
+      "text": "Вулики"
+    },
+    "price": {
+      "text": "Ціна:"
+    },
+    "b_desc": {
+      "text": "Опис:"
+    },
+    "b_gen": {
+      "text": "Покоління:"
+    }
   }
 }

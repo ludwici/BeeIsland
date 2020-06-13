@@ -88,5 +88,50 @@
     "b_bonus": {
       "text": "Bonuses:"
     }
+  },
+  "ua": {
+    "difficult_label": {
+      "text": "Рівень складності та бонуси"
+    },
+    "desc_label": {
+      "line_length": 30
+    },
+    "reward_label": {
+      "text": "Нагороди"
+    },
+    "easy": {
+      "text": "Легкий"
+    },
+    "medium": {
+      "text": "Середній"
+    },
+    "hard": {
+      "text": "Важкий"
+    },
+    "start_button": {
+      "text": "Почати",
+      "x_off": 44
+    },
+    "locked_zone": {
+      "text": "Пройдіть більше місій для відкриття цієї зони"
+    },
+    "b_name": {
+      "text": "Ім'я:"
+    },
+    "b_level": {
+      "text": "Рівень:"
+    },
+    "b_exp": {
+      "text": "Досвід:"
+    },
+    "b_speed": {
+      "text": "Швидкість:"
+    },
+    "b_hp": {
+      "text": "Здоров'я:"
+    },
+    "b_bonus": {
+      "text": "Бонуси:"
+    }
   }
 }

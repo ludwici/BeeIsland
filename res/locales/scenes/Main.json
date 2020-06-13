@@ -22,21 +22,41 @@
   "en": {
     "start": {
       "text": "Start game",
-      "padding": 20
+      "padding": 30
     },
     "settings": {
       "text": "Settings",
-      "padding": 30
+      "padding": 45
     },
     "exit": {
       "text": "Exit",
-      "padding": 52
+      "padding": 65
     },
     "resolution": {
       "text": "Screen resolution:"
     },
     "lang": {
       "text": "Language:"
+    }
+  },
+  "ua": {
+    "start": {
+      "text": "Почати гру",
+      "padding": 25
+    },
+    "settings": {
+      "text": "Налаштування",
+      "padding": 10
+    },
+    "exit": {
+      "text": "Віхід",
+      "padding": 65
+    },
+    "resolution": {
+      "text": "Розширення екрану:"
+    },
+    "lang": {
+      "text": "Мова:"
     }
   }
 }

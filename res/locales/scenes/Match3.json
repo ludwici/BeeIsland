@@ -14,7 +14,7 @@
       "x_off": 15
     }
   },
-    "en": {
+  "en": {
     "time": {
       "text": "Time:"
     },
@@ -26,6 +26,21 @@
     },
     "finish_label": {
       "text": "Finish",
+      "x_off": 15
+    }
+  },
+  "ua": {
+    "time": {
+      "text": "Час:"
+    },
+    "time_over": {
+      "text": "Час вийшов"
+    },
+    "score": {
+      "text": "Рахунок:"
+    },
+    "finish_label": {
+      "text": "Завершити",
       "x_off": 15
     }
   }
