@@ -57,7 +57,7 @@ class Resource:
 
     def __sub__(self, other) -> "Resource":
         if self.__locale_name == other.__locale_name:
-            self.base_value -= other.base_value
+            self.__value -= other.value
         return self
 
     def __bool__(self) -> bool:

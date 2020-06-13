@@ -22,7 +22,7 @@ class ResourceBag:
     def remove(self, old_res: Resource) -> None:
         for r in self.__bag:
             if old_res.locale_name == r.locale_name:
-                r.base_value -= old_res.base_value
+                r.value -= old_res.value
                 if r.base_value == 0:
                     self.__bag.remove(r)
 
@@ -40,3 +40,4 @@ class ResourceBag:
     def __sub__(self, other: "ResourceBag") -> "ResourceBag":
         for o in other.bag:
             self.remove(o)
+        return self
