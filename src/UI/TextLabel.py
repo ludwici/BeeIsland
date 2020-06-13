@@ -5,7 +5,7 @@ from src.Utils import resource_path
 
 
 class TextLabel(RenderObject):
-    __slots__ = ("_font_name", "_font_size", "_bold", "_font", "_text", "_color", "_image")
+    __slots__ = ("_font_name", "_font_size", "_bold", "_font", "_text", "_color", "_image", "_normal_color")
 
     def __init__(self, parent, font_size: int, text: str = "", font_name: str = "segoeprint",
                  position: (int, int) = (0, 0),
@@ -18,8 +18,17 @@ class TextLabel(RenderObject):
         self._font.set_bold(self._bold)
         self._text = text
         self._color = color
+        self._normal_color = color
         self._image = None
         self.set_text(text)
+
+    @property
+    def normal_color(self) -> (int, int, int):
+        return self._normal_color
+
+    def change_color(self, color: (int, int, int)) -> None:
+        self._color = color
+        self.set_text(self._text)
 
     def set_text(self, text: str) -> None:
         self._text = text

@@ -13,6 +13,14 @@ class TextButton(Button):
         self.text_label = text_label
         self.padding = text_padding
 
+    def lock(self) -> None:
+        super().lock()
+        self.text_label.change_color((82, 82, 82))
+
+    def unlock(self) -> None:
+        super().unlock()
+        self.text_label.change_color(self.text_label.normal_color)
+
     def show(self) -> None:
         super().show()
         self.text_label.show()
