@@ -3,6 +3,7 @@ import traceback
 import pygame
 
 from src.BeeFamily.Bee import Bee
+from src.BeeFamily.BeeQueen import BeeQueen
 from src.Interfaces.RenderObject import RenderObject
 from src.UI.Button import Button, ButtonState, ButtonEventType
 from src.UI.ListItem import ListItem
@@ -127,7 +128,6 @@ class BeeSelectPanel(RenderObject):
         if not b:
             return
 
-        # self.info_group["b_bonus"].show()
         try:
             self.info_group["b_name"].set_text(
                 text="{0} {1}".format(self.__scene.localization.get_string("b_name"), b.name))
@@ -146,25 +146,26 @@ class BeeSelectPanel(RenderObject):
                                                    self.info_group["b_level"].position[1]
                                                    + self.info_group["b_level"].size[1] - 5))
 
-            self.info_group["b_speed"].set_text(
-                text="{0} {1}".format(self.__scene.localization.get_string("b_speed"), b.speed))
-            self.info_group["b_speed"].set_position((self.info_group["b_exp"].position[0],
-                                                     self.info_group["b_exp"].position[1]
-                                                     + self.info_group["b_exp"].size[1] - 5))
+            if not isinstance(b, BeeQueen):
+                self.info_group["b_speed"].set_text(
+                    text="{0} {1}".format(self.__scene.localization.get_string("b_speed"), b.speed))
+                self.info_group["b_speed"].set_position((self.info_group["b_exp"].position[0],
+                                                         self.info_group["b_exp"].position[1]
+                                                         + self.info_group["b_exp"].size[1] - 5))
 
-            self.info_group["b_hp"].set_text(
-                text="{0} {1}/{2}".format(self.__scene.localization.get_string("b_hp"), b.current_hp, b.max_hp)
-            )
-            self.info_group["b_hp"].set_position((self.info_group["b_speed"].position[0],
-                                                  self.info_group["b_speed"].position[1]
-                                                  + self.info_group["b_speed"].size[1] - 5))
+                self.info_group["b_hp"].set_text(
+                    text="{0} {1}/{2}".format(self.__scene.localization.get_string("b_hp"), b.current_hp, b.max_hp)
+                )
+                self.info_group["b_hp"].set_position((self.info_group["b_speed"].position[0],
+                                                      self.info_group["b_speed"].position[1]
+                                                      + self.info_group["b_speed"].size[1] - 5))
 
-            self.info_group["b_bonus"].set_text(
-                text="{0} {1}".format(self.__scene.localization.get_string("b_bonus"), b.bonus.description)
-            )
-            self.info_group["b_bonus"].set_position((self.info_group["b_hp"].position[0],
-                                                     self.info_group["b_hp"].position[1]
-                                                     + self.info_group["b_hp"].size[1] - 5))
+                self.info_group["b_bonus"].set_text(
+                    text="{0} {1}".format(self.__scene.localization.get_string("b_bonus"), b.bonus.description)
+                )
+                self.info_group["b_bonus"].set_position((self.info_group["b_hp"].position[0],
+                                                         self.info_group["b_hp"].position[1]
+                                                         + self.info_group["b_hp"].size[1] - 5))
         except KeyError as ky:
             field = str(ky).replace('\'', '')
             self.info_group[field].hide()
