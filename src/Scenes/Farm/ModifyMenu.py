@@ -7,6 +7,7 @@ from src.BeeFamily.Bee import Bee
 from src.BeeFamily.BeeQueen import BeeQueen
 from src.DNAEntity import DNAEntity
 from src.Database.Database import Database
+from src.InGameResources.ResourceBag import ResourceBag
 from src.Scenes.Scene import Scene
 from src.UI.BeeSocket import BeeSocket, BeeSocketType
 from src.UI.Button import ButtonEventType, ButtonState
@@ -69,7 +70,7 @@ class ModifyMenu(Menu):
 
         self.info_block_image = pygame.image.load("{0}/modify_popup1_info.png".format(self._res_dir))
         self.info_block_rect = self.info_block_image.get_rect()
-        self.info_text_label = TextLabel(parent=self, text=self.parent.localization.get_string("upgrade_button"),
+        self.info_text_label = TextLabel(parent=self, text=self.parent.localization.get_string("info_label"),
                                          font_size=14)
 
         self.info_block_rect.x = self.upgrade_button.position[0] + self.upgrade_button.size[0] + 95
@@ -187,6 +188,20 @@ class ModifyMenu(Menu):
 
         if not bee:
             return
+
+        remove_bag = ResourceBag()
+        db = Database.get_instance()
+        if not isinstance(self.socket1.bee, Bee):
+            r1 = db.get_resource_by_id(self.socket1.bee.resource.r_id)
+            r1.value = 1
+            remove_bag.append(r1)
+
+        if not isinstance(self.socket2.bee, Bee):
+            r2 = db.get_resource_by_id(self.socket2.bee.resource.r_id)
+            r2.value = 1
+            remove_bag.append(r2)
+
+        self.parent.player.resources -= remove_bag
 
         self.kill_bee(self.socket1)
         self.kill_bee(self.socket2)
