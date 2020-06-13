@@ -62,6 +62,11 @@ class MainMenuScene(Scene):
         self.exit_button.set_text(text=self._localization.get_string("exit"))
         self.exit_button.set_padding(padding=(self._localization.get_params_by_string("exit")["padding"], 3))
 
+        s = self.find_render_by_type(SettingsMenu)
+        if s:
+            s.destroy()
+            self.show_settings()
+
     def stop_handle(self):
         self.start_button.stop_handle()
         self.settings_button.unselect()
