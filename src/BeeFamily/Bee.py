@@ -52,14 +52,15 @@ class Bee(RenderObject, GeneCode):
             screen.blit(self._image, self._rect)
 
     def set_locale_to_bonus(self):
-        if not self.bonus:
-            return
-        if isinstance(self.bonus.__slots__, tuple):
-            name = self.bonus.__slots__[0]
-        else:
-            name = self.bonus.__slots__
-        d = self._localization.get_params_by_string("bonuses")[name.lstrip("_")]
-        self.bonus.set_description(d)
+        try:
+            if isinstance(self.bonus.__slots__, tuple):
+                name = self.bonus.__slots__[0]
+            else:
+                name = self.bonus.__slots__
+            d = self._localization.get_params_by_string("bonuses")[name.lstrip("_")]
+            self.bonus.set_description(d)
+        except AttributeError:
+            pass
 
     def set_image(self, path: str) -> None:
         self._image = pygame.image.load("{0}{1}".format(self._res_dir, path))
