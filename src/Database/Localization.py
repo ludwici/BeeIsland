@@ -7,7 +7,7 @@ from src.Utils import resource_path
 class LocalList(Enum):
     RU = "ru",
     EN = "en",
-    UA = "ua"
+    UA = "ua",
 
     def get_next(self):
         if self == LocalList.RU:
