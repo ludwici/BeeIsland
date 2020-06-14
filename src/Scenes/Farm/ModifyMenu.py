@@ -179,6 +179,7 @@ class ModifyMenu(Menu):
         self.parent.player.farm.add_out_of_hive_bee(self.result_socket.bee)
         self.add_bee_to_list(self.result_socket.bee)
         del self.result_socket.bee
+        self.socket_group.unselect_all()
         self.result_socket.lock()
 
     def upgrade(self):
