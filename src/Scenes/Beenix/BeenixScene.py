@@ -1,7 +1,7 @@
 import pygame
 from pygame.event import Event
 
-from src.Quests.Quest import Quest
+from src.Quests.Quest import Quest, QuestDifficult
 from src.Scenes.Beenix.Area import Area
 from src.Scenes.Beenix.Beenix import Beenix, Direction
 from src.Scenes.Beenix.Spider import Spider
@@ -14,8 +14,8 @@ class BeenixScene(QuestScene):
 
     def __init__(self, main_window, name, player, quest: Quest) -> None:
         QuestScene.__init__(self, main_window=main_window, player=player, name=name, quest=quest)
-        self.__percent_zone = 60
-        self.__spider_count = 2
+        self.__percent_zone = 60 + 15 * int(self._quest.difficult == QuestDifficult.HARD)
+        self.__spider_count = 2 + int(self._quest.difficult == QuestDifficult.HARD)
         self.__area = Area()
         self.__area_surface = self.__area.mask.count()
         self.__area.update_mask()
