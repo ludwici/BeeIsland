@@ -88,6 +88,7 @@ class FlowersGrid:
                 for x in range(self.cols_count)
                 for y in range(self.rows_count)
             }
+
         for c in self.cells:
             self.cells[c].get_neighbor_cells(self.cells)
 
@@ -143,9 +144,13 @@ class FlowersGrid:
             data_matches = FlowersGrid.find_repeats(colors, 3)
             for match in data_matches:
                 if is_col:
-                    matches.append([(i, index) for index in match])
+                    # matches.append([(i, index) for index in match])
+                    for index in match:
+                        matches.append([(i, index)])
                 else:
-                    matches.append([(index, i) for index in match])
+                    # matches.append([(index, i) for index in match])
+                    for index in match:
+                        matches.append([(index, i)])
         return matches
 
     @staticmethod
@@ -294,8 +299,14 @@ class GridCell:
                 "down": (self.index[0], self.index[1] + 1)
             }
 
+        # for off in offsets:
+        #     self.neighbors[off] = grid[offsets[off]] if offsets[off] in grid else None
+
         for off in offsets:
-            self.neighbors[off] = grid[offsets[off]] if offsets[off] in grid else None
+            if offsets[off] in grid:
+                self.neighbors[off] = grid[offsets[off]]
+
+        pass
 
     def send_flower(self, new_cell, animations) -> None:
         dist = new_cell.rect.top - self.rect.top

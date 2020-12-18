@@ -1,5 +1,5 @@
+from BeeFamily.BeeWarrior import BeeWarrior
 from src.BeeFamily.BeeQueen import BeeQueen
-from src.BeeFamily.BeeWarrior import BeeWarrior
 from src.BeeFamily.BeeWorker import BeeWorker
 from src.BeeNest import BeeNest
 from src.Database.Database import Database

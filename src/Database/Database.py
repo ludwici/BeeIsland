@@ -19,7 +19,7 @@ class Database:
         return Database.__instance
 
     def __init__(self) -> None:
-        if Database.__instance is not None:
+        if Database.__instance:
             raise Exception("This class is singleton")
         else:
             Database.__instance = self

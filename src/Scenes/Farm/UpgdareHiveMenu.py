@@ -40,9 +40,8 @@ class UpgradeHiveMenu(Menu):
         self.hover_index = -1
 
         for h in self.parent.nest_group.buttons:
-            if not h.hive:
-                continue
-            self.add_hive_to_list(h)
+            if h.hive:
+                self.add_hive_to_list(h)
 
         self.parent.nest_group.stop_handle()
 

@@ -4,5 +4,4 @@
 /coverage_results
 __pycache__
 build
-dist
 *.bat
